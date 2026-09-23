@@ -273,7 +273,7 @@
         
         <!-- Left: UzOS Logo -->
         <a href="#hero" class="footer-logo" aria-label="UzOS Home">
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="brand-icon">
             <circle cx="16" cy="16" r="16" fill="#1EAEFB"/>
             <path d="M8 15.5L23.5 8.5L16.5 23.5L14 17L8 15.5Z" fill="white"/>
           </svg>
@@ -283,32 +283,38 @@
         <!-- Center: TON.org style horizontal link list with icons -->
         <nav class="footer-nav" aria-label="Footer navigation">
           <ul class="footer-links-list">
-            <li>
+            <li class="footer-link-item">
               <a class="footer-link" href="https://t.me/UzOS" target="_blank" rel="noopener noreferrer">
-                <!-- Telegram SVG Icon -->
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                </svg>
-                <span>GitHub</span>
-              </a>
-            </li>
-            <li>
-              <a class="footer-link" href="https://t.me/UzOS" target="_blank" rel="noopener noreferrer">
-                <!-- Telegram SVG Icon -->
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.62 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.88.03-.24.37-.49 1.02-.75 3.98-1.73 6.64-2.87 7.97-3.44 3.8-1.58 4.59-1.86 5.11-1.87.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.21-.04.36z"/>
+                <!-- TON.org Telegram SVG Icon -->
+                <svg class="footer-link-icon" aria-hidden="true" fill="none" focusable="false" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <g opacity="0.5">
+                    <path d="M16.3234 4.17334C17.0263 4.17334 17.2113 4.70501 17.0034 5.95334C16.7655 7.38084 16.0801 12.1071 15.5334 15.0492C15.3242 16.175 14.9472 16.6604 14.3984 16.6604C14.0967 16.6604 13.7434 16.5138 13.3376 16.2458C12.7876 15.8825 10.0109 14.0463 9.40798 13.615C8.85798 13.2221 8.09924 12.7492 9.0509 11.8183C9.38965 11.4867 11.6092 9.36709 13.3384 7.71751C13.523 7.54126 13.3684 7.27251 13.1634 7.27251C13.1167 7.27251 13.0672 7.28667 13.0188 7.31876C10.688 8.86459 7.4559 11.01 7.04465 11.2896C6.6334 11.5688 6.23257 11.7479 5.6984 11.7479C5.42549 11.7479 5.11757 11.7013 4.75548 11.5971C3.9459 11.3646 3.15549 11.0875 2.84757 10.9817C1.66215 10.575 1.9434 10.0479 3.09465 9.54126C7.71048 7.51084 13.6834 5.03501 14.508 4.69251C15.3113 4.35876 15.908 4.17334 16.3234 4.17334ZM16.3234 2.92334C15.7534 2.92334 15.0672 3.10709 14.0292 3.53751L13.9047 3.58917C9.4734 5.42917 5.45548 7.13667 2.59132 8.39667C2.14382 8.59376 0.782568 9.19251 0.835485 10.445C0.857985 10.9854 1.15549 11.7221 2.44215 12.1633L2.53715 12.1958C2.89632 12.3196 3.64423 12.5775 4.4109 12.7979C4.87757 12.9321 5.29923 12.9971 5.69882 12.9971C6.39215 12.9971 6.92923 12.7992 7.34923 12.5688C7.34715 12.6388 7.34882 12.7092 7.35423 12.78C7.43007 13.7433 8.17507 14.2717 8.62007 14.5875L8.68215 14.6317C9.33924 15.1017 12.313 17.0663 12.6497 17.2883C13.2834 17.7067 13.8555 17.9096 14.3992 17.9096C15.2542 17.9096 16.3588 17.4529 16.763 15.2771C17.1467 13.2133 17.5901 10.3304 17.9138 8.22542C18.0517 7.32709 18.1651 6.59042 18.2372 6.15834C18.3826 5.28584 18.4492 4.29751 17.8422 3.58126C17.5872 3.28126 17.1172 2.92334 16.3234 2.92334Z" fill="currentColor"/>
+                  </g>
                 </svg>
                 <span>Telegram</span>
               </a>
             </li>
-            <li>
+            <li class="footer-link-item">
+              <a class="footer-link" href="https://github.com/muhammadrizoxoja/UzOS" target="_blank" rel="noopener noreferrer">
+                <!-- TON.org GitHub SVG Icon -->
+                <svg class="footer-link-icon" aria-hidden="true" fill="none" focusable="false" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <g opacity="0.5">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2C5.58 2 2 5.58 2 10C2 13.53 4.29 16.53 7.47 17.59C7.87 17.66 8.02 17.42 8.02 17.21C8.02 17.02 8.01 16.39 8.01 15.72C6 16.09 5.48 15.23 5.32 14.78C5.23 14.55 4.84 13.84 4.5 13.65C4.22 13.5 3.82 13.13 4.49 13.12C5.12 13.11 5.57 13.7 5.72 13.94C6.44 15.15 7.59 14.81 8.05 14.6C8.12 14.08 8.33 13.73 8.56 13.53C6.78 13.33 4.92 12.64 4.92 9.58C4.92 8.71 5.23 7.99 5.74 7.43C5.66 7.23 5.38 6.41 5.82 5.31C5.82 5.31 6.49 5.1 8.02 6.13C8.66 5.95 9.34 5.86 10.02 5.86C10.7 5.86 11.38 5.95 12.02 6.13C13.55 5.09 14.22 5.31 14.22 5.31C14.66 6.41 14.38 7.23 14.3 7.43C14.81 7.99 15.12 8.7 15.12 9.58C15.12 12.65 13.25 13.33 11.47 13.53C11.76 13.78 12.01 14.26 12.01 15.01C12.01 16.08 12 16.94 12 17.21C12 17.42 12.15 17.67 12.55 17.59C15.71 16.53 18 13.53 18 10C18 5.58 14.42 2 10 2Z" fill="currentColor"/>
+                  </g>
+                </svg>
+                <span>GitHub</span>
+              </a>
+            </li>
+            <li class="footer-link-item">
               <a class="footer-link" href="https://github.com/muhammadrizoxoja/UzOS/blob/main/README.md" target="_blank" rel="noopener noreferrer">
-                <!-- Docs SVG Icon -->
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                <!-- TON.org Document / Media Assets SVG Icon -->
+                <svg class="footer-link-icon" aria-hidden="true" fill="none" focusable="false" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <g opacity="0.5">
+                    <path d="M10.6257 6.45817V2.2915H5.20898C4.51857 2.2915 3.95898 2.85109 3.95898 3.5415V16.4582C3.95898 17.1486 4.51857 17.7082 5.20898 17.7082H14.7923C15.4827 17.7082 16.0423 17.1486 16.0423 16.4582V7.70817H11.8757C11.1852 7.70817 10.6257 7.14859 10.6257 6.45817Z" stroke="currentColor" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.25"/>
+                    <path d="M16.0417 7.70817L10.625 2.2915" stroke="currentColor" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.25"/>
+                    <path d="M7.29102 15.2085H12.7077" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1.25"/>
+                    <path d="M10 9.7915V13.5736" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.25"/>
+                  </g>
                 </svg>
                 <span>Docs</span>
               </a>
@@ -316,9 +322,9 @@
           </ul>
         </nav>
 
-        <!-- Right: Status / Copyright -->
-        <div class="footer-copyright">
-          © 2026 UzOS Al-Xorazmiy LTS
+        <!-- Right: TON.org style meta -->
+        <div class="footer-meta">
+          <span class="footer-copyright">© 2026 UzOS Al-Xorazmiy LTS</span>
         </div>
 
       </div>
