@@ -168,11 +168,11 @@ body {
   color: var(--color-accent);
   display: block;
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 13.5px;
   font-weight: 600;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
   line-height: 16px;
-  margin: 0 0 16px 0;
+  margin: 0 0 14px 0;
   text-transform: uppercase;
   white-space: nowrap;
   width: fit-content;
@@ -189,31 +189,50 @@ body {
 
 .hero-container {
   display: grid;
-  grid-template-columns: minmax(0, 640px) minmax(460px, 1fr);
+  grid-template-columns: minmax(0, 520px) minmax(0, 1fr);
   align-items: center;
-  gap: 48px;
+  gap: 56px;
 }
 
-/* TON.org _heading_SRZB1 _hero_FAhG- _title_LpTcC */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  z-index: 2;
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+}
+
+/* TON.org _heading_SRZB1 _hero_FAhG- _title_LpTcC (1:1 with .heading-title) */
 .hero-title {
-  font-size: clamp(32px, 3.2vw, 48px);
-  line-height: 1.25;
+  font-size: clamp(30px, 3.1vw, 40px);
+  line-height: 1.2;
   font-weight: 500;
   letter-spacing: -0.015em;
-  margin: 0 0 32px 0;
-  max-width: 695px;
+  margin: 0 0 28px 0;
+  padding: 0;
+  max-width: 520px;
   color: #ffffff;
   font-family: var(--font-sans);
+  text-align: left;
+  width: 100%;
 }
 
 .split-title {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
 }
 
 .split-title > span {
   display: block;
+  white-space: nowrap;
+  text-align: left;
 }
 
 .telegram-phrase {
@@ -221,6 +240,13 @@ body {
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.telegram-phrase:hover {
+  opacity: 0.85;
 }
 
 .telegram-icon {
@@ -230,7 +256,7 @@ body {
   width: 0.9em;
   height: 0.9em;
   vertical-align: -0.12em;
-  margin: 0 5px;
+  margin: 0 6px 0 4px;
 }
 
 .telegram-icon svg {
@@ -240,8 +266,7 @@ body {
 }
 
 /* ==========================================================================
-   TON.org 1:1 Metric Badges (_badges_ZfXs7 & _badge_6diKg)
-   Seamless horizontal pills: Value in white + Label in muted gray, on one line
+   TON.org 1:1 Metric Badges (Row 1: 3 badges | Row 2: 2 badges)
    ========================================================================== */
 .ton-badges-list {
   display: flex;
@@ -251,6 +276,8 @@ body {
   margin: 0;
   max-width: 520px;
   padding: 0;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .ton-badge-item {
@@ -261,70 +288,76 @@ body {
 
 .ton-badge-card {
   align-items: center;
-  backdrop-filter: blur(7.5px);
-  -webkit-backdrop-filter: blur(7.5px);
-  background: rgba(16, 27, 42, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(16, 27, 42, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 100px;
   box-shadow: inset 1px 1px 1px 0 rgba(255, 255, 255, 0.05);
   box-sizing: border-box;
   color: var(--color-white);
   display: inline-flex;
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 14.5px;
   font-weight: 500;
   gap: 6px;
   justify-content: center;
   letter-spacing: 0;
   line-height: 18px;
-  padding: 8px 14px;
+  padding: 7px 13px;
   white-space: nowrap;
   width: fit-content;
-  transition: background-color 0.2s ease;
-  border: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .ton-badge-card:hover {
   background: rgba(26, 38, 56, 0.9);
+  border-color: rgba(30, 174, 251, 0.35);
 }
 
 .ton-badge-card .metric-val {
   color: #ffffff;
   font-family: var(--font-sans);
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 14.5px;
+  font-weight: 600;
   line-height: 18px;
 }
 
 .ton-badge-card .metric-lbl {
   color: var(--color-muted);
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 14.5px;
   font-weight: 500;
   line-height: 18px;
 }
 
-/* 3D Dot-Matrix Globe Container */
+/* 3D Binary Matrix Globe Container (Right-aligned with Docs nav at the top) */
 .hero-visual-wrap {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   position: relative;
+  width: 100%;
+  min-width: 0;
+  z-index: 1;
 }
 
 .globe-canvas-container {
   position: relative;
   width: 100%;
-  max-width: 520px;
+  max-width: 560px;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 #hero-globe-canvas {
   width: 100%;
   height: 100%;
+  display: block;
   cursor: grab;
+  touch-action: none;
 }
 
 #hero-globe-canvas:active {
@@ -557,7 +590,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
-    gap: 36px;
+    gap: 48px;
   }
   
   .hero-title {

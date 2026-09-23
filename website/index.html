@@ -14,10 +14,10 @@
   <meta property="og:description" content="Windows'dan ustun, xavfsiz, bepul va raqamli suveren milliy operatsion tizim. Ubuntu yadrosi va Telegram UI asosida.">
   
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=matrix_11">
   
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><circle cx='14' cy='14' r='14' fill='%231EAEFB'/><path d='M6.5 13.5L20.5 7L14 21L12 15L6.5 13.5Z' fill='white'/></svg>">
+  <!-- Favicon (7-talik Asal Ari Uyasi / Honeycomb Rosette) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><g stroke='white' stroke-width='1.1' stroke-linejoin='round' fill='%230284C7'><polygon points='8.6,11.7 12.3,13.8 12.3,18.2 8.6,20.3 4.8,18.2 4.8,13.8'/><polygon points='23.4,11.7 27.2,13.8 27.2,18.2 23.4,20.3 19.7,18.2 19.7,13.8'/><polygon points='12.3,5.2 16,7.4 16,11.7 12.3,13.8 8.6,11.7 8.6,7.4'/><polygon points='19.7,5.2 23.4,7.4 23.4,11.7 19.7,13.8 16,11.7 16,7.4'/><polygon points='12.3,18.2 16,20.3 16,24.7 12.3,26.8 8.6,24.7 8.6,20.3'/><polygon points='19.7,18.2 23.4,20.3 23.4,24.7 19.7,26.8 16,24.7 16,20.3'/></g><polygon points='16,11.7 19.7,13.8 19.7,18.2 16,20.3 12.3,18.2 12.3,13.8' fill='white'/></svg>">
 </head>
 <body>
 
@@ -54,10 +54,26 @@
     <!-- Site Header (1:1 TON.org Header: Left Logo + Right White Text Links) -->
     <header class="site-header" id="site-header">
       <div class="inner-header">
-        <a href="#hero" class="brand-logo" aria-label="UzOS Home">
+        <a href="#hero" class="brand-logo" aria-label="UzOS Bosh sahifa">
           <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="brand-icon">
-            <circle cx="16" cy="16" r="16" fill="#1EAEFB"/>
-            <path d="M8 15.5L23.5 8.5L16.5 23.5L14 17L8 15.5Z" fill="white"/>
+            <defs>
+              <linearGradient id="uzHoneycomb7Header" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38BDF8"/>
+                <stop offset="100%" stop-color="#0284C7"/>
+              </linearGradient>
+            </defs>
+            <!-- 6 Outer Honeycomb Cells -->
+            <g stroke="white" stroke-width="1.1" stroke-linejoin="round" fill="url(#uzHoneycomb7Header)">
+              <polygon points="8.6,11.7 12.3,13.8 12.3,18.2 8.6,20.3 4.8,18.2 4.8,13.8"/>
+              <polygon points="23.4,11.7 27.2,13.8 27.2,18.2 23.4,20.3 19.7,18.2 19.7,13.8"/>
+              <polygon points="12.3,5.2 16,7.4 16,11.7 12.3,13.8 8.6,11.7 8.6,7.4"/>
+              <polygon points="19.7,5.2 23.4,7.4 23.4,11.7 19.7,13.8 16,11.7 16,7.4"/>
+              <polygon points="12.3,18.2 16,20.3 16,24.7 12.3,26.8 8.6,24.7 8.6,20.3"/>
+              <polygon points="19.7,18.2 23.4,20.3 23.4,24.7 19.7,26.8 16,24.7 16,20.3"/>
+            </g>
+            <!-- Center Core Honeycomb Cell -->
+            <polygon points="16,11.7 19.7,13.8 19.7,18.2 16,20.3 12.3,18.2 12.3,13.8" fill="white" stroke="#38BDF8" stroke-width="1.1" stroke-linejoin="round"/>
+            <circle cx="16" cy="16" r="1.4" fill="#0284C7"/>
           </svg>
           <span class="brand-title">UzOS</span>
         </a>
@@ -87,11 +103,12 @@
             <h1 id="hero-title" class="hero-title">
               <span class="split-title">
                 <span>Windows'dan Tezroq va Xavfsiz</span>
-                <span>Ubuntu negizida va <span class="telegram-phrase"><span class="telegram-icon" aria-hidden="true"><svg width="54" height="54" viewBox="0 0 54 54" fill="none"><circle cx="27" cy="27" r="27" fill="#1EAEFB"/><path d="M38.14 20.55C38.73 17.01 37.55 16.7 33.7 18.3L13.38 26.93C11.33 27.84 10.83 28.77 12.94 29.5L16.34 30.6C18.25 31.14 19.31 30.8 20.42 30.04C21.15 29.55 26.9 25.73 31.05 22.98C31.52 22.67 32.02 23.3 31.62 23.69L23.99 30.99C22.29 32.64 23.64 33.49 24.62 34.18L31.62 38.87C33.65 40.21 34.95 39.84 35.53 36.74L38.14 20.55Z" fill="white"/></svg></span><span>Telegram</span></span> UI bilan</span>
+                <span>Ubuntu negizida, <span class="telegram-phrase"><span class="telegram-icon" aria-hidden="true"><svg width="32" height="32" viewBox="0 0 54 54" fill="none"><circle cx="27" cy="27" r="27" fill="#1EAEFB"/><path d="M38.14 20.55C38.73 17.01 37.55 16.7 33.7 18.3L13.38 26.93C11.33 27.84 10.83 28.77 12.94 29.5L16.34 30.6C18.25 31.14 19.31 30.8 20.42 30.04C21.15 29.55 26.9 25.73 31.05 22.98C31.52 22.67 32.02 23.3 31.62 23.69L23.99 30.99C22.29 32.64 23.64 33.49 24.62 34.18L31.62 38.87C33.65 40.21 34.95 39.84 35.53 36.74L38.14 20.55Z" fill="white"/></svg></span><span>Telegram</span></span></span>
+                <span>UI bilan yaratilgan Milliy OS</span>
               </span>
             </h1>
 
-            <!-- 1:1 TON.org Style Metric Badges (_badges_ZfXs7 & _badge_6diKg) -->
+            <!-- 1:1 TON.org Style Metric Badges (Row 1: 3 badges, Row 2: 2 badges) -->
             <ul aria-label="UzOS milliy ko'rsatkichlari" class="ton-badges-list">
               <li class="ton-badge-item">
                 <span class="ton-badge-card">
@@ -120,7 +137,7 @@
               <li class="ton-badge-item">
                 <span class="ton-badge-card">
                   <span class="metric-val">Mutlaqo</span>
-                  <span class="metric-lbl">Bepul</span>
+                  <span class="metric-lbl">Bepul OS</span>
                 </span>
               </li>
             </ul>
@@ -147,7 +164,7 @@
           <div class="section-heading">
             <!-- 1:1 TON.org Shunchaki Ko'k Yozuv -->
             <p class="section-label">Asosiy Afzalliklar</p>
-            <h2 class="heading-title">Technological superiority</h2>
+            <h2 class="heading-title">Texnologik ustunlik</h2>
           </div>
 
           <!-- 1:1 Unified Card Grid Component (Joined cells, seamless borders) -->
@@ -270,11 +287,27 @@
     <footer class="site-footer">
       <div class="footer-inner">
         
-        <!-- Left: UzOS Logo -->
-        <a href="#hero" class="footer-logo" aria-label="UzOS Home">
+        <!-- Left: UzOS Logo (7-talik Asal Ari Uyasi) -->
+        <a href="#hero" class="footer-logo brand-logo" aria-label="UzOS Bosh sahifa">
           <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="brand-icon">
-            <circle cx="16" cy="16" r="16" fill="#1EAEFB"/>
-            <path d="M8 15.5L23.5 8.5L16.5 23.5L14 17L8 15.5Z" fill="white"/>
+            <defs>
+              <linearGradient id="uzHoneycomb7Footer" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38BDF8"/>
+                <stop offset="100%" stop-color="#0284C7"/>
+              </linearGradient>
+            </defs>
+            <!-- 6 Outer Honeycomb Cells -->
+            <g stroke="white" stroke-width="1.1" stroke-linejoin="round" fill="url(#uzHoneycomb7Footer)">
+              <polygon points="8.6,11.7 12.3,13.8 12.3,18.2 8.6,20.3 4.8,18.2 4.8,13.8"/>
+              <polygon points="23.4,11.7 27.2,13.8 27.2,18.2 23.4,20.3 19.7,18.2 19.7,13.8"/>
+              <polygon points="12.3,5.2 16,7.4 16,11.7 12.3,13.8 8.6,11.7 8.6,7.4"/>
+              <polygon points="19.7,5.2 23.4,7.4 23.4,11.7 19.7,13.8 16,11.7 16,7.4"/>
+              <polygon points="12.3,18.2 16,20.3 16,24.7 12.3,26.8 8.6,24.7 8.6,20.3"/>
+              <polygon points="19.7,18.2 23.4,20.3 23.4,24.7 19.7,26.8 16,24.7 16,20.3"/>
+            </g>
+            <!-- Center Core Honeycomb Cell -->
+            <polygon points="16,11.7 19.7,13.8 19.7,18.2 16,20.3 12.3,18.2 12.3,13.8" fill="white" stroke="#38BDF8" stroke-width="1.1" stroke-linejoin="round"/>
+            <circle cx="16" cy="16" r="1.4" fill="#0284C7"/>
           </svg>
           <span class="brand-title">UzOS</span>
         </a>
@@ -283,7 +316,7 @@
         <nav class="footer-nav" aria-label="Footer navigation">
           <ul class="footer-links-list">
             <li class="footer-link-item">
-              <a class="footer-link" href="https://t.me/UzOS" target="_blank" rel="noopener noreferrer">
+              <a class="footer-link" href="https://t.me/texnomuhandis" target="_blank" rel="noopener noreferrer">
                 <!-- TON.org Telegram SVG Icon -->
                 <svg class="footer-link-icon" aria-hidden="true" fill="none" focusable="false" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                   <g opacity="0.5">
@@ -331,6 +364,6 @@
 
   </div>
 
-  <script src="main.js"></script>
+  <script src="main.js?v=matrix_11"></script>
 </body>
 </html>

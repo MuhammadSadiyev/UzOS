@@ -1,6 +1,6 @@
 /**
  * UzOS — O'zbekiston Milliy Operatsion Tizimi
- * 1:1 TON.org Dynamics & 3D Interactive Dot-Matrix Globe
+ * 1:1 TON.org Minimalist 3D Binary (0 & 1) Network Globe
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2. Interactive 3D Dot-Matrix Network Globe (1:1 TON.org Canvas Globe)
+  // 2. Minimalist 3D Binary (0 & 1) Network Globe
   const canvas = document.getElementById('hero-globe-canvas');
   if (canvas) {
     const ctx = canvas.getContext('2d');
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resizeCanvas() {
       const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       ctx.scale(dpr, dpr);
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Fibonacci Sphere Distribution (260 points on a unit sphere)
+    // 260 Minimalist Binary points on the Fibonacci sphere
     const numPoints = 260;
     const points = [];
     const phi = Math.PI * (3 - Math.sqrt(5));
@@ -53,13 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
         unitX: x,
         unitY: y,
         unitZ: z,
-        isNode: i % 18 === 0 // Key national nodes
+        char: (i % 2 === 0 ? '1' : '0'),
+        isNode: (i % 16 === 0), // Subtle key hubs
+        isBright: (i % 6 === 0)
       });
     }
 
     let rotX = 0.2;
     let rotY = 0;
-    let speedY = 0.0035;
+    let speedY = 0.0015;
     let isDragging = false;
     let lastMouseX = 0;
     let lastMouseY = 0;
@@ -78,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isDragging) return;
       const dx = e.clientX - lastMouseX;
       const dy = e.clientY - lastMouseY;
-      rotY += dx * 0.005;
-      rotX += dy * 0.005;
+      rotY += dx * 0.004;
+      rotX += dy * 0.004;
       lastMouseX = e.clientX;
       lastMouseY = e.clientY;
     });
@@ -101,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isDragging || e.touches.length !== 1) return;
       const dx = e.touches[0].clientX - lastMouseX;
       const dy = e.touches[0].clientY - lastMouseY;
-      rotY += dx * 0.006;
-      rotX += dy * 0.006;
+      rotY += dx * 0.005;
+      rotX += dy * 0.005;
       lastMouseX = e.touches[0].clientX;
       lastMouseY = e.touches[0].clientY;
     }, { passive: true });
@@ -119,18 +121,37 @@ document.addEventListener('DOMContentLoaded', () => {
       pulseAngle += 0.04;
       const pulseScale = 1 + Math.sin(pulseAngle) * 0.15;
 
+      // Subtle, gentle bit-flip (1 or 2 bits occasionally change state)
+      if (Math.random() < 0.15) {
+        const randIdx = Math.floor(Math.random() * points.length);
+        points[randIdx].char = points[randIdx].char === '1' ? '0' : '1';
+      }
+
       const cosX = Math.cos(rotX);
       const sinX = Math.sin(rotX);
       const cosY = Math.cos(rotY);
       const sinY = Math.sin(rotY);
 
-      const centerX = width / 2;
+      // Sizing in perfect proportion with the hero layout, right edge aligned with Docs nav above
+      const currentRadius = Math.min(width, height) * 0.42;
+      const centerX = width > 520 ? (width - currentRadius - 16) : (width / 2);
       const centerY = height / 2;
-
-      // Dynamic radius scaling smoothly for mobile and desktop screens
-      const currentRadius = Math.min(width, height) * 0.32;
       const fov = currentRadius * 2.3;
 
+      // Subtle atmospheric background glow (dissolves cleanly into #10161f)
+      const glowGrad = ctx.createRadialGradient(
+        centerX, centerY, currentRadius * 0.1,
+        centerX, centerY, currentRadius * 1.15
+      );
+      glowGrad.addColorStop(0, 'rgba(30, 174, 251, 0.12)');
+      glowGrad.addColorStop(0.6, 'rgba(30, 174, 251, 0.03)');
+      glowGrad.addColorStop(1, 'rgba(30, 174, 251, 0)');
+      ctx.fillStyle = glowGrad;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, currentRadius * 1.15, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Project points in 3D
       const projected = [];
       const keyNodes = [];
 
@@ -158,16 +179,18 @@ document.addEventListener('DOMContentLoaded', () => {
           z: z2,
           scale: scale,
           alpha: Math.max(0.12, Math.min(1, alpha)),
-          isNode: p.isNode
+          char: p.char,
+          isNode: p.isNode,
+          isBright: p.isBright
         };
 
         projected.push(item);
-        if (p.isNode && z2 > -40) {
+        if (p.isNode && z2 > -30) {
           keyNodes.push(item);
         }
       }
 
-      // Connecting arcs between key nodes
+      // Hairline constellation arcs between nearby key hubs
       ctx.beginPath();
       const maxConnectDist = currentRadius * 0.85;
       for (let i = 0; i < keyNodes.length; i++) {
@@ -183,35 +206,58 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       }
-      ctx.strokeStyle = 'rgba(30, 174, 251, 0.16)';
+      ctx.strokeStyle = 'rgba(30, 174, 251, 0.14)';
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Render dots
+      // Render 3D Binary Glyphs sorted by depth
       projected.sort((a, b) => a.z - b.z);
 
       for (let i = 0; i < projected.length; i++) {
         const p = projected[i];
 
         if (p.isNode) {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, 4.5 * p.scale, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(30, 174, 251, ${p.alpha * 0.95})`;
-          ctx.fill();
-
+          // Minimalist glowing pulse ring
           ctx.beginPath();
           ctx.arc(p.x, p.y, 7 * p.scale * pulseScale, 0, Math.PI * 2);
           ctx.strokeStyle = `rgba(30, 174, 251, ${p.alpha * 0.35})`;
           ctx.lineWidth = 1.2;
           ctx.stroke();
-        } else {
+
+          // Small core node
           ctx.beginPath();
-          const dotSize = p.z > 0 ? 1.8 * p.scale : 1.2 * p.scale;
-          ctx.arc(p.x, p.y, dotSize, 0, Math.PI * 2);
-          ctx.fillStyle = p.z > 0 
-            ? `rgba(147, 165, 184, ${p.alpha * 0.75})`
-            : `rgba(98, 114, 132, ${p.alpha * 0.35})`;
+          ctx.arc(p.x, p.y, 4 * p.scale, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(30, 174, 251, ${p.alpha * 0.95})`;
           ctx.fill();
+
+          // Clean, crisp binary digit
+          const fontSize = Math.max(9, Math.round(11 * p.scale));
+          ctx.font = `600 ${fontSize}px "JetBrains Mono", monospace`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(p.char, p.x, p.y);
+
+        } else {
+          // Delicate binary 0 & 1 digits
+          const fontSize = Math.max(8, Math.round((p.z > 0 ? 12 : 9) * p.scale));
+          ctx.font = `500 ${fontSize}px "JetBrains Mono", monospace`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+
+          if (p.z > 0) {
+            // Front side: pure minimalist electric blue & soft white
+            if (p.isBright) {
+              ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * 0.9})`;
+            } else {
+              ctx.fillStyle = `rgba(30, 174, 251, ${p.alpha * 0.85})`;
+            }
+          } else {
+            // Back side: muted slate fading softly into dark depth
+            ctx.fillStyle = `rgba(98, 114, 132, ${p.alpha * 0.3})`;
+          }
+
+          ctx.fillText(p.char, p.x, p.y);
         }
       }
 
