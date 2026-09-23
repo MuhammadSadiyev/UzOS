@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="hamburger.png">resources/icons/hamburger.png</file>
+        <file alias="search.png">resources/icons/search.png</file>
+        <file alias="terminal.png">resources/icons/terminal.png</file>
+        <file alias="files.png">resources/icons/files.png</file>
+        <file alias="settings.png">resources/icons/settings.png</file>
+        <file alias="info.png">resources/icons/info.png</file>
+        <file alias="night.png">resources/icons/night.png</file>
+        <file alias="power.png">resources/icons/power.png</file>
+        <file alias="restart.png">resources/icons/restart.png</file>
+        <file alias="sound.png">resources/icons/sound.png</file>
+        <file alias="battery.png">resources/icons/battery.png</file>
+        <file alias="language.png">resources/icons/language.png</file>
+        <file alias="network.png">resources/icons/network.png</file>
+        <file alias="win_close.png">resources/icons/win_close.png</file>
+        <file alias="win_max.png">resources/icons/win_max.png</file>
+        <file alias="win_min.png">resources/icons/win_min.png</file>
+    </qresource>
+</RCC>

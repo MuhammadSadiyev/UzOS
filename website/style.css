@@ -1,0 +1,729 @@
+/* ==========================================================================
+   UzOS — O'zbekiston Milliy Operatsion Tizimi (Al-Xorazmiy LTS 1.0)
+   1:1 TON.org Minimalist Design System & Unified Grid Architecture
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Exact TON.org Color Palette */
+  --color-background: #10161f;
+  --color-surface: #101b2a;
+  --color-surface-tint: rgba(16, 27, 42, 0.8);
+  --color-surface-shadow: rgba(255, 255, 255, 0.05);
+
+  --color-accent: #1eaefb;
+  --color-accent-hover: #0f9fe9;
+
+  --color-white: #ffffff;
+  --color-muted: #93a5b8;
+  --color-muted-dark: #627284;
+  --color-border: rgba(147, 165, 184, 0.14);
+  --color-border-hover: rgba(30, 174, 251, 0.35);
+
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --max-width: 1240px;
+  --header-height: 72px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-white);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-white);
+  line-height: 1.5;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Background Radial Glow SVGs (1:1 TON.org Multi-mesh) */
+.ambient-glow-wrapper {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1440px;
+  height: 660px;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero-glow-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.landing-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+/* ==========================================================================
+   Header (1:1 TON.org Style: Left Logo + Right Minimalist White Text Links)
+   ========================================================================== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header-height);
+  z-index: 100;
+  background-color: transparent;
+  border-bottom: 0.5px solid transparent;
+  transition: background-color 0.2s ease, border-bottom-color 0.2s ease, backdrop-filter 0.2s ease;
+}
+
+.site-header.scrolled {
+  background-color: rgba(16, 22, 31, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid #364459;
+}
+
+.inner-header {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.brand-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.brand-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+/* TON.org _nav_ccy_S: right-aligned, gap 48px, pure white text links */
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.nav-link {
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--color-accent);
+}
+
+/* ==========================================================================
+   Section Labels (1:1 TON.org _badge_DqXMW: Shunchaki Ko'k Yozuv, Kartochkasiz)
+   ========================================================================== */
+.section-label {
+  color: var(--color-accent);
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 16px;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+/* ==========================================================================
+   Hero Section (1:1 TON.org Main Text Typography & Layout)
+   ========================================================================== */
+.section-hero {
+  padding-top: calc(var(--header-height) + 54px);
+  padding-bottom: 70px;
+  position: relative;
+}
+
+.hero-container {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 40px;
+}
+
+/* TON.org _heading_SRZB1 _hero_FAhG- _title_LpTcC */
+.hero-title {
+  font-size: 48px;
+  line-height: 1.24;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin: 0 0 32px 0;
+  max-width: 695px;
+  color: #ffffff;
+  font-family: var(--font-sans);
+}
+
+.split-title {
+  display: grid;
+  gap: 2px;
+}
+
+.telegram-phrase {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+
+.telegram-icon {
+  display: inline-flex;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.13em;
+  margin: 0 6px;
+}
+
+.telegram-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   TON.org 1:1 Metric Badges (_badges_ZfXs7 & _badge_6diKg)
+   Seamless horizontal pills: Value in white + Label in muted gray, on one line
+   ========================================================================== */
+.ton-badges-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 10px;
+  list-style: none;
+  margin: 0;
+  max-width: 520px;
+  padding: 0;
+}
+
+.ton-badge-item {
+  display: inline-flex;
+  margin: 0;
+  width: fit-content;
+}
+
+.ton-badge-card {
+  align-items: center;
+  backdrop-filter: blur(7.5px);
+  -webkit-backdrop-filter: blur(7.5px);
+  background: rgba(16, 27, 42, 0.8);
+  border-radius: 100px;
+  box-shadow: inset 1px 1px 1px 0 rgba(255, 255, 255, 0.05);
+  box-sizing: border-box;
+  color: var(--color-white);
+  display: inline-flex;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  gap: 6px;
+  justify-content: center;
+  letter-spacing: 0;
+  line-height: 18px;
+  padding: 8px 14px;
+  white-space: nowrap;
+  width: fit-content;
+  transition: background-color 0.2s ease;
+  border: none;
+}
+
+.ton-badge-card:hover {
+  background: rgba(26, 38, 56, 0.9);
+}
+
+.ton-badge-card .metric-val {
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.ton-badge-card .metric-lbl {
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+/* 3D Dot-Matrix Globe Container */
+.hero-visual-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.globe-canvas-container {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#hero-globe-canvas {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+#hero-globe-canvas:active {
+  cursor: grabbing;
+}
+
+/* ==========================================================================
+   Section Common
+   ========================================================================== */
+.section {
+  padding: 80px 0;
+  position: relative;
+}
+
+.section-heading {
+  margin-bottom: 40px;
+}
+
+.heading-title {
+  font-size: 40px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   Technological Superiority (1:1 TON.org Unified Cards Grid Container)
+   class="_featuresLinks_qWwV4" and "_list_fJLG_" and "_card_YMOBA"
+   ========================================================================== */
+.features-unified-container {
+  background: rgba(16, 27, 42, 0.75);
+  box-shadow: inset 1px 1px 1px 0 var(--color-surface-shadow);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.feature-cell {
+  padding: 36px 32px;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+/* Remove right border on 3rd column */
+.feature-cell:nth-child(3n) {
+  border-right: none;
+}
+
+/* Remove bottom border on last row */
+.feature-cell:nth-last-child(-n+3) {
+  border-bottom: none;
+}
+
+.feature-cell:hover {
+  background-color: rgba(30, 174, 251, 0.04);
+}
+
+.feature-cell-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-cell-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-cell-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--color-white);
+  line-height: 1.25;
+}
+
+.feature-cell-desc {
+  font-size: 0.95rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+}
+
+.feature-cell-desc strong {
+  color: var(--color-white);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   #core Section (1:1 TON.org / #gram Section)
+   ========================================================================== */
+.section-core-ton {
+  padding: 90px 0;
+}
+
+.core-header-ton {
+  max-width: 680px;
+  margin-bottom: 36px;
+}
+
+.core-desc-ton {
+  font-size: 1.12rem;
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin-top: 12px;
+}
+
+/* TON.org _card_RMcg8 replicated */
+.gram-card-ton {
+  width: 100%;
+  max-width: 620px;
+  background: rgba(16, 27, 42, 0.75);
+  box-shadow: inset 1px 1px 1px 0 var(--color-surface-shadow);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 32px;
+  backdrop-filter: blur(10px);
+}
+
+.gram-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(147, 165, 184, 0.1);
+}
+
+.gram-asset-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.diamond-icon-wrap {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.asset-primary-metric {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: var(--font-mono);
+  line-height: 1.1;
+}
+
+.asset-secondary-label {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+.gram-chart-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.gram-sparkline {
+  width: 140px;
+  height: 38px;
+}
+
+.change-tag-ton {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+.change-tag-ton span {
+  color: #28c76f;
+  font-weight: 700;
+}
+
+.gram-stats-row {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding-top: 24px;
+}
+
+.gram-stat-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-big-val {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: var(--font-mono);
+}
+
+.stat-small-lbl {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   Getting Started (Minimalist One-liner)
+   ========================================================================== */
+.code-container-ton {
+  position: relative;
+  background: rgba(16, 27, 42, 0.75);
+  box-shadow: inset 1px 1px 1px 0 var(--color-surface-shadow);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 20px 24px;
+  max-width: 680px;
+}
+
+.ton-code {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--color-accent);
+  overflow-x: auto;
+  padding-right: 70px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.btn-copy-code {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.18s ease;
+}
+
+.btn-copy-code:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.btn-copy-code.copied {
+  color: #28c76f;
+  border-color: #28c76f;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.site-footer {
+  background-color: #0b0f15;
+  border-top: 1px solid var(--color-border);
+  padding: 64px 0 36px;
+  margin-top: 60px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 48px;
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.status-indicator-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #28c76f;
+  font-weight: 500;
+}
+
+.dot-status {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #28c76f;
+  box-shadow: 0 0 6px #28c76f;
+}
+
+.footer-links-grid {
+  display: flex;
+  gap: 64px;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.col-head {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.f-link {
+  color: var(--color-muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.18s ease;
+}
+
+.f-link:hover {
+  color: var(--color-accent);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(147, 165, 184, 0.08);
+  padding-top: 24px;
+  font-size: 0.82rem;
+  color: var(--color-muted);
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 960px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .hero-title {
+    font-size: 34px;
+  }
+
+  .ton-badges-list {
+    justify-content: center;
+  }
+
+  .hero-visual-wrap {
+    margin-top: 20px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-cell {
+    border-right: none !important;
+    border-bottom: 1px solid var(--color-border) !important;
+  }
+
+  .feature-cell:last-child {
+    border-bottom: none !important;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .site-nav {
+    gap: 20px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+  }
+
+  .footer-links-grid {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
