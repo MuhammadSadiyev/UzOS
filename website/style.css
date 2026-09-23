@@ -1,5 +1,5 @@
 /* ==========================================================================
-   UzOS — O'zbekiston Milliy Operatsion Tizimi (Al-Xorazmiy LTS 1.0)
+   UzOS — O'zbekiston Milliy Operatsion Tizimi
    1:1 TON.org Minimalist Design System & Unified Grid Architecture
    ========================================================================== */
 
@@ -189,15 +189,15 @@ body {
 
 .hero-container {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: minmax(0, 640px) minmax(460px, 1fr);
   align-items: center;
-  gap: 40px;
+  gap: 48px;
 }
 
 /* TON.org _heading_SRZB1 _hero_FAhG- _title_LpTcC */
 .hero-title {
-  font-size: 48px;
-  line-height: 1.24;
+  font-size: clamp(32px, 3.2vw, 48px);
+  line-height: 1.25;
   font-weight: 500;
   letter-spacing: -0.015em;
   margin: 0 0 32px 0;
@@ -207,27 +207,36 @@ body {
 }
 
 .split-title {
-  display: grid;
-  gap: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.split-title > span {
+  display: block;
 }
 
 .telegram-phrase {
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
+  vertical-align: middle;
 }
 
 .telegram-icon {
   display: inline-flex;
-  width: 1em;
-  height: 1em;
-  vertical-align: -0.13em;
-  margin: 0 6px;
+  align-items: center;
+  justify-content: center;
+  width: 0.9em;
+  height: 0.9em;
+  vertical-align: -0.12em;
+  margin: 0 5px;
 }
 
 .telegram-icon svg {
   width: 100%;
   height: 100%;
+  display: block;
 }
 
 /* ==========================================================================
@@ -535,24 +544,62 @@ body {
 }
 
 /* ==========================================================================
-   Responsive Breakpoints
+   Responsive Breakpoints (Mobile & Tablet Optimization)
    ========================================================================== */
 @media (max-width: 960px) {
+  .section-hero {
+    padding-top: calc(var(--header-height) + 32px);
+    padding-bottom: 50px;
+  }
+
   .hero-container {
-    grid-template-columns: 1fr;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 36px;
   }
   
   .hero-title {
     font-size: 34px;
+    line-height: 1.22;
+    margin-bottom: 24px;
+    max-width: 100%;
+  }
+
+  .split-title {
+    display: block;
+  }
+
+  .split-title > span {
+    display: inline;
+    white-space: normal;
+  }
+
+  .telegram-phrase {
+    display: inline-flex;
+    white-space: nowrap;
   }
 
   .ton-badges-list {
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 8px 6px;
+    max-width: 100%;
+  }
+
+  .ton-badge-card {
+    font-size: 14px;
+    padding: 7px 12px;
   }
 
   .hero-visual-wrap {
-    margin-top: 20px;
+    width: 100%;
+    max-width: 440px;
+    margin: 16px auto 0;
+  }
+
+  .globe-canvas-container {
+    max-width: 380px;
   }
 
   .features-grid {
@@ -562,6 +609,7 @@ body {
   .feature-cell {
     border-right: none !important;
     border-bottom: 1px solid var(--color-border) !important;
+    padding: 28px 24px;
   }
 
   .feature-cell:last-child {
@@ -590,30 +638,153 @@ body {
 
   .footer-meta {
     justify-self: start;
+    width: 100%;
   }
 }
 
-@media (max-width: 640px) {
-  .hero-title {
-    font-size: 28px;
+@media (max-width: 768px) {
+  :root {
+    --header-height: 62px;
+  }
+
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .inner-header {
+    padding: 0 20px;
   }
 
   .site-nav {
-    gap: 20px;
+    gap: 24px;
   }
 
   .nav-link {
     font-size: 14px;
   }
 
-  .footer-links-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .brand-title {
+    font-size: 18px;
+  }
+
+  .brand-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .section {
+    padding: 56px 0;
+  }
+
+  .section-heading {
+    margin-bottom: 28px;
+  }
+
+  .heading-title {
+    font-size: 32px;
+  }
+
+  .site-footer {
+    margin-top: 56px;
+  }
+}
+
+@media (max-width: 520px) {
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .inner-header {
+    padding: 0 16px;
+  }
+
+  .site-nav {
     gap: 16px;
-    width: 100%;
+  }
+
+  .nav-link {
+    font-size: 13.5px;
+  }
+
+  .section-hero {
+    padding-top: calc(var(--header-height) + 20px);
+    padding-bottom: 36px;
+  }
+
+  .hero-title {
+    font-size: 26px;
+    line-height: 1.25;
+    margin-bottom: 20px;
+  }
+
+  .section-label {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .ton-badges-list {
+    gap: 6px;
+  }
+
+  .ton-badge-card {
+    font-size: 13px;
+    padding: 6px 10px;
+    gap: 4px;
+  }
+
+  .ton-badge-card .metric-val,
+  .ton-badge-card .metric-lbl {
+    font-size: 13px;
+  }
+
+  .hero-visual-wrap {
+    max-width: 320px;
+  }
+
+  .globe-canvas-container {
+    max-width: 280px;
+  }
+
+  .features-unified-container {
+    border-radius: 16px;
+  }
+
+  .feature-cell {
+    padding: 22px 18px;
+    gap: 14px;
+  }
+
+  .feature-cell-title {
+    font-size: 1.15rem;
+  }
+
+  .feature-cell-desc {
+    font-size: 0.88rem;
+    line-height: 1.45;
+  }
+
+  .heading-title {
+    font-size: 26px;
+  }
+
+  .footer-inner {
+    padding: 28px 16px;
+    gap: 20px;
+  }
+
+  .footer-links-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
   }
 
   .footer-link {
-    font-size: 14px;
+    font-size: 13.5px;
+  }
+
+  .footer-copyright {
+    font-size: 13px;
   }
 }

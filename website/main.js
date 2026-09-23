@@ -1,5 +1,5 @@
 /**
- * UzOS — O'zbekiston Milliy Operatsion Tizimi (Al-Xorazmiy LTS 1.0)
+ * UzOS — O'zbekiston Milliy Operatsion Tizimi
  * 1:1 TON.org Dynamics & 3D Interactive Dot-Matrix Globe
  */
 
@@ -7,13 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 1. Site Header on-scroll glassmorphism
   const siteHeader = document.getElementById('site-header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 20) {
-      siteHeader.classList.add('scrolled');
-    } else {
-      siteHeader.classList.remove('scrolled');
-    }
-  });
+  if (siteHeader) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        siteHeader.classList.add('scrolled');
+      } else {
+        siteHeader.classList.remove('scrolled');
+      }
+    });
+  }
 
   // 2. Interactive 3D Dot-Matrix Network Globe (1:1 TON.org Canvas Globe)
   const canvas = document.getElementById('hero-globe-canvas');
@@ -34,9 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Fibonacci Sphere Distribution (260 points)
+    // Fibonacci Sphere Distribution (260 points on a unit sphere)
     const numPoints = 260;
-    const radius = 170;
     const points = [];
     const phi = Math.PI * (3 - Math.sqrt(5));
 
@@ -49,12 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const z = Math.sin(theta) * r;
 
       points.push({
-        x: x * radius,
-        y: y * radius,
-        z: z * radius,
-        baseX: x * radius,
-        baseY: y * radius,
-        baseZ: z * radius,
+        unitX: x,
+        unitY: y,
+        unitZ: z,
         isNode: i % 18 === 0 // Key national nodes
       });
     }
@@ -86,14 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
       lastMouseY = e.clientY;
     });
 
-    // Touch events
+    // Touch events for mobile
     canvas.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
         isDragging = true;
         lastMouseX = e.touches[0].clientX;
         lastMouseY = e.touches[0].clientY;
       }
-    });
+    }, { passive: true });
 
     window.addEventListener('touchend', () => {
       isDragging = false;
@@ -107,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       rotX += dy * 0.006;
       lastMouseX = e.touches[0].clientX;
       lastMouseY = e.touches[0].clientY;
-    });
+    }, { passive: true });
 
     let pulseAngle = 0;
 
@@ -129,23 +127,30 @@ document.addEventListener('DOMContentLoaded', () => {
       const centerX = width / 2;
       const centerY = height / 2;
 
+      // Dynamic radius scaling smoothly for mobile and desktop screens
+      const currentRadius = Math.min(width, height) * 0.32;
+      const fov = currentRadius * 2.3;
+
       const projected = [];
       const keyNodes = [];
 
       for (let i = 0; i < points.length; i++) {
         const p = points[i];
 
-        let x1 = p.baseX * cosY - p.baseZ * sinY;
-        let z1 = p.baseZ * cosY + p.baseX * sinY;
+        const bx = p.unitX * currentRadius;
+        const by = p.unitY * currentRadius;
+        const bz = p.unitZ * currentRadius;
 
-        let y1 = p.baseY * cosX - z1 * sinX;
-        let z2 = z1 * cosX + p.baseY * sinX;
+        let x1 = bx * cosY - bz * sinY;
+        let z1 = bz * cosY + bx * sinY;
 
-        const fov = 380;
+        let y1 = by * cosX - z1 * sinX;
+        let z2 = z1 * cosX + by * sinX;
+
         const scale = fov / (fov + z2);
         const projX = centerX + x1 * scale;
         const projY = centerY + y1 * scale;
-        const alpha = (z2 + radius) / (2 * radius);
+        const alpha = (z2 + currentRadius) / (2 * currentRadius);
 
         const item = {
           x: projX,
@@ -162,14 +167,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Connecting arcs
+      // Connecting arcs between key nodes
       ctx.beginPath();
+      const maxConnectDist = currentRadius * 0.85;
       for (let i = 0; i < keyNodes.length; i++) {
         for (let j = i + 1; j < keyNodes.length; j++) {
           const n1 = keyNodes[i];
           const n2 = keyNodes[j];
           const dist = Math.hypot(n1.x - n2.x, n1.y - n2.y);
-          if (dist < 140) {
+          if (dist < maxConnectDist) {
             ctx.moveTo(n1.x, n1.y);
             const midX = (n1.x + n2.x) / 2 + (n1.x - centerX) * 0.12;
             const midY = (n1.y + n2.y) / 2 + (n1.y - centerY) * 0.12;
@@ -213,24 +219,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     render();
-  }
-
-  // 3. Copy Build Command
-  const btnCopy = document.getElementById('btn-copy');
-  const copyText = document.getElementById('copy-text');
-  const cmdSource = document.getElementById('cmd-source');
-
-  if (btnCopy && cmdSource) {
-    btnCopy.addEventListener('click', () => {
-      navigator.clipboard.writeText(cmdSource.innerText.trim()).then(() => {
-        copyText.textContent = 'Nusxa olindi!';
-        btnCopy.classList.add('copied');
-        setTimeout(() => {
-          copyText.textContent = 'Nusxa';
-          btnCopy.classList.remove('copied');
-        }, 2000);
-      });
-    });
   }
 
 });
