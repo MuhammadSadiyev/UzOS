@@ -30,38 +30,81 @@ jobs:
             qt6-declarative-dev \
             qml6-module-qtquick \
             qml6-module-qtquick-controls \
-            qml6-module-qtquick-window
+            qml6-module-qtquick-window \
+            curl
 
       - name: Compile Native Telegram UI Shell (C++ / Qt6)
         run: |
           make shell
-          sudo mkdir -p ubuntu-base/rootfs/usr/bin
-          sudo cp desktop-shell/build/uzos-shell ubuntu-base/rootfs/usr/bin/
-          sudo chmod +x ubuntu-base/rootfs/usr/bin/uzos-shell
-          sudo chmod +x ubuntu-base/rootfs/usr/bin/start-uzos.sh
-          sudo chmod +x ubuntu-base/rootfs/usr/bin/uzosfetch
+
+      - name: Prepare Clean Linux RootFS & Apply UzOS
+        run: |
+          # 1. Download official Ubuntu 24.04.5 LTS minimal base directly on Linux
+          # This guarantees 100% proper symlinks (/bin -> usr/bin, /lib64) and POSIX permissions
+          mkdir -p rootfs
+          curl -sSL -o ubuntu-base.tar.gz https://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/ubuntu-base-24.04.5-base-amd64.tar.gz
+          sudo tar -xpzf ubuntu-base.tar.gz -C rootfs
+
+          # 2. Create required directory tree
+          sudo mkdir -p rootfs/usr/share/icons \
+                        rootfs/usr/share/themes \
+                        rootfs/usr/share/wayland-sessions \
+                        rootfs/usr/share/xsessions \
+                        rootfs/usr/bin \
+                        rootfs/etc/skel \
+                        rootfs/etc/profile.d \
+                        rootfs/etc/apt/preferences.d \
+                        rootfs/etc/sysctl.d \
+                        rootfs/etc/default \
+                        rootfs/etc/sudoers.d \
+                        rootfs/etc/lightdm/lightdm.conf.d
+
+          # 3. Install UzOS Themes & Icons
+          sudo cp -r themes/icons/UzOS-Telegram rootfs/usr/share/icons/
+          sudo cp -r themes/gtk/UzOS-Telegram-Dark rootfs/usr/share/themes/
+
+          # 4. Install Native Telegram UI Shell & CLI tools
+          sudo cp desktop-shell/build/uzos-shell rootfs/usr/bin/
+          sudo cp desktop-shell/session/start-uzos.sh rootfs/usr/bin/
+          sudo cp desktop-shell/session/uzos.desktop rootfs/usr/share/wayland-sessions/
+          sudo cp desktop-shell/session/uzos.desktop rootfs/usr/share/xsessions/
+          sudo cp ubuntu-base/rootfs/usr/bin/uzosfetch rootfs/usr/bin/
+          sudo chmod +x rootfs/usr/bin/uzos-shell rootfs/usr/bin/start-uzos.sh rootfs/usr/bin/uzosfetch
+
+          # 5. Apply UzOS System Configurations (Zero Telemetry, zRAM, Rebranding)
+          sudo cp -r ubuntu-base/rootfs/etc/skel/.config rootfs/etc/skel/ || true
+          sudo cp ubuntu-base/rootfs/etc/profile.d/uzos-env.sh rootfs/etc/profile.d/ || true
+          sudo cp ubuntu-base/rootfs/etc/hosts rootfs/etc/hosts
+          sudo cp ubuntu-base/rootfs/etc/lsb-release rootfs/etc/lsb-release
+          sudo cp ubuntu-base/rootfs/usr/lib/os-release rootfs/usr/lib/os-release
+          sudo cp ubuntu-base/rootfs/etc/hostname rootfs/etc/hostname
+          sudo cp ubuntu-base/rootfs/etc/apt/preferences.d/nosnap.pref rootfs/etc/apt/preferences.d/
+          sudo cp ubuntu-base/rootfs/etc/sysctl.d/99-uzos-performance.conf rootfs/etc/sysctl.d/
+          sudo cp ubuntu-base/rootfs/etc/default/zram-tools rootfs/etc/default/
+
+          # 6. Configure Passwordless Sudo & Autologin for Live User
+          echo 'uzos ALL=(ALL) NOPASSWD:ALL' | sudo tee rootfs/etc/sudoers.d/uzos
+          sudo chmod 0440 rootfs/etc/sudoers.d/uzos
+
+          cat <<'EOF' | sudo tee rootfs/etc/lightdm/lightdm.conf.d/uzos-autologin.conf
+          [Seat:*]
+          autologin-user=uzos
+          autologin-user-timeout=0
+          user-session=uzos
+          EOF
 
       - name: Install Linux Kernel & Bootloader into RootFS
         run: |
-          # Git does not track empty directories; create them before mounting
-          sudo mkdir -p ubuntu-base/rootfs/dev/pts \
-                        ubuntu-base/rootfs/proc \
-                        ubuntu-base/rootfs/sys \
-                        ubuntu-base/rootfs/run \
-                        ubuntu-base/rootfs/tmp \
-                        ubuntu-base/rootfs/boot \
-                        ubuntu-base/rootfs/etc/apt/apt.conf.d
-
           # Chroot mount
-          sudo mount --bind /dev ubuntu-base/rootfs/dev
-          sudo mount --bind /dev/pts ubuntu-base/rootfs/dev/pts
-          sudo mount -t proc proc ubuntu-base/rootfs/proc
-          sudo mount -t sysfs sysfs ubuntu-base/rootfs/sys
-          sudo cp /etc/resolv.conf ubuntu-base/rootfs/etc/resolv.conf
+          sudo mount --bind /dev rootfs/dev
+          sudo mount --bind /dev/pts rootfs/dev/pts
+          sudo mount -t proc proc rootfs/proc
+          sudo mount -t sysfs sysfs rootfs/sys
+          sudo cp /etc/resolv.conf rootfs/etc/resolv.conf
 
-          echo 'APT::Install-Recommends "false";' | sudo tee ubuntu-base/rootfs/etc/apt/apt.conf.d/99no-recommends
+          echo 'APT::Install-Recommends "false";' | sudo tee rootfs/etc/apt/apt.conf.d/99no-recommends
 
-          sudo chroot ubuntu-base/rootfs /bin/bash -c "
+          sudo chroot rootfs /bin/bash -c "
             export DEBIAN_FRONTEND=noninteractive
             apt update -y
             apt install -y \
@@ -70,7 +113,18 @@ jobs:
               systemd-sysv \
               casper \
               sudo \
-              xserver-xorg-core \
+              labwc \
+              libqt6core6 \
+              libqt6gui6 \
+              libqt6qml6 \
+              libqt6quick6 \
+              libqt6quickcontrols2-6 \
+              qml6-module-qtquick \
+              qml6-module-qtquick-controls \
+              qml6-module-qtquick-window \
+              qml6-module-qtquick-layouts \
+              foot \
+              zram-tools \
               pipewire \
               pipewire-audio-client-libraries \
               wireplumber \
@@ -90,20 +144,24 @@ jobs:
             apt clean
           "
 
-          sudo umount -lf ubuntu-base/rootfs/dev/pts 2>/dev/null || true
-          sudo umount -lf ubuntu-base/rootfs/dev 2>/dev/null || true
-          sudo umount -lf ubuntu-base/rootfs/proc 2>/dev/null || true
-          sudo umount -lf ubuntu-base/rootfs/sys 2>/dev/null || true
+          sudo umount -lf rootfs/dev/pts 2>/dev/null || true
+          sudo umount -lf rootfs/dev 2>/dev/null || true
+          sudo umount -lf rootfs/proc 2>/dev/null || true
+          sudo umount -lf rootfs/sys 2>/dev/null || true
 
       - name: Build Bootable ISO Image
         run: |
           mkdir -p build/iso/casper build/iso/boot/grub output
 
           # Extract kernel and initrd with symlink resolution
-          KERNEL=$(ls -1 ubuntu-base/rootfs/boot/vmlinuz* | grep -v "old" | tail -n 1)
-          INITRD=$(ls -1 ubuntu-base/rootfs/boot/initrd.img* | grep -v "old" | tail -n 1)
+          KERNEL=$(ls -1 rootfs/boot/vmlinuz* 2>/dev/null | grep -v "old" | head -n 1)
+          INITRD=$(ls -1 rootfs/boot/initrd.img* 2>/dev/null | grep -v "old" | head -n 1)
+          echo "Using Kernel: $KERNEL"
+          echo "Using Initrd: $INITRD"
           sudo cp -L "$KERNEL" build/iso/casper/vmlinuz
           sudo cp -L "$INITRD" build/iso/casper/initrd
+
+          printf $(sudo du -sx --block-size=1 rootfs | cut -f1) | sudo tee build/iso/casper/filesystem.size
 
           cat <<'EOF' > build/iso/boot/grub/grub.cfg
           set default=0
@@ -125,7 +183,7 @@ jobs:
           EOF
 
           echo "SquashFS siqilmoqda (zstd)..."
-          sudo mksquashfs ubuntu-base/rootfs build/iso/casper/filesystem.squashfs \
+          sudo mksquashfs rootfs build/iso/casper/filesystem.squashfs \
             -comp zstd -Xcompression-level 15 \
             -e "boot/vmlinuz*" -e "boot/initrd.img*"
 
