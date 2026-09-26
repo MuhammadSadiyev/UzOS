@@ -1,0 +1,10 @@
+# UzOS: Snapd paketlarini butunlay bloklash (Zero Snapd)
+# Tizim yuklanish vaqtini 3 barobar tezlashtiradi va fon demonlarini yo'qotadi.
+
+Package: snapd
+Pin: release *
+Pin-Priority: -10
+
+Package: snapd:*
+Pin: release *
+Pin-Priority: -10

@@ -1,0 +1,9 @@
+# UzOS Git Ignore
+*.tar.gz
+*.tar.xz
+*.iso
+build/
+work/
+node_modules/
+.DS_Store
+Thumbs.db

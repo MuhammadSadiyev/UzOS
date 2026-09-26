@@ -1,0 +1,4 @@
+# UzOS zRAM Configuration (zstd algoritmi bilan 100% RAM siqish)
+ALGO=zstd
+PERCENT=100
+PRIORITY=100

@@ -1,0 +1,12 @@
+127.0.0.1   localhost uzos
+::1         localhost ip6-localhost ip6-loopback
+
+# ==============================================================================
+# UzOS Zero-Telemetry: Canonical / Ubuntu kuzatuv domenlari blokirovkasi
+# ==============================================================================
+0.0.0.0 metrics.ubuntu.com
+0.0.0.0 daisy.ubuntu.com
+0.0.0.0 popcon.ubuntu.com
+0.0.0.0 livepatch.canonical.com
+0.0.0.0 telemetry.ubuntu.com
+0.0.0.0 errors.ubuntu.com

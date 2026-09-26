@@ -1,0 +1,13 @@
+PRETTY_NAME="UzOS 24.04 LTS"
+NAME="UzOS"
+VERSION_ID="24.04"
+VERSION="24.04 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=uzos
+ID_LIKE="ubuntu debian"
+HOME_URL="https://github.com/MuhammadSadiyev/UzOS"
+SUPPORT_URL="https://github.com/MuhammadSadiyev/UzOS"
+BUG_REPORT_URL="https://github.com/MuhammadSadiyev/UzOS/issues"
+PRIVACY_POLICY_URL="https://github.com/MuhammadSadiyev/UzOS"
+UBUNTU_CODENAME=noble
+LOGO=uzos-logo

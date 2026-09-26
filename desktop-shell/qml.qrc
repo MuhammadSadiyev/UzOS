@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/Main.qml</file>
+        <file>qml/Theme.qml</file>
+        <file>qml/Sidebar.qml</file>
+        <file>qml/Drawer.qml</file>
+        <file>qml/TopBar.qml</file>
+        <file>qml/QuickSettings.qml</file>
+        <file>qml/NotificationCenter.qml</file>
+    </qresource>
+</RCC>
