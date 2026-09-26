@@ -35,6 +35,7 @@ jobs:
       - name: Compile Native Telegram UI Shell (C++ / Qt6)
         run: |
           make shell
+          sudo mkdir -p ubuntu-base/rootfs/usr/bin
           sudo cp desktop-shell/build/uzos-shell ubuntu-base/rootfs/usr/bin/
           sudo chmod +x ubuntu-base/rootfs/usr/bin/uzos-shell
           sudo chmod +x ubuntu-base/rootfs/usr/bin/start-uzos.sh
@@ -42,6 +43,15 @@ jobs:
 
       - name: Install Linux Kernel & Bootloader into RootFS
         run: |
+          # Git does not track empty directories; create them before mounting
+          sudo mkdir -p ubuntu-base/rootfs/dev/pts \
+                        ubuntu-base/rootfs/proc \
+                        ubuntu-base/rootfs/sys \
+                        ubuntu-base/rootfs/run \
+                        ubuntu-base/rootfs/tmp \
+                        ubuntu-base/rootfs/boot \
+                        ubuntu-base/rootfs/etc/apt/apt.conf.d
+
           # Chroot mount
           sudo mount --bind /dev ubuntu-base/rootfs/dev
           sudo mount --bind /dev/pts ubuntu-base/rootfs/dev/pts
@@ -49,10 +59,12 @@ jobs:
           sudo mount -t sysfs sysfs ubuntu-base/rootfs/sys
           sudo cp /etc/resolv.conf ubuntu-base/rootfs/etc/resolv.conf
 
+          echo 'APT::Install-Recommends "false";' | sudo tee ubuntu-base/rootfs/etc/apt/apt.conf.d/99no-recommends
+
           sudo chroot ubuntu-base/rootfs /bin/bash -c "
             export DEBIAN_FRONTEND=noninteractive
             apt update -y
-            apt install -y --no-install-recommends \
+            apt install -y \
               linux-image-generic \
               initramfs-tools \
               systemd-sysv \
@@ -73,7 +85,7 @@ jobs:
               echo 'uzos:uzos' | chpasswd
             fi
             
-            systemctl enable NetworkManager.service
+            systemctl enable NetworkManager.service || true
             systemctl enable lightdm.service || true
             apt clean
           "
@@ -87,11 +99,11 @@ jobs:
         run: |
           mkdir -p build/iso/casper build/iso/boot/grub output
 
-          # Extract kernel and initrd
-          KERNEL=$(ls -1 ubuntu-base/rootfs/boot/vmlinuz-* | tail -n 1)
-          INITRD=$(ls -1 ubuntu-base/rootfs/boot/initrd.img-* | tail -n 1)
-          sudo cp "$KERNEL" build/iso/casper/vmlinuz
-          sudo cp "$INITRD" build/iso/casper/initrd
+          # Extract kernel and initrd with symlink resolution
+          KERNEL=$(ls -1 ubuntu-base/rootfs/boot/vmlinuz* | grep -v "old" | tail -n 1)
+          INITRD=$(ls -1 ubuntu-base/rootfs/boot/initrd.img* | grep -v "old" | tail -n 1)
+          sudo cp -L "$KERNEL" build/iso/casper/vmlinuz
+          sudo cp -L "$INITRD" build/iso/casper/initrd
 
           cat <<'EOF' > build/iso/boot/grub/grub.cfg
           set default=0
@@ -114,7 +126,7 @@ jobs:
 
           echo "SquashFS siqilmoqda (zstd)..."
           sudo mksquashfs ubuntu-base/rootfs build/iso/casper/filesystem.squashfs \
-            -comp zstd -Xcompression-level 19 \
+            -comp zstd -Xcompression-level 15 \
             -e "boot/vmlinuz*" -e "boot/initrd.img*"
 
           echo "ISO yaratilmoqda..."
