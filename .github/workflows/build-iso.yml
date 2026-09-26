@@ -31,6 +31,7 @@ jobs:
             qml6-module-qtquick \
             qml6-module-qtquick-controls \
             qml6-module-qtquick-window \
+            librsvg2-bin \
             curl
 
       - name: Compile Native Telegram UI Shell (C++ / Qt6)
@@ -53,8 +54,12 @@ jobs:
                         rootfs/usr/share/applications \
                         rootfs/usr/share/wayland-sessions \
                         rootfs/usr/share/xsessions \
+                        rootfs/usr/share/plymouth/themes/spinner \
+                        rootfs/usr/share/plymouth/themes/bgrt \
+                        rootfs/usr/share/pixmaps \
                         rootfs/usr/bin \
                         rootfs/etc/skel/Desktop \
+                        rootfs/etc/xdg/autostart \
                         rootfs/etc/profile.d \
                         rootfs/etc/apt/preferences.d \
                         rootfs/etc/sysctl.d \
@@ -69,8 +74,16 @@ jobs:
           sudo cp themes/99_uzos.gschema.override rootfs/usr/share/glib-2.0/schemas/
           sudo cp themes/install-uzos.desktop rootfs/usr/share/applications/
           sudo cp themes/install-uzos.desktop rootfs/etc/skel/Desktop/
+          sudo cp themes/install-uzos.desktop rootfs/etc/xdg/autostart/
 
-          # 4. Install Native Telegram UI Shell & CLI tools
+          # 4. Replace Plymouth Ubuntu Boot Watermark with Native UzOS Logo
+          rsvg-convert -w 256 -h 256 themes/icons/UzOS-Telegram/apps/scalable/uzos-logo.svg -o uzos-logo.png
+          sudo cp uzos-logo.png rootfs/usr/share/plymouth/ubuntu-logo.png
+          sudo cp uzos-logo.png rootfs/usr/share/plymouth/themes/spinner/watermark.png
+          sudo cp uzos-logo.png rootfs/usr/share/plymouth/themes/bgrt/watermark.png 2>/dev/null || true
+          sudo cp uzos-logo.png rootfs/usr/share/pixmaps/ubuntu-logo.png 2>/dev/null || true
+
+          # 5. Install Native Telegram UI Shell & CLI tools
           sudo cp desktop-shell/build/uzos-shell rootfs/usr/bin/
           sudo cp desktop-shell/session/start-uzos.sh rootfs/usr/bin/
           sudo cp desktop-shell/session/uzos.desktop rootfs/usr/share/wayland-sessions/
@@ -78,7 +91,7 @@ jobs:
           sudo cp ubuntu-base/rootfs/usr/bin/uzosfetch rootfs/usr/bin/
           sudo chmod +x rootfs/usr/bin/uzos-shell rootfs/usr/bin/start-uzos.sh rootfs/usr/bin/uzosfetch
 
-          # 5. Apply UzOS System Configurations (Zero Telemetry, zRAM, Rebranding)
+          # 6. Apply UzOS System Configurations (Zero Telemetry, zRAM, Rebranding)
           sudo cp ubuntu-base/rootfs/etc/profile.d/uzos-env.sh rootfs/etc/profile.d/ || true
           sudo cp ubuntu-base/rootfs/etc/hosts rootfs/etc/hosts
           sudo cp ubuntu-base/rootfs/etc/lsb-release rootfs/etc/lsb-release
@@ -88,7 +101,16 @@ jobs:
           sudo cp ubuntu-base/rootfs/etc/sysctl.d/99-uzos-performance.conf rootfs/etc/sysctl.d/
           sudo cp ubuntu-base/rootfs/etc/default/zram-tools rootfs/etc/default/
 
-          # 6. Configure Passwordless Sudo & GDM3 Autologin for Live User
+          # 7. Configure Casper Live Hostname and Identity
+          cat <<'EOF' | sudo tee rootfs/etc/casper.conf
+          export USERNAME="uzos"
+          export USERFULLNAME="UzOS Live"
+          export HOST="uzos"
+          export BUILD_SYSTEM="UzOS"
+          export FLAVOUR="UzOS"
+          EOF
+
+          # 8. Configure Passwordless Sudo & GDM3 Autologin for Live User
           echo 'uzos ALL=(ALL) NOPASSWD:ALL' | sudo tee rootfs/etc/sudoers.d/uzos
           sudo chmod 0440 rootfs/etc/sudoers.d/uzos
 
@@ -96,6 +118,7 @@ jobs:
           [daemon]
           AutomaticLoginEnable=true
           AutomaticLogin=uzos
+          WaylandEnable=true
           EOF
 
       - name: Install Linux Kernel, Full Drivers & Graphical Installer into RootFS
@@ -188,6 +211,9 @@ jobs:
             systemctl set-default graphical.target
             systemctl enable NetworkManager.service || true
             systemctl enable gdm3.service || true
+
+            # 8. Rebuild initramfs with UzOS Plymouth splash and Casper branding
+            update-initramfs -u -k all || true
 
             apt clean
           "
