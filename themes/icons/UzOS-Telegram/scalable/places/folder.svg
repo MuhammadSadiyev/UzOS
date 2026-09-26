@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="folderBack" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1eaefb"/>
+      <stop offset="100%" stop-color="#2481cc"/>
+    </linearGradient>
+    <linearGradient id="folderFront" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+  <!-- Back flap -->
+  <path d="M6 10 C6 7.8 7.8 6 10 6 L19 6 C21 6 22.5 7 23.5 8.5 L25.5 11.5 C26.2 12.5 27.2 13 28.5 13 L38 13 C40.2 13 42 14.8 42 17 L42 22 L6 22 Z" fill="url(#folderBack)"/>
+  <!-- Front flap with Telegram rounded smooth styling -->
+  <rect x="4" y="16" width="40" height="24" rx="5" fill="url(#folderFront)"/>
+</svg>

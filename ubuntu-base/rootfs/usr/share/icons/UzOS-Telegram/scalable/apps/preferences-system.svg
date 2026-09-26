@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="gearBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="40" height="40" rx="10" fill="url(#gearBg)"/>
+  <!-- Telegram settings gear -->
+  <g fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="24" cy="24" r="5"/>
+    <path d="M24 13 L24 16 M24 32 L24 35 M13 24 L16 24 M32 24 L35 24 M16.2 16.2 L18.3 18.3 M29.7 29.7 L31.8 31.8 M16.2 31.8 L18.3 29.7 M29.7 18.3 L31.8 16.2"/>
+  </g>
+</svg>

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=UzOS-Telegram-Dark
+Comment=Telegram UI Dark GTK Theme for UzOS
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=UzOS-Telegram-Dark
+MetacityTheme=UzOS-Telegram-Dark
+IconTheme=UzOS-Telegram
+CursorTheme=DMZ-White
+ButtonLayout=close,minimize,maximize:menu

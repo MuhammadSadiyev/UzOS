@@ -1,0 +1,26 @@
+[Icon Theme]
+Name=UzOS-Telegram
+Comment=UzOS Telegram UI Piktogrammalar To'plami
+Inherits=Papirus,breeze,Adwaita,hicolor
+Directories=scalable/places,scalable/apps,scalable/actions
+
+[scalable/places]
+Size=48
+Type=Scalable
+MinSize=16
+MaxSize=512
+Context=Places
+
+[scalable/apps]
+Size=48
+Type=Scalable
+MinSize=16
+MaxSize=512
+Context=Applications
+
+[scalable/actions]
+Size=24
+Type=Scalable
+MinSize=16
+MaxSize=128
+Context=Actions

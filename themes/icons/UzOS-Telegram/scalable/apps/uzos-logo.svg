@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="uzosHex" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+  <polygon points="24,6 42,16.5 42,37.5 24,48 6,37.5 6,16.5" fill="url(#uzosHex)"/>
+  <polygon points="24,13 35,19.5 35,32.5 24,39 13,32.5 13,19.5" fill="#ffffff"/>
+  <circle cx="24" cy="26" r="4.5" fill="#0284c7"/>
+</svg>
