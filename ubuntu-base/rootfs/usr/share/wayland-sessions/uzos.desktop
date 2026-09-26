@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=UzOS Desktop (Telegram UI)
+Comment=O'zbekiston Milliy Operatsion Tizimi — Telegram UI Ish Stoli
+Exec=/usr/bin/start-uzos.sh
+Type=Application
+DesktopNames=UzOS
+Keywords=wayland;desktop;telegram;uzos;

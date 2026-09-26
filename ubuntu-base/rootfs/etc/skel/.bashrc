@@ -115,3 +115,13 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# ==============================================================================
+# UzOS Terminal Defaults
+# ==============================================================================
+if [ -x /usr/bin/uzosfetch ] && [ -t 1 ]; then
+    /usr/bin/uzosfetch
+fi
+
+alias telemetry='echo "[UzOS] Zero-Telemetry Holati:" && grep "0.0.0.0" /etc/hosts'
+

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<labwc_config>
+  <theme>
+    <name>UzOS-Telegram-Dark</name>
+    <cornerRadius>12</cornerRadius>
+    <titlebarHeight>38</titlebarHeight>
+  </theme>
+  <keyboard>
+    <default />
+    <!-- Super key toggles Telegram Drawer -->
+    <keybind key="Super">
+      <action name="Execute" command="/usr/bin/uzos-shell --toggle-drawer" />
+    </keybind>
+    <!-- Ctrl+Alt+T opens Terminal -->
+    <keybind key="C-A-t">
+      <action name="Execute" command="x-terminal-emulator" />
+    </keybind>
+  </keyboard>
+  <windowRules>
+    <windowRule identifier="*" cornerRadius="12" />
+  </windowRules>
+</labwc_config>

@@ -1,0 +1,3 @@
+#!/bin/sh
+# UzOS Autostart
+/usr/bin/uzos-shell &
