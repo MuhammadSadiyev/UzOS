@@ -1,5 +1,0 @@
-<RCC>
-	<qresource prefix="/misc">
-		<file alias="grammars.dat">grammars.dat</file>
-	</qresource>
-</RCC>

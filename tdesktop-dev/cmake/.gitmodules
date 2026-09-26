@@ -1,3 +1,0 @@
-[submodule "external/glib/cppgir"]
-	path = external/glib/cppgir
-	url = https://gitlab.com/mnauw/cppgir.git

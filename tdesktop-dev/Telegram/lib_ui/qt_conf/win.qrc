@@ -1,5 +1,0 @@
-<RCC>
-  <qresource prefix="/misc">
-    <file alias="gpu_driver_bug_list.json">gpu_driver_bug_list.json</file>
-  </qresource>
-</RCC>

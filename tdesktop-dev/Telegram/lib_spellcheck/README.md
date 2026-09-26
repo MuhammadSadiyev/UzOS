@@ -1,1 +1,0 @@
-Spellcheck library.
