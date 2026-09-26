@@ -77,7 +77,7 @@ jobs:
           sudo cp themes/install-uzos.desktop rootfs/etc/xdg/autostart/
 
           # 4. Replace Plymouth Ubuntu Boot Watermark with Native UzOS Logo
-          rsvg-convert -w 256 -h 256 themes/icons/UzOS-Telegram/apps/scalable/uzos-logo.svg -o uzos-logo.png
+          rsvg-convert -w 256 -h 256 themes/icons/UzOS-Telegram/scalable/apps/uzos-logo.svg -o uzos-logo.png
           sudo cp uzos-logo.png rootfs/usr/share/plymouth/ubuntu-logo.png
           sudo cp uzos-logo.png rootfs/usr/share/plymouth/themes/spinner/watermark.png
           sudo cp uzos-logo.png rootfs/usr/share/plymouth/themes/bgrt/watermark.png 2>/dev/null || true
