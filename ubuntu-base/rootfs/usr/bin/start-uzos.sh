@@ -6,7 +6,7 @@ set -e
 
 export XDG_CURRENT_DESKTOP=UzOS
 export XDG_SESSION_DESKTOP=UzOS
-export QT_QPA_PLATFORM=wayland;xcb
+export QT_QPA_PLATFORM="wayland;xcb"
 export QT_QPA_PLATFORMTHEME=gtk3
 export GDK_BACKEND=wayland,x11
 export MOZ_ENABLE_WAYLAND=1

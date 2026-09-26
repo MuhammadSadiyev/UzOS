@@ -121,9 +121,10 @@ jobs:
 
             apt update -y
 
-            # 2. Install Linux Kernel, GDM3, GNOME Core, Hardware Drivers, and Calamares Installer
+            # 2. Install Linux Kernel, Firmware, GDM3, GNOME Core, Hardware Drivers, Qt6, and Calamares
             apt install -y --no-install-recommends \
               linux-image-generic \
+              linux-firmware \
               initramfs-tools \
               systemd-sysv \
               casper \
@@ -136,6 +137,18 @@ jobs:
               pipewire-audio-client-libraries \
               wireplumber \
               network-manager \
+              wireless-regdb \
+              wpasupplicant \
+              labwc \
+              libqt6core6 \
+              libqt6gui6 \
+              libqt6qml6 \
+              libqt6quick6 \
+              libqt6quickcontrols2-6 \
+              qml6-module-qtquick \
+              qml6-module-qtquick-controls \
+              qml6-module-qtquick-window \
+              qml6-module-qtquick-layouts \
               calamares \
               calamares-settings-lubuntu \
               zram-tools \
@@ -171,7 +184,8 @@ jobs:
             chmod +x /home/uzos/Desktop/install-uzos.desktop
             chown -R uzos:uzos /home/uzos
 
-            # 7. Enable essential system services
+            # 7. Enable graphical boot mode and services
+            systemctl set-default graphical.target
             systemctl enable NetworkManager.service || true
             systemctl enable gdm3.service || true
 
