@@ -1,0 +1,129 @@
+name: UzOS ISO Builder (CI/CD)
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-iso:
+    name: Build UzOS 24.04 LTS Bootable ISO
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Build Tools & Qt6
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            squashfs-tools \
+            xorriso \
+            grub-pc-bin \
+            grub-efi-amd64-bin \
+            mtools \
+            build-essential \
+            cmake \
+            qt6-base-dev \
+            qt6-declarative-dev \
+            qml6-module-qtquick \
+            qml6-module-qtquick-controls \
+            qml6-module-qtquick-window
+
+      - name: Compile Native Telegram UI Shell (C++ / Qt6)
+        run: |
+          make shell
+          sudo cp desktop-shell/build/uzos-shell ubuntu-base/rootfs/usr/bin/
+          sudo chmod +x ubuntu-base/rootfs/usr/bin/uzos-shell
+          sudo chmod +x ubuntu-base/rootfs/usr/bin/start-uzos.sh
+          sudo chmod +x ubuntu-base/rootfs/usr/bin/uzosfetch
+
+      - name: Install Linux Kernel & Bootloader into RootFS
+        run: |
+          # Chroot mount
+          sudo mount --bind /dev ubuntu-base/rootfs/dev
+          sudo mount --bind /dev/pts ubuntu-base/rootfs/dev/pts
+          sudo mount -t proc proc ubuntu-base/rootfs/proc
+          sudo mount -t sysfs sysfs ubuntu-base/rootfs/sys
+          sudo cp /etc/resolv.conf ubuntu-base/rootfs/etc/resolv.conf
+
+          sudo chroot ubuntu-base/rootfs /bin/bash -c "
+            export DEBIAN_FRONTEND=noninteractive
+            apt update -y
+            apt install -y --no-install-recommends \
+              linux-image-generic \
+              initramfs-tools \
+              systemd-sysv \
+              casper \
+              sudo \
+              xserver-xorg-core \
+              pipewire \
+              pipewire-audio-client-libraries \
+              wireplumber \
+              network-manager \
+              lightdm \
+              fonts-inter \
+              fonts-roboto
+            
+            # Default uzos user
+            if ! id uzos &>/dev/null; then
+              useradd -m -s /bin/bash -G sudo,audio,video,plugdev uzos
+              echo 'uzos:uzos' | chpasswd
+            fi
+            
+            systemctl enable NetworkManager.service
+            systemctl enable lightdm.service || true
+            apt clean
+          "
+
+          sudo umount -lf ubuntu-base/rootfs/dev/pts 2>/dev/null || true
+          sudo umount -lf ubuntu-base/rootfs/dev 2>/dev/null || true
+          sudo umount -lf ubuntu-base/rootfs/proc 2>/dev/null || true
+          sudo umount -lf ubuntu-base/rootfs/sys 2>/dev/null || true
+
+      - name: Build Bootable ISO Image
+        run: |
+          mkdir -p build/iso/casper build/iso/boot/grub output
+
+          # Extract kernel and initrd
+          KERNEL=$(ls -1 ubuntu-base/rootfs/boot/vmlinuz-* | tail -n 1)
+          INITRD=$(ls -1 ubuntu-base/rootfs/boot/initrd.img-* | tail -n 1)
+          sudo cp "$KERNEL" build/iso/casper/vmlinuz
+          sudo cp "$INITRD" build/iso/casper/initrd
+
+          cat <<'EOF' > build/iso/boot/grub/grub.cfg
+          set default=0
+          set timeout=5
+          insmod efi_gop
+          insmod font
+
+          menuentry "UzOS 24.04 LTS (Zero-Telemetry & Telegram UI)" {
+              set gfxpayload=keep
+              linux /casper/vmlinuz boot=casper quiet splash --
+              initrd /casper/initrd
+          }
+
+          menuentry "UzOS 24.04 LTS (Xavfsiz grafik rejim)" {
+              set gfxpayload=keep
+              linux /casper/vmlinuz boot=casper nomodeset quiet splash --
+              initrd /casper/initrd
+          }
+          EOF
+
+          echo "SquashFS siqilmoqda (zstd)..."
+          sudo mksquashfs ubuntu-base/rootfs build/iso/casper/filesystem.squashfs \
+            -comp zstd -Xcompression-level 19 \
+            -e "boot/vmlinuz*" -e "boot/initrd.img*"
+
+          echo "ISO yaratilmoqda..."
+          sudo grub-mkrescue -o output/uzos-24.04-desktop-amd64.iso build/iso
+
+      - name: Upload UzOS ISO to GitHub Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: uzos-24.04-desktop-amd64-iso
+          path: output/uzos-24.04-desktop-amd64.iso
+          if-no-files-found: error
+          retention-days: 14
