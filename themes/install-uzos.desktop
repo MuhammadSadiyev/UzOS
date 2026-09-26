@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=UzOS 24.04 LTS O'rnatish
+Name[uz]=UzOS 24.04 LTS O'rnatish
+Name[en]=Install UzOS 24.04 LTS
+Name[ru]=Установить UzOS 24.04 LTS
+Comment=UzOS 24.04 LTS tizimini kompyuterga o'rnatish
+Exec=sudo -E calamares
+Icon=calamares
+Terminal=false
+StartupNotify=true
+Categories=Qt;System;

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <!-- Background Gradient: Authentic Telegram Dark Night Palette -->
+    <radialGradient id="bg-glow" cx="50%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#182533" />
+      <stop offset="50%" stop-color="#0f1822" />
+      <stop offset="100%" stop-color="#0a0f16" />
+    </radialGradient>
+
+    <!-- Telegram Accent Glow -->
+    <radialGradient id="center-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2481cc" stop-opacity="0.25" />
+      <stop offset="70%" stop-color="#2481cc" stop-opacity="0.03" />
+      <stop offset="100%" stop-color="#2481cc" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Telegram Plane Gradient -->
+    <linearGradient id="plane-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#40a7e3" />
+      <stop offset="100%" stop-color="#2481cc" />
+    </linearGradient>
+
+    <!-- Subtle Pattern Fill -->
+    <pattern id="telegram-doodle" x="0" y="0" width="120" height="120" patternUnits="userSpaceOnUse" opacity="0.04">
+      <path d="M20 20 h15 v15 h-15 z M60 30 c5 -5 15 -5 20 0 c5 5 5 15 0 20 l-10 10 l-10 -10 c-5 -5 -5 -15 0 -20 z M30 80 l10 -15 l10 15 z M85 75 c0 -5 10 -5 10 0 c0 5 -10 5 -10 0 z" fill="#ffffff" />
+      <circle cx="95" cy="25" r="4" fill="#ffffff" />
+      <circle cx="25" cy="100" r="3" fill="#ffffff" />
+      <path d="M70 95 l15 -5 l-10 15 z" fill="#ffffff" />
+      <path d="M10 50 q5 -10 15 0 t15 0" stroke="#ffffff" stroke-width="1.5" fill="none" />
+    </pattern>
+  </defs>
+
+  <!-- Base Night Background -->
+  <rect width="1920" height="1080" fill="url(#bg-glow)" />
+
+  <!-- Telegram Subtle Chat Doodle Pattern -->
+  <rect width="1920" height="1080" fill="url(#telegram-doodle)" />
+
+  <!-- Center Ambient Radial Glow -->
+  <circle cx="960" cy="500" r="450" fill="url(#center-glow)" />
+
+  <!-- Center UzOS Telegram Emblem -->
+  <g transform="translate(960, 480)">
+    <!-- Outer Glow Circle -->
+    <circle cx="0" cy="0" r="92" fill="#2481cc" opacity="0.12" />
+    <circle cx="0" cy="0" r="76" fill="#17212b" stroke="#242f3d" stroke-width="2.5" />
+
+    <!-- Telegram Circle Badge -->
+    <circle cx="0" cy="0" r="62" fill="url(#plane-grad)" />
+
+    <!-- Telegram Paper Plane Vector -->
+    <path d="M -26 0 L 26 -20 L 12 24 L 2 10 L 14 -10 L -12 -2 L 2 10 L -4 20 Z" fill="#ffffff" opacity="0.95" />
+
+    <!-- UzOS Typography below emblem -->
+    <text x="0" y="115" font-family="'Inter', 'Segoe UI', system-ui, sans-serif" font-size="28" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="3">UzOS</text>
+    <text x="0" y="142" font-family="'Inter', 'Segoe UI', system-ui, sans-serif" font-size="13" font-weight="500" fill="#6c7883" text-anchor="middle" letter-spacing="4">24.04 LTS • ZERO-TELEMETRY</text>
+  </g>
+</svg>

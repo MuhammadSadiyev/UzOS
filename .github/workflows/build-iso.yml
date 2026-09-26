@@ -39,8 +39,8 @@ jobs:
 
       - name: Prepare Clean Linux RootFS & Apply UzOS
         run: |
-          # 1. Download official Ubuntu 24.04.5 LTS minimal base directly on Linux
-          # This guarantees 100% proper symlinks (/bin -> usr/bin, /lib64) and POSIX permissions
+          # 1. Download official Ubuntu 24.04.5 LTS base directly on Linux
+          # Preserves all native Linux symlinks (/bin -> usr/bin, /lib64) and permissions
           mkdir -p rootfs
           curl -sSL -o ubuntu-base.tar.gz https://cdimage.ubuntu.com/ubuntu-base/releases/24.04/release/ubuntu-base-24.04.5-base-amd64.tar.gz
           sudo tar -xpzf ubuntu-base.tar.gz -C rootfs
@@ -48,20 +48,27 @@ jobs:
           # 2. Create required directory tree
           sudo mkdir -p rootfs/usr/share/icons \
                         rootfs/usr/share/themes \
+                        rootfs/usr/share/backgrounds \
+                        rootfs/usr/share/glib-2.0/schemas \
+                        rootfs/usr/share/applications \
                         rootfs/usr/share/wayland-sessions \
                         rootfs/usr/share/xsessions \
                         rootfs/usr/bin \
-                        rootfs/etc/skel \
+                        rootfs/etc/skel/Desktop \
                         rootfs/etc/profile.d \
                         rootfs/etc/apt/preferences.d \
                         rootfs/etc/sysctl.d \
                         rootfs/etc/default \
                         rootfs/etc/sudoers.d \
-                        rootfs/etc/lightdm/lightdm.conf.d
+                        rootfs/etc/gdm3
 
-          # 3. Install UzOS Themes & Icons
+          # 3. Install UzOS Themes, Icons, Wallpaper and Settings
           sudo cp -r themes/icons/UzOS-Telegram rootfs/usr/share/icons/
           sudo cp -r themes/gtk/UzOS-Telegram-Dark rootfs/usr/share/themes/
+          sudo cp themes/wallpapers/uzos-telegram-dark.svg rootfs/usr/share/backgrounds/
+          sudo cp themes/99_uzos.gschema.override rootfs/usr/share/glib-2.0/schemas/
+          sudo cp themes/install-uzos.desktop rootfs/usr/share/applications/
+          sudo cp themes/install-uzos.desktop rootfs/etc/skel/Desktop/
 
           # 4. Install Native Telegram UI Shell & CLI tools
           sudo cp desktop-shell/build/uzos-shell rootfs/usr/bin/
@@ -72,7 +79,6 @@ jobs:
           sudo chmod +x rootfs/usr/bin/uzos-shell rootfs/usr/bin/start-uzos.sh rootfs/usr/bin/uzosfetch
 
           # 5. Apply UzOS System Configurations (Zero Telemetry, zRAM, Rebranding)
-          sudo cp -r ubuntu-base/rootfs/etc/skel/.config rootfs/etc/skel/ || true
           sudo cp ubuntu-base/rootfs/etc/profile.d/uzos-env.sh rootfs/etc/profile.d/ || true
           sudo cp ubuntu-base/rootfs/etc/hosts rootfs/etc/hosts
           sudo cp ubuntu-base/rootfs/etc/lsb-release rootfs/etc/lsb-release
@@ -82,18 +88,17 @@ jobs:
           sudo cp ubuntu-base/rootfs/etc/sysctl.d/99-uzos-performance.conf rootfs/etc/sysctl.d/
           sudo cp ubuntu-base/rootfs/etc/default/zram-tools rootfs/etc/default/
 
-          # 6. Configure Passwordless Sudo & Autologin for Live User
+          # 6. Configure Passwordless Sudo & GDM3 Autologin for Live User
           echo 'uzos ALL=(ALL) NOPASSWD:ALL' | sudo tee rootfs/etc/sudoers.d/uzos
           sudo chmod 0440 rootfs/etc/sudoers.d/uzos
 
-          cat <<'EOF' | sudo tee rootfs/etc/lightdm/lightdm.conf.d/uzos-autologin.conf
-          [Seat:*]
-          autologin-user=uzos
-          autologin-user-timeout=0
-          user-session=uzos
+          cat <<'EOF' | sudo tee rootfs/etc/gdm3/custom.conf
+          [daemon]
+          AutomaticLoginEnable=true
+          AutomaticLogin=uzos
           EOF
 
-      - name: Install Linux Kernel & Bootloader into RootFS
+      - name: Install Linux Kernel, Full Drivers & Graphical Installer into RootFS
         run: |
           # Chroot mount
           sudo mount --bind /dev rootfs/dev
@@ -102,45 +107,74 @@ jobs:
           sudo mount -t sysfs sysfs rootfs/sys
           sudo cp /etc/resolv.conf rootfs/etc/resolv.conf
 
-          echo 'APT::Install-Recommends "false";' | sudo tee rootfs/etc/apt/apt.conf.d/99no-recommends
-
           sudo chroot rootfs /bin/bash -c "
             export DEBIAN_FRONTEND=noninteractive
+
+            # 1. Full repository sources
+            cat <<'SOURCES' > /etc/apt/sources.list.d/ubuntu.sources
+          Types: deb
+          URIs: http://archive.ubuntu.com/ubuntu/
+          Suites: noble noble-updates noble-security noble-backports
+          Components: main universe restricted multiverse
+          Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+          SOURCES
+
             apt update -y
-            apt install -y \
+
+            # 2. Install Linux Kernel, GDM3, GNOME Core, Hardware Drivers, and Calamares Installer
+            apt install -y --no-install-recommends \
               linux-image-generic \
               initramfs-tools \
               systemd-sysv \
               casper \
-              sudo \
-              labwc \
-              libqt6core6 \
-              libqt6gui6 \
-              libqt6qml6 \
-              libqt6quick6 \
-              libqt6quickcontrols2-6 \
-              qml6-module-qtquick \
-              qml6-module-qtquick-controls \
-              qml6-module-qtquick-window \
-              qml6-module-qtquick-layouts \
-              foot \
-              zram-tools \
+              plymouth-theme-spinner \
+              gdm3 \
+              gnome-core \
+              gnome-terminal \
+              xserver-xorg-video-all \
               pipewire \
               pipewire-audio-client-libraries \
               wireplumber \
               network-manager \
-              lightdm \
+              calamares \
+              calamares-settings-lubuntu \
+              zram-tools \
               fonts-inter \
-              fonts-roboto
-            
-            # Default uzos user
+              fonts-roboto \
+              sudo \
+              curl
+
+            # 3. Purge Telemetry, Office Apps, and Unwanted Bloatware
+            apt purge -y \
+              ubuntu-report \
+              popularity-contest \
+              whoopsie \
+              apport \
+              apport-symptoms \
+              libreoffice* \
+              thunderbird* \
+              gnome-games* || true
+            apt autoremove -y --purge
+
+            # 4. Compile GNOME Schemas for Default Telegram Theme & Wallpaper
+            glib-compile-schemas /usr/share/glib-2.0/schemas/ || true
+
+            # 5. Create default 'uzos' user for live session
             if ! id uzos &>/dev/null; then
-              useradd -m -s /bin/bash -G sudo,audio,video,plugdev uzos
+              useradd -m -s /bin/bash -G sudo,audio,video,plugdev,netdev uzos
               echo 'uzos:uzos' | chpasswd
             fi
-            
+
+            # 6. Place Graphical Installer shortcut on Desktop
+            mkdir -p /home/uzos/Desktop
+            cp /usr/share/applications/install-uzos.desktop /home/uzos/Desktop/
+            chmod +x /home/uzos/Desktop/install-uzos.desktop
+            chown -R uzos:uzos /home/uzos
+
+            # 7. Enable essential system services
             systemctl enable NetworkManager.service || true
-            systemctl enable lightdm.service || true
+            systemctl enable gdm3.service || true
+
             apt clean
           "
 
@@ -169,22 +203,28 @@ jobs:
           insmod efi_gop
           insmod font
 
-          menuentry "UzOS 24.04 LTS (Zero-Telemetry & Telegram UI)" {
+          menuentry "UzOS 24.04 LTS (Telegram UI - Jonli sinov)" {
               set gfxpayload=keep
-              linux /casper/vmlinuz boot=casper quiet splash --
+              linux /casper/vmlinuz boot=casper quiet splash ---
               initrd /casper/initrd
           }
 
-          menuentry "UzOS 24.04 LTS (Xavfsiz grafik rejim)" {
+          menuentry "UzOS 24.04 LTS ni o'rnatish (Grafik o'rnatuvchi)" {
               set gfxpayload=keep
-              linux /casper/vmlinuz boot=casper nomodeset quiet splash --
+              linux /casper/vmlinuz boot=casper quiet splash ---
+              initrd /casper/initrd
+          }
+
+          menuentry "UzOS 24.04 LTS (Xavfsiz grafik rejim / Safe Graphics)" {
+              set gfxpayload=keep
+              linux /casper/vmlinuz boot=casper nomodeset quiet splash ---
               initrd /casper/initrd
           }
           EOF
 
           echo "SquashFS siqilmoqda (zstd)..."
           sudo mksquashfs rootfs build/iso/casper/filesystem.squashfs \
-            -comp zstd -Xcompression-level 15 \
+            -comp zstd -Xcompression-level 9 \
             -e "boot/vmlinuz*" -e "boot/initrd.img*"
 
           echo "ISO yaratilmoqda..."

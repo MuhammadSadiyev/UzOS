@@ -1,0 +1,29 @@
+---
+componentName:  uzos
+welcomeStyleCalamares:   false
+welcomeExpandingLogo:   true
+windowExpanding:    normal
+windowSize: 850px,560px
+windowPlacement: center
+
+strings:
+    productName:         UzOS
+    version:             24.04 LTS
+    shortVersion:        24.04
+    versionedName:       UzOS 24.04 LTS
+    shortVersionedName:  UzOS 24.04
+    bootloaderEntryName: UzOS
+    productUrl:          https://uzos.uz
+    supportUrl:          https://uzos.uz
+    knownIssuesUrl:      https://uzos.uz
+    releaseNotesUrl:     https://uzos.uz
+
+images:
+    productLogo:         "uzos-logo.svg"
+    productIcon:         "uzos-logo.svg"
+
+style:
+   SidebarBackground:    "#0e1621"
+   SidebarText:          "#ffffff"
+   SidebarTextSelect:    "#2481cc"
+   SidebarTextHighlight: "#5288c1"
