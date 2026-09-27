@@ -281,7 +281,6 @@ jobs:
           retention-days: 14
 
       - name: Upload UzOS ISO to Cloudflare R2 (Ultra-Fast CDN)
-        if: ${{ secrets.R2_SECRET_ACCESS_KEY != '' }}
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
