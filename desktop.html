@@ -3,36 +3,317 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="description" content="UzOS Cloud 2.0 — O'zbekiston Milliy Bulut Operatsion Tizimi. 100% Telegram UI rasmiy dizayn tizimi asosida.">
-  <meta name="theme-color" content="#0f172a">
-  <title>UzOS Cloud — Telegram UI WebOS</title>
+  <meta name="description" content="UzOS Cloud — O'zbekiston Milliy Bulut Operatsion Tizimi. 100% Telegram Desktop / Web 1:1 interfeysi.">
+  <meta name="theme-color" content="#0e1621">
+  <title>UzOS Cloud — Telegram Desktop WebOS</title>
 
-  <!-- Favicon (7-talik Asal Ari Uyasi) -->
+  <!-- Favicon (7-talik Asal Ari Uyasi / Honeycomb Rosette) -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><g stroke='white' stroke-width='1.1' stroke-linejoin='round' fill='%230284C7'><polygon points='8.6,11.7 12.3,13.8 12.3,18.2 8.6,20.3 4.8,18.2 4.8,13.8'/><polygon points='23.4,11.7 27.2,13.8 27.2,18.2 23.4,20.3 19.7,18.2 19.7,13.8'/><polygon points='12.3,5.2 16,7.4 16,11.7 12.3,13.8 8.6,11.7 8.6,7.4'/><polygon points='19.7,5.2 23.4,7.4 23.4,11.7 19.7,13.8 16,11.7 16,7.4'/><polygon points='12.3,18.2 16,20.3 16,24.7 12.3,26.8 8.6,24.7 8.6,20.3'/><polygon points='19.7,18.2 23.4,20.3 23.4,24.7 19.7,26.8 16,24.7 16,20.3'/></g><polygon points='16,11.7 19.7,13.8 19.7,18.2 16,20.3 12.3,18.2 12.3,13.8' fill='white'/></svg>">
 
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #0b1120;
-      color: #f8fafc;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      overflow-x: hidden;
-    }
-    #root {
-      width: 100%;
-      min-height: 100vh;
-    }
-  </style>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/telegram-ui.css">
+  <link rel="stylesheet" href="css/desktop.css">
+  <link rel="stylesheet" href="css/apps.css">
 </head>
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Main 1:1 Telegram Desktop 3-Column Interface -->
+  <div id="tg-app-container">
+
+    <!-- ========================================================================
+         COLUMN 1: Telegram Folders Navigation Rail (70px)
+         ======================================================================== -->
+    <aside id="tg-nav-rail">
+      
+      <div class="rail-top">
+        <button class="rail-btn" id="btn-tg-menu" title="Telegram Menyu">
+          <span class="rail-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </span>
+        </button>
+      </div>
+
+      <div class="rail-middle">
+        <!-- All chats folder -->
+        <button class="rail-btn active" id="rail-all" title="Barcha Chatlar">
+          <span class="rail-icon">💬</span>
+          <span class="rail-label">Barchasi</span>
+          <span class="rail-badge">5</span>
+        </button>
+
+        <!-- AI Assistant -->
+        <button class="rail-btn active" data-chat-id="ai" title="Milliy AI Bot">
+          <span class="rail-icon">🤖</span>
+          <span class="rail-label">AI Bot</span>
+        </button>
+
+        <!-- Web Terminal -->
+        <button class="rail-btn" data-chat-id="terminal" title="Web Terminal">
+          <span class="rail-icon">💻</span>
+          <span class="rail-label">Terminal</span>
+        </button>
+
+        <!-- Cloud Files -->
+        <button class="rail-btn" data-chat-id="files" title="Bulut Fayllar">
+          <span class="rail-icon">📁</span>
+          <span class="rail-label">Fayllar</span>
+        </button>
+
+        <!-- Code Editor -->
+        <button class="rail-btn" data-chat-id="editor" title="Kod Muharriri">
+          <span class="rail-icon">📝</span>
+          <span class="rail-label">Studio</span>
+        </button>
+
+        <!-- Settings -->
+        <button class="rail-btn" data-chat-id="settings" title="Sozlamalar">
+          <span class="rail-icon">⚙️</span>
+          <span class="rail-label">Sozlama</span>
+        </button>
+      </div>
+
+      <div class="rail-bottom">
+        <button class="rail-btn" id="btn-theme-toggle" title="Rang Mavzusi (Dark/Blue/Night)">
+          <span class="rail-icon">🌙</span>
+        </button>
+        <a class="rail-btn" href="index.html" title="UzOS Bosh Sahifasi">
+          <span class="rail-icon">🌐</span>
+        </a>
+      </div>
+
+    </aside>
+
+    <!-- ========================================================================
+         COLUMN 2: Telegram Chats & Folders List (330px)
+         ======================================================================== -->
+    <aside id="tg-left-col">
+      
+      <!-- Top Search Header -->
+      <div class="tg-left-header">
+        <div class="tg-search-wrapper" id="tg-search-wrapper">
+          <span class="tg-search-icon">🔍</span>
+          <input type="text" id="tg-search-input" class="tg-search-input" placeholder="Qidirish..." spellcheck="false" autocomplete="off" />
+          <span class="tg-search-clear" id="tg-search-clear">✕</span>
+        </div>
+      </div>
+
+      <!-- Telegram Chat Folders Bar -->
+      <div class="tg-folders-bar" id="tg-folders-bar">
+        <div class="tg-folder-tab active" data-folder="all">
+          <span>Barchasi</span>
+          <span class="tg-folder-badge">5</span>
+        </div>
+        <div class="tg-folder-tab" data-folder="ai">
+          <span>🤖 AI Botlar</span>
+        </div>
+        <div class="tg-folder-tab" data-folder="dev">
+          <span>💻 Tizim</span>
+        </div>
+        <div class="tg-folder-tab" data-folder="files">
+          <span>📁 Fayllar</span>
+        </div>
+        <div class="tg-folder-tab" data-folder="settings">
+          <span>⚙️ Sozlamalar</span>
+        </div>
+      </div>
+
+      <!-- Telegram Chat List (Each app is an authentic Chat Item) -->
+      <div class="tg-chat-list" id="tg-chat-list">
+        
+        <!-- Chat 1: UzOS Milliy AI -->
+        <div class="tg-chat-item active" data-chat-id="ai" data-folder="ai,all">
+          <div class="tg-avatar gradient-purple">AI</div>
+          <div class="tg-chat-info">
+            <div class="tg-chat-top-row">
+              <div class="tg-chat-name">
+                <span>UzOS Milliy AI</span>
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 0L9.8 1.9L12.4 1.5L13.4 3.9L15.9 4.9L15.6 7.5L17.2 9.5L15.6 11.5L15.9 14.1L13.4 15.1L12.4 17.5L9.8 17.1L8 19L6.2 17.1L3.6 17.5L2.6 15.1L0.1 14.1L0.4 11.5L-1.2 9.5L0.4 7.5L0.1 4.9L2.6 3.9L3.6 1.5L6.2 1.9L8 0Z" transform="scale(0.8) translate(2, 0)" fill="#3390ec"/>
+                  <path d="M4.5 8L6.8 10.3L11.5 5.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="tg-chat-time" id="chat-time-ai">hozir</span>
+            </div>
+            <div class="tg-chat-bottom-row">
+              <span class="tg-chat-desc">Assalomu alaykum! Savolingiz bormi?</span>
+              <div class="tg-chat-badges">
+                <span class="tg-pin-icon" title="Qadalgan">📌</span>
+                <span class="tg-unread-badge">1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat 2: UzOS Terminal -->
+        <div class="tg-chat-item" data-chat-id="terminal" data-folder="dev,all">
+          <div class="tg-avatar gradient-dark">&gt;_</div>
+          <div class="tg-chat-info">
+            <div class="tg-chat-top-row">
+              <div class="tg-chat-name">UzOS Terminal</div>
+              <span class="tg-chat-time">15:20</span>
+            </div>
+            <div class="tg-chat-bottom-row">
+              <span class="tg-chat-desc">uzos@cloud:~$ uzosfetch</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat 3: UzOS Fayllar -->
+        <div class="tg-chat-item" data-chat-id="files" data-folder="files,all">
+          <div class="tg-avatar gradient-orange">📁</div>
+          <div class="tg-chat-info">
+            <div class="tg-chat-top-row">
+              <div class="tg-chat-name">UzOS Fayllar (Cloud Drive)</div>
+              <span class="tg-chat-time">14:50</span>
+            </div>
+            <div class="tg-chat-bottom-row">
+              <span class="tg-chat-desc">Hujjatlar, Rasmlar, Yuklamalar...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat 4: UzOS Code -->
+        <div class="tg-chat-item" data-chat-id="editor" data-folder="dev,all">
+          <div class="tg-avatar gradient-blue">📝</div>
+          <div class="tg-chat-info">
+            <div class="tg-chat-top-row">
+              <div class="tg-chat-name">UzOS Code Studio</div>
+              <span class="tg-chat-time">12:10</span>
+            </div>
+            <div class="tg-chat-bottom-row">
+              <span class="tg-chat-desc">script.js tahrirlanmoqda...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat 5: Sozlamalar -->
+        <div class="tg-chat-item" data-chat-id="settings" data-folder="settings,all">
+          <div class="tg-avatar gradient-slate">⚙️</div>
+          <div class="tg-chat-info">
+            <div class="tg-chat-top-row">
+              <div class="tg-chat-name">Tizim Sozlamalari</div>
+              <span class="tg-chat-time">Kecha</span>
+            </div>
+            <div class="tg-chat-bottom-row">
+              <span class="tg-chat-desc">Zero-Telemetry • AES-256 Faol</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- ========================================================================
+         COLUMN 3: Active Telegram View (100% Height)
+         ======================================================================== -->
+    <main id="tg-right-col">
+      
+      <!-- Telegram Chat Header -->
+      <header class="tg-right-header">
+        <div class="tg-header-contact" id="tg-header-info">
+          <button class="tg-back-mobile-btn" id="btn-mobile-back" title="Orqaga">←</button>
+          <div class="tg-header-avatar gradient-purple" id="header-avatar">AI</div>
+          <div class="tg-header-details">
+            <div class="tg-header-title" id="header-title">
+              <span>UzOS Milliy AI</span>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                <path d="M8 0L9.8 1.9L12.4 1.5L13.4 3.9L15.9 4.9L15.6 7.5L17.2 9.5L15.6 11.5L15.9 14.1L13.4 15.1L12.4 17.5L9.8 17.1L8 19L6.2 17.1L3.6 17.5L2.6 15.1L0.1 14.1L0.4 11.5L-1.2 9.5L0.4 7.5L0.1 4.9L2.6 3.9L3.6 1.5L6.2 1.9L8 0Z" transform="scale(0.8) translate(2, 0)" fill="#3390ec"/>
+                <path d="M4.5 8L6.8 10.3L11.5 5.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="tg-header-subtitle" id="header-subtitle">bot, doimiy onlayn</div>
+          </div>
+        </div>
+
+        <div class="tg-header-actions">
+          <button class="tg-header-btn" id="btn-fullscreen" title="To'liq ekranga o'tish">⛶</button>
+          <a class="tg-header-btn" id="btn-home" href="index.html" title="Bosh sahifaga qaytish">🌐</a>
+        </div>
+      </header>
+
+      <!-- Telegram Body Content (Switches between views seamlessly) -->
+      <div class="tg-right-body">
+        
+        <!-- View 1: Milliy AI (Telegram Chat) -->
+        <div class="tg-app-view active" id="view-ai">
+          <div class="app-host-ai" style="height:100%; display:flex; flex-direction:column;"></div>
+        </div>
+
+        <!-- View 2: Terminal -->
+        <div class="tg-app-view" id="view-terminal">
+          <div class="app-host-terminal" style="height:100%; display:flex; flex-direction:column;"></div>
+        </div>
+
+        <!-- View 3: Files -->
+        <div class="tg-app-view" id="view-files">
+          <div class="app-host-files" style="height:100%; display:flex; flex-direction:column;"></div>
+        </div>
+
+        <!-- View 4: Editor -->
+        <div class="tg-app-view" id="view-editor">
+          <div class="app-host-editor" style="height:100%; display:flex; flex-direction:column;"></div>
+        </div>
+
+        <!-- View 5: Settings -->
+        <div class="tg-app-view" id="view-settings">
+          <div class="app-host-settings" style="height:100%; display:flex; flex-direction:column;"></div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Telegram Slide-out Left Menu (Drawer) -->
+  <div id="tg-menu-overlay"></div>
+  <div id="tg-side-menu">
+    <div class="tg-menu-profile">
+      <div class="tg-menu-avatar">UZ</div>
+      <div>
+        <div class="tg-menu-name">UzOS Foydalanuvchisi</div>
+        <div class="tg-menu-username">@uzos_cloud • O'zbekiston</div>
+      </div>
+    </div>
+
+    <div class="tg-menu-items">
+      <div class="tg-menu-item" data-action="ai">
+        <span>🤖</span> UzOS Milliy AI
+      </div>
+      <div class="tg-menu-item" data-action="terminal">
+        <span>💻</span> Web Terminal
+      </div>
+      <div class="tg-menu-item" data-action="files">
+        <span>📁</span> Bulut Fayllar
+      </div>
+      <div class="tg-menu-item" data-action="editor">
+        <span>📝</span> Kod Muharriri
+      </div>
+      <div class="tg-menu-item" data-action="settings">
+        <span>⚙️</span> Sozlamalar
+      </div>
+      <div style="height: 1px; background: var(--tg-border); margin: 6px 0;"></div>
+      <div class="tg-menu-item" data-action="theme">
+        <span>🌙</span> Rang Mavzusi Almashuvi
+      </div>
+      <div class="tg-menu-item" data-action="home">
+        <span>🌐</span> Bosh Sahifa (Taqdimot)
+      </div>
+    </div>
+
+    <div class="tg-menu-footer">
+      <span>UzOS Cloud 2.0.4 WebOS</span>
+      <span style="color:#4ade80;">100% Suveren</span>
+    </div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div id="tg-toast-container"></div>
+
+  <!-- Master Script -->
+  <script type="module" src="js/desktop-main.js"></script>
 </body>
 </html>

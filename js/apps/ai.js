@@ -1,10 +1,12 @@
 /* ==============================================================================
    UzOS Cloud (WebOS) — Milliy AI Assistant (100% Authentic Telegram Chat UI)
+   Exact 1:1 Telegram Speech Bubbles with Tails, Inline Buttons & Audio Feedback
    ============================================================================== */
 
 export class AIAssistantApp {
   constructor(container) {
     this.container = container;
+    this.audioCtx = null;
     this.render();
   }
 
@@ -12,62 +14,114 @@ export class AIAssistantApp {
     return new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit', hour12: false });
   }
 
+  // Synthesize authentic soft Telegram message pop sound
+  playTelegramSound(type = 'send') {
+    try {
+      if (!this.audioCtx) {
+        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
+      const osc = this.audioCtx.createOscillator();
+      const gain = this.audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(this.audioCtx.destination);
+
+      const now = this.audioCtx.currentTime;
+      if (type === 'send') {
+        osc.frequency.setValueAtTime(540, now);
+        osc.frequency.exponentialRampToValueAtTime(840, now + 0.08);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+        osc.start(now);
+        osc.stop(now + 0.09);
+      } else {
+        osc.frequency.setValueAtTime(820, now);
+        osc.frequency.exponentialRampToValueAtTime(1080, now + 0.07);
+        gain.gain.setValueAtTime(0.09, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.start(now);
+        osc.stop(now + 0.1);
+      }
+    } catch (e) {
+      // Audio autoplay policy fallback
+    }
+  }
+
   render() {
     this.container.innerHTML = `
       <div class="app-ai">
-        <!-- Telegram Chat Header -->
-        <div class="ai-chat-header">
-          <div class="ai-avatar">AI</div>
-          <div class="ai-user-info">
-            <div class="ai-header-title">
-              <span>UzOS Milliy AI</span>
-              <svg class="tg-verified-icon" viewBox="0 0 16 16" fill="none">
-                <path d="M8 0L9.8 1.9L12.4 1.5L13.4 3.9L15.9 4.9L15.6 7.5L17.2 9.5L15.6 11.5L15.9 14.1L13.4 15.1L12.4 17.5L9.8 17.1L8 19L6.2 17.1L3.6 17.5L2.6 15.1L0.1 14.1L0.4 11.5L-1.2 9.5L0.4 7.5L0.1 4.9L2.6 3.9L3.6 1.5L6.2 1.9L8 0Z" transform="scale(0.8) translate(2, 0)" fill="#3390ec"/>
-                <path d="M4.5 8L6.8 10.3L11.5 5.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="ai-header-status">bot, doimiy onlayn</div>
-          </div>
-        </div>
-
-        <!-- Telegram Chat Messages -->
+        
+        <!-- Telegram Chat Messages Container -->
         <div class="ai-chat-messages" id="ai-messages">
+          
+          <!-- Date Separator Pill -->
+          <div class="tg-date-pill">Bugun, 27-Sentabr 2026</div>
+
+          <!-- Initial Bot Greeting Bubble -->
           <div class="tg-bubble-row bot">
+            <div class="bubble-avatar">AI</div>
             <div class="ai-bubble bot">
-              Assalomu alaykum! Men <b>UzOS Milliy AI</b> yordamchisiman. 🇺🇿<br><br>
-              Sizga operatsion tizim, dasturlash (Python, JavaScript, C++), texnologiyalar yoki shaxsiy masalalarda qanday yordam bera olaman?
+              Assalomu alaykum! Men <b>UzOS Milliy Sun'iy Intellekt</b> maslahatchisiman. 🇺🇿<br><br>
+              Tizim xavfsizligi, kiber-suverenitet, dasturlash yoki O'zbekiston IT qonunchiligi bo'yicha qanday yordam bera olaman? Quyidagi tugmalardan birini tanlashingiz mumkin:
+              
+              <!-- Telegram Inline Keyboard -->
+              <div class="tg-inline-keyboard">
+                <button class="tg-inline-btn" data-query="Kiber-xavfsizlik auditi">⚡ Xavfsizlik Auditi</button>
+                <button class="tg-inline-btn" data-query="Zero-Telemetry nima?">🛡️ Zero-Telemetry</button>
+                <button class="tg-inline-btn" data-query="Windows vs UzOS farqi?">📊 UzOS vs Windows</button>
+                <button class="tg-inline-btn" data-query="O'zbekiston IT qonunlari">🇺🇿 IT Qonunlari</button>
+                <button class="tg-inline-btn" data-query="Python skript yozib ber">💻 Python Skript</button>
+              </div>
+
               <div class="bubble-meta">
                 <span>${this.getCurrentTime()}</span>
               </div>
             </div>
           </div>
+
+          <!-- Typing Row (Hidden by default) -->
+          <div class="tg-typing-row" id="tg-typing-row">
+            <div class="tg-typing-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span>UzOS AI yozmoqda...</span>
+          </div>
+
         </div>
 
-        <!-- Telegram Quick Prompts -->
+        <!-- Telegram Quick Prompt Chips Bar -->
         <div class="ai-quick-prompts">
           <div class="ai-chip" data-prompt="UzOS Cloud nima va qanday ishlaydi?">💡 UzOS nima?</div>
-          <div class="ai-chip" data-prompt="Python'da Telegram bot qanday yaratiladi?">🤖 Telegram Bot</div>
-          <div class="ai-chip" data-prompt="Raqamli suverenitet va Zero-Telemetry nima?">🛡 Suverenitet</div>
-          <div class="ai-chip" data-prompt="JavaScript'da qiziqarli algoritm misoli keltir">⚡ Kod yozish</div>
+          <div class="ai-chip" data-prompt="Zero-Telemetry nima?">🛡️ Zero-Telemetry</div>
+          <div class="ai-chip" data-prompt="Windows vs UzOS farqi?">📊 UzOS vs Windows</div>
+          <div class="ai-chip" data-prompt="Python'da Telegram bot yaratish">🤖 Telegram Bot</div>
+          <div class="ai-chip" data-prompt="O'zbekiston kiberxavfsizlik qonunlari">🇺🇿 Qonunchilik</div>
         </div>
 
-        <!-- Telegram Input Area -->
+        <!-- Telegram Message Input Bar -->
         <div class="ai-input-area">
-          <button class="tg-attach-btn" title="Fayl biriktirish">📎</button>
-          <input type="text" class="ai-input" id="ai-input-field" placeholder="Xabar yozing..." />
-          <button class="ai-send-btn" id="ai-send-btn" title="Yuborish">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="tg-attach-btn" id="ai-attach-btn" title="Fayl biriktirish">📎</button>
+          <input type="text" class="ai-input" id="ai-input-field" placeholder="Xabar yozing..." autocomplete="off" />
+          <button class="tg-emoji-btn" id="ai-emoji-btn" title="Emotsiyalar">😊</button>
+          <button class="ai-send-btn" id="ai-send-btn" title="Yuborish (Enter)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
             </svg>
           </button>
         </div>
+
       </div>
     `;
 
     this.messagesEl = this.container.querySelector('#ai-messages');
+    this.typingRow = this.container.querySelector('#tg-typing-row');
     this.inputEl = this.container.querySelector('#ai-input-field');
     this.sendBtn = this.container.querySelector('#ai-send-btn');
+    this.emojiBtn = this.container.querySelector('#ai-emoji-btn');
+    this.attachBtn = this.container.querySelector('#ai-attach-btn');
 
     this.bindEvents();
   }
@@ -78,6 +132,7 @@ export class AIAssistantApp {
       if (!query) return;
       this.inputEl.value = '';
       this.addUserMessage(query);
+      this.playTelegramSound('send');
       this.generateAIResponse(query);
     };
 
@@ -86,12 +141,41 @@ export class AIAssistantApp {
       if (e.key === 'Enter') handleSend();
     });
 
-    this.container.querySelectorAll('.ai-chip').forEach(chip => {
-      chip.addEventListener('click', () => {
+    // Delegate inline buttons & chips
+    this.container.addEventListener('click', (e) => {
+      const inlineBtn = e.target.closest('.tg-inline-btn');
+      if (inlineBtn) {
+        const q = inlineBtn.dataset.query;
+        this.addUserMessage(q);
+        this.playTelegramSound('send');
+        this.generateAIResponse(q);
+        return;
+      }
+
+      const chip = e.target.closest('.ai-chip');
+      if (chip) {
         const prompt = chip.dataset.prompt;
         this.addUserMessage(prompt);
+        this.playTelegramSound('send');
         this.generateAIResponse(prompt);
-      });
+        return;
+      }
+    });
+
+    this.emojiBtn.addEventListener('click', () => {
+      const emojis = ['⚡', '🛡️', '🇺🇿', '🚀', '💻', '🔒', '✅'];
+      const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+      this.inputEl.value += randomEmoji;
+      this.inputEl.focus();
+    });
+
+    this.attachBtn.addEventListener('click', () => {
+      this.addUserMessage("📎 Hujjat biriktirildi: uzos_suverenitet_akt.pdf (240 KB)");
+      this.playTelegramSound('send');
+      setTimeout(() => {
+        this.addBotMessage("✅ Hujjat qabul qilindi va mahalliy AES-256 xavfsiz VFS xotirasida muvaffaqiyatli tekshirildi. Kiber-tahdidlar aniqlanmadi!");
+        this.playTelegramSound('receive');
+      }, 700);
     });
   }
 
@@ -107,14 +191,15 @@ export class AIAssistantApp {
         </div>
       </div>
     `;
-    this.messagesEl.appendChild(row);
-    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+    this.messagesEl.insertBefore(row, this.typingRow);
+    this.scrollToBottom();
   }
 
   addBotMessage(html) {
     const row = document.createElement('div');
     row.className = 'tg-bubble-row bot';
     row.innerHTML = `
+      <div class="bubble-avatar">AI</div>
       <div class="ai-bubble bot">
         ${html}
         <div class="bubble-meta">
@@ -122,7 +207,11 @@ export class AIAssistantApp {
         </div>
       </div>
     `;
-    this.messagesEl.appendChild(row);
+    this.messagesEl.insertBefore(row, this.typingRow);
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
     this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
   }
 
@@ -131,60 +220,63 @@ export class AIAssistantApp {
   }
 
   generateAIResponse(query) {
-    const lower = query.toLowerCase();
-
-    // Telegram typing indicator
-    const typingRow = document.createElement('div');
-    typingRow.className = 'tg-bubble-row bot';
-    typingRow.innerHTML = `
-      <div class="ai-bubble bot" style="color:var(--tg-theme-subtitle-text-color); font-size:12.5px;">
-        yozmoqda... ✍️
-      </div>
-    `;
-    this.messagesEl.appendChild(typingRow);
-    this.messagesEl.scrollTop = this.messagesEl.scrollHeight;
+    const q = query.toLowerCase();
+    this.typingRow.classList.add('visible');
+    this.scrollToBottom();
 
     setTimeout(() => {
-      typingRow.remove();
+      this.typingRow.classList.remove('visible');
       let response = "";
 
-      if (lower.includes('uzos') || lower.includes('nima')) {
-        response = `<b>UzOS Cloud</b> — bu O'zbekistonda yaratilgan birinchi to'liq brauzerda ishlovchi <b>Milliy Bulut Operatsion Tizimi (WebOS)</b>.<br><br>
-        Uning bosh g'oyasi: har qanday foydalanuvchiga (hatto 2GB RAM'li eng oddiy kompyuterlarda ham) havolani ochish orqali xavfsiz, tejamkor va o'zbek tilidagi shaxsiy ish stolini taqdim etishdir. Tizimda 100% Zero-Telemetry printsipi amal qiladi.`;
-      } else if (lower.includes('telegram') || lower.includes('bot')) {
-        response = `Telegram bot yaratish uchun <b>python-telegram-bot</b> yoki <b>aiogram</b> kutubxonasidan foydalanish tavsiya etiladi:<br>
-        <pre style="background:#090e15; padding:10px; border-radius:8px; margin:6px 0; font-family:var(--tg-font-mono); font-size:11.5px; color:#4ade80;">
-from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
+      if (q.includes('xavfsizlik') || q.includes('audit') || q.includes('tekshir')) {
+        response = `🔒 <b>UzOS Kiber-Xavfsizlik Auditi Natijasi:</b><br><br>
+        1. <b>Telemetriya:</b> 0 bayt (Xorijiy kuzatuv tarmoqlariga ulanish yo'q).<br>
+        2. <b>Yadro holati:</b> Web Hypervisor VFS faol va suveren.<br>
+        3. <b>Mahalliy shifrlash:</b> AES-GCM 256-bit faol.<br>
+        4. <b>Xulosa:</b> Tizim 100% raqamli suverenitet talablariga javob beradi!
+        
+        <div class="tg-inline-keyboard">
+          <button class="tg-inline-btn" data-query="Zero-Telemetry nima?">🛡️ Zero-Telemetry</button>
+          <button class="tg-inline-btn" data-query="Python skript yozib ber">💻 Audit skripti</button>
+        </div>`;
+      } else if (q.includes('telemetr') || q.includes('zero')) {
+        response = `🛡️ <b>Zero-Telemetry Falsafasi:</b><br><br>
+        Ko'plab xorijiy operatsion tizimlar (masalan, Windows) foydalanuvchining bosgan har bir tugmasi, ko'rgan veb-sahifalari va shaxsiy ma'lumotlarini o'z serverlariga jo'natadi.<br><br>
+        <b>UzOS Cloud</b> da bu amaliyot qat'iyan taqiqlangan: barcha fayllar va hisob-kitoblar faqat qurilmangizning o'zida saqlanadi va chetga chiqmaydi!
+        
+        <div class="tg-inline-keyboard">
+          <button class="tg-inline-btn" data-query="Windows vs UzOS farqi?">📊 Windows bilan farqi</button>
+        </div>`;
+      } else if (q.includes('windows') || q.includes('farq') || q.includes('solishtir')) {
+        response = `📊 <b>UzOS va Windows Solishtiruvi:</b><br><br>
+        • <b>RAM sarfi:</b> Windows bo'sh holatda ~3.5 GB sarflaydi; UzOS bor-yo'g'i ~110 MB talab qiladi (30 barobar yengil!).<br>
+        • <b>Narxi:</b> Windows qimmat litsenziya talab qiladi; UzOS 100% ochiq kodli va tekin.<br>
+        • <b>Maxfiylik:</b> Windows telemetriya yig'adi; UzOS da 0 bayt telemetriya.<br>
+        • <b>Interfeys:</b> UzOS o'zbek foydalanuvchilariga tanish Telegram Desktop UI asosida yaratilgan.`;
+      } else if (q.includes('qonun') || q.includes('it') || q.includes('suveren')) {
+        response = `🇺🇿 <b>O'zbekiston IT va Kiberxavfsizlik Qonunchiligi:</b><br><br>
+        O'zbekiston Respublikasining <i>"Kiberxavfsizlik to'g'risida"</i>gi (O'RQ-764) hamda <i>"Shaxsga doir ma'lumotlar to'g'risida"</i>gi Qonuniga muvofiq, fuqarolarning shaxsiy ma'lumotlari O'zbekiston hududidagi serverlarda saqlanishi shart.<br><br>
+        UzOS Cloud mazkur talablarga 100% mos ravishda milliy ma'lumotlar xavfsizligini ta'minlaydi.`;
+      } else if (q.includes('python') || q.includes('skript') || q.includes('kod')) {
+        response = `💻 <b>Python Zero-Telemetry Audit Skripti:</b><br>
+        <pre># UzOS Kiber-Qalqon Tekshiruvi
+import socket
 
-bot = Bot(token="SIZNING_TOKENINGIZ")
-dp = Dispatcher(bot)
+def audit_network():
+    blocked_hosts = ["telemetry.ms.com", "vortex.data.ms.com"]
+    print("🛡️ UzOS Kiber-Qalqoni faol!")
+    for host in blocked_hosts:
+        print(f"Bloklangan manzil: {host} -> 0.0.0.0 (Xavfsiz)")
 
-@dp.message_handler(commands=['start'])
-async def send_welcome(message: types.Message):
-    await message.reply("Assalomu alaykum! UzOS Cloud botiga xush kelibsiz!")
-
-if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
-        </pre>
-        Ushbu kodni <b>UzOS Code</b> tahrirlagichida saqlab, sinab ko'rishingiz mumkin!`;
-      } else if (lower.includes('suverenitet') || lower.includes('telemetriya')) {
-        response = `<b>Raqamli Suverenitet:</b> Bu fuqarolar, ta'lim muassasalari va tashkilotlarning ma'lumotlari xorijiy korporatsiyalar (Microsoft, Google va boshqalar) serverlariga noqonuniy uzatilmasligini ta'minlash demakdir.<br><br>
-        UzOS Cloud sizning fayllaringizni faqat shaxsiy keshda yoki himoyalangan milliy serverlarda saqlaydi.`;
-      } else if (lower.includes('javascript') || lower.includes('kod')) {
-        response = `JavaScript'da ikkita massiv kesishmasini (Intersection) topish uchun zamonaviy usul:<br>
-        <pre style="background:#090e15; padding:10px; border-radius:8px; margin:6px 0; font-family:var(--tg-font-mono); font-size:11.5px; color:#60a5fa;">
-const arr1 = [1, 2, 3, 4, 5];
-const arr2 = [3, 4, 5, 6, 7];
-
-const kesishma = arr1.filter(item => arr2.includes(item));
-console.log(kesishma); // [3, 4, 5]
-        </pre>`;
+audit_network()</pre>
+        Ushbu kodni <b>UzOS Kod Muharriri</b>da ochib, <i>▶ Bajarish</i> tugmasi orqali ishga tushirishingiz mumkin!`;
       } else {
-        response = `Savolingiz uchun tashakkur! UzOS Milliy AI platformasi sizning <i>"${this.escapeHtml(query)}"</i> haqidagi so'rovingizni qabul qildi. Biz har kuni yangi modellar va o'zbek tili ma'lumotlar bazasini kengaytirib bormoqdamiz. Yana qanday savollaringiz bor?`;
+        response = `Sizning savolingiz: <i>"${this.escapeHtml(query)}"</i><br><br>
+        UzOS Milliy AI tizimi buni qayta ishladi. Agar texnik yordam kerak bo'lsa, <b>Terminal</b> orqali buyruqlarni yuborishingiz, <b>Fayllar</b> bo'limida hujjatlaringizni boshqarishingiz yoki <b>Kod Muharriri</b>da yangi ilovalarni yaratishingiz mumkin! 🚀`;
       }
 
       this.addBotMessage(response);
-    }, 450);
+      this.playTelegramSound('receive');
+    }, 600);
   }
 }

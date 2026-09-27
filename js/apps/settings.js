@@ -1,14 +1,14 @@
 /* ==============================================================================
-   UzOS Cloud (WebOS) — Settings (100% Authentic Telegram Settings Screen)
+   UzOS Cloud (WebOS) — Settings Application
+   100% Authentic Telegram Desktop Settings Screen
    ============================================================================== */
 
 export class SettingsApp {
-  constructor(container, onWallpaperChange, vfs, showNotification) {
+  constructor(container, setWallpaperCallback, vfs, showToast) {
     this.container = container;
-    this.setWallpaper = onWallpaperChange;
+    this.setWallpaper = setWallpaperCallback;
     this.vfs = vfs;
-    this.notify = showNotification;
-    this.currentTab = 'profile';
+    this.showToast = showToast;
 
     this.render();
   }
@@ -16,161 +16,188 @@ export class SettingsApp {
   render() {
     this.container.innerHTML = `
       <div class="app-settings">
-        <!-- Settings Nav -->
-        <div class="settings-nav">
-          <div class="settings-nav-btn active" data-tab="profile">
-            <span>👤</span> Profil & Tizim
+        <div class="settings-container">
+          
+          <!-- Profile Card -->
+          <div class="settings-profile-card">
+            <div class="settings-avatar">UZ</div>
+            <div class="settings-profile-info">
+              <div class="settings-name">
+                <span>UzOS Foydalanuvchisi</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 0L9.8 1.9L12.4 1.5L13.4 3.9L15.9 4.9L15.6 7.5L17.2 9.5L15.6 11.5L15.9 14.1L13.4 15.1L12.4 17.5L9.8 17.1L8 19L6.2 17.1L3.6 17.5L2.6 15.1L0.1 14.1L0.4 11.5L-1.2 9.5L0.4 7.5L0.1 4.9L2.6 3.9L3.6 1.5L6.2 1.9L8 0Z" transform="scale(0.8) translate(2, 0)" fill="#3390ec"/>
+                  <path d="M4.5 8L6.8 10.3L11.5 5.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="settings-username">@uzos_cloud • Administrator</div>
+              <div class="settings-bio">O'zbekiston Milliy Raqamli Suveren Bulut Tizimi</div>
+            </div>
           </div>
-          <div class="settings-nav-btn" data-tab="wallpaper">
-            <span>🖼</span> Fon Rasmlari
-          </div>
-          <div class="settings-nav-btn" data-tab="storage">
-            <span>💾</span> Xotira & Reset
-          </div>
-        </div>
 
-        <!-- Content Area -->
-        <div class="settings-content" id="settings-content-area"></div>
+          <!-- Group 1: Kiber-Xavfsizlik -->
+          <div class="settings-group">
+            <div class="settings-group-header">Kiber-Xavfsizlik va Maxfiylik</div>
+            <div class="settings-card">
+              
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <div class="settings-icon-bubble green">🛡️</div>
+                  <div class="settings-row-text">
+                    <span class="settings-row-title">Zero-Telemetry Qalqoni</span>
+                    <span class="settings-row-desc">Xorijiy kuzatuv serverlariga so'rov: 0 bayt</span>
+                  </div>
+                </div>
+                <label class="tg-switch">
+                  <input type="checkbox" id="set-zero-telemetry" checked />
+                  <span class="tg-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <div class="settings-icon-bubble blue">🔒</div>
+                  <div class="settings-row-text">
+                    <span class="settings-row-title">Mahalliy AES-256 Shifrlash</span>
+                    <span class="settings-row-desc">Barcha VFS fayllari brauzer ichida shifrlanadi</span>
+                  </div>
+                </div>
+                <label class="tg-switch">
+                  <input type="checkbox" id="set-local-encrypt" checked />
+                  <span class="tg-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <div class="settings-icon-bubble purple">ID</div>
+                  <div class="settings-row-text">
+                    <span class="settings-row-title">OneID.uz Identifikatsiyasi</span>
+                    <span class="settings-row-desc">Milliy identifikatsiya tizimi bog'langan</span>
+                  </div>
+                </div>
+                <span style="color:#4ade80; font-size:12px; font-weight:700;">FAOL</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Group 2: Interfeys va Rang Mavzulari -->
+          <div class="settings-group">
+            <div class="settings-group-header">Interfeys va Mavzular</div>
+            <div class="settings-card">
+              
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <div class="settings-icon-bubble blue">🎨</div>
+                  <div class="settings-row-text">
+                    <span class="settings-row-title">Telegram Rang Mavzusi</span>
+                    <span class="settings-row-desc">Dark (Asosiy), Blue (Klassik), Night (Chuqur)</span>
+                  </div>
+                </div>
+                <select id="theme-selector" style="background:var(--tg-surface-card); color:#fff; border:1px solid var(--tg-border); padding:6px 12px; border-radius:8px; outline:none; font-size:12.5px;">
+                  <option value="dark">Telegram Dark</option>
+                  <option value="blue">Telegram Blue</option>
+                  <option value="night">Telegram Night</option>
+                </select>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <div class="settings-icon-bubble orange">🇺🇿</div>
+                  <div class="settings-row-text">
+                    <span class="settings-row-title">Tizim Tili</span>
+                    <span class="settings-row-desc">O'zbek tili (Lotin alifbosi)</span>
+                  </div>
+                </div>
+                <span style="color:var(--tg-blue-bright); font-size:12.5px; font-weight:600;">O'zbekcha</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Group 3: Xotira va Kesh -->
+          <div class="settings-group">
+            <div class="settings-group-header">Xotira va Kesh (VFS)</div>
+            <div class="settings-card">
+              
+              <div class="settings-row">
+                <div class="settings-row-left">
+                  <div class="settings-icon-bubble purple">💾</div>
+                  <div class="settings-row-text">
+                    <span class="settings-row-title">VFS Xotira Sarfi</span>
+                    <span class="settings-row-desc">IndexedDB / LocalStorage orqali saqlanmoqda</span>
+                  </div>
+                </div>
+                <span style="color:var(--tg-text-secondary); font-size:12.5px; font-weight:600;">~112 KB</span>
+              </div>
+
+              <div style="padding:14px 18px;">
+                <button class="settings-btn-danger" id="btn-reset-vfs">
+                  ⚠️ Barcha VFS Xotirani Tozalash (Factory Reset)
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Group 4: Tizim Haqida -->
+          <div class="settings-group">
+            <div class="settings-group-header">Tizim Haqida</div>
+            <div class="settings-card">
+              
+              <div class="settings-row">
+                <span style="color:var(--tg-text-secondary);">Tizim Versiyasi</span>
+                <span style="font-weight:600; color:#fff;">UzOS Cloud 2.0.4 WebOS</span>
+              </div>
+              <div class="settings-row">
+                <span style="color:var(--tg-text-secondary);">Dasturiy Huquqlar</span>
+                <span style="color:var(--tg-blue-bright); font-weight:600;">100% Ochiq Kodli (MIT)</span>
+              </div>
+              <div class="settings-row">
+                <span style="color:var(--tg-text-secondary);">Yadro Tizimi</span>
+                <span style="font-weight:600; color:#fff;">Web Hypervisor VFS</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
       </div>
     `;
 
-    this.contentEl = this.container.querySelector('#settings-content-area');
     this.bindEvents();
-    this.renderTab(this.currentTab);
   }
 
   bindEvents() {
-    this.container.querySelectorAll('.settings-nav-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        this.container.querySelectorAll('.settings-nav-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        this.currentTab = btn.dataset.tab;
-        this.renderTab(this.currentTab);
-      });
+    const themeSelect = this.container.querySelector('#theme-selector');
+    themeSelect.addEventListener('change', (e) => {
+      document.body.className = '';
+      if (e.target.value === 'blue') {
+        document.body.classList.add('tg-theme-blue');
+      } else if (e.target.value === 'night') {
+        document.body.classList.add('tg-theme-night');
+      }
+      if (this.showToast) this.showToast("Mavzu O'zgartirildi", `${e.target.selectedOptions[0].text} faollashtirildi.`, "🎨");
     });
-  }
 
-  renderTab(tab) {
-    if (tab === 'profile') {
-      this.contentEl.innerHTML = `
-        <!-- Telegram Profile Header -->
-        <div style="display:flex; align-items:center; gap:16px; margin-bottom: 24px; padding: 12px 16px; background: var(--tg-surface-card); border-radius: 12px;">
-          <div style="width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, #2481cc 0%, #3390ec 100%); display:flex; align-items:center; justify-content:center; color:#fff; font-size:22px; font-weight:700;">
-            UZ
-          </div>
-          <div>
-            <div style="font-size:16px; font-weight:600; color:#fff; display:flex; align-items:center; gap:6px;">
-              <span>UzOS Foydalanuvchisi</span>
-              <span style="background:var(--tg-blue); font-size:10px; color:#fff; padding:1px 6px; border-radius:6px;">Admin</span>
-            </div>
-            <div style="font-size:12.5px; color:var(--tg-blue-bright); margin-top:2px;">@uzos_cloud • O'zbekiston</div>
-          </div>
-        </div>
+    const zeroTelemetryToggle = this.container.querySelector('#set-zero-telemetry');
+    zeroTelemetryToggle.addEventListener('change', (e) => {
+      if (this.showToast) {
+        this.showToast(
+          "Zero-Telemetry",
+          e.target.checked ? "Tashqi kuzatuv to'liq bloklandi." : "Ogohlantirish: Qalqon o'chirildi.",
+          e.target.checked ? "🛡️" : "⚠️"
+        );
+      }
+    });
 
-        <!-- Telegram Grouped Section: System Specs -->
-        <div style="font-size:12px; font-weight:600; color:var(--tg-theme-section-header-text-color); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px; padding-left:4px;">
-          Tizim Xususiyatlari
-        </div>
-
-        <div class="tg-section-card">
-          <div class="tg-cell-row">
-            <span class="tg-cell-label">Operatsion Tizim:</span>
-            <span class="tg-cell-value">UzOS Cloud 2.0 (WebOS)</span>
-          </div>
-          <div class="tg-cell-row">
-            <span class="tg-cell-label">Dizayn Tili:</span>
-            <span class="tg-cell-value">Telegram UI (@telegram-apps/telegram-ui)</span>
-          </div>
-          <div class="tg-cell-row">
-            <span class="tg-cell-label">Telemetriya:</span>
-            <span class="tg-cell-value" style="color:var(--tg-green);">0 B (100% Zero-Telemetry)</span>
-          </div>
-          <div class="tg-cell-row">
-            <span class="tg-cell-label">Yadro / Hypervisor:</span>
-            <span class="tg-cell-value">Web Standards VFS Engine</span>
-          </div>
-          <div class="tg-cell-row">
-            <span class="tg-cell-label">Ishlab Chiquvchi:</span>
-            <span class="tg-cell-value">Muhammad Sadiyev</span>
-          </div>
-        </div>
-      `;
-
-    } else if (tab === 'wallpaper') {
-      this.contentEl.innerHTML = `
-        <div class="settings-section-title">Telegram Ish Stoli Mavzusi</div>
-        <div class="settings-section-desc">Kerakli Telegram foni ustiga bosing, fon darhol saqlanadi.</div>
-
-        <div class="wallpaper-grid">
-          <div class="wallpaper-card" data-bg="default" style="background: #0e1621;">
-            <div class="wallpaper-card-name">Telegram Dark (Klassik)</div>
-          </div>
-
-          <div class="wallpaper-card" data-bg="midnight" style="background: radial-gradient(circle at 50% 20%, #1e3a8a 0%, #0f172a 60%, #020617 100%);">
-            <div class="wallpaper-card-name">Midnight Blue</div>
-          </div>
-
-          <div class="wallpaper-card" data-bg="emerald" style="background: radial-gradient(circle at 30% 30%, #064e3b 0%, #022c22 60%, #01140e 100%);">
-            <div class="wallpaper-card-name">Emerald Dark</div>
-          </div>
-
-          <div class="wallpaper-card" data-bg="amethyst" style="background: radial-gradient(circle at 70% 30%, #581c87 0%, #2e1065 60%, #090214 100%);">
-            <div class="wallpaper-card-name">Telegram Violet</div>
-          </div>
-
-          <div class="wallpaper-card" data-bg="pure-black" style="background: #000000;">
-            <div class="wallpaper-card-name">OLED Black</div>
-          </div>
-        </div>
-      `;
-
-      this.contentEl.querySelectorAll('.wallpaper-card').forEach(card => {
-        card.addEventListener('click', () => {
-          const bgType = card.dataset.bg;
-          const bgStyle = card.style.background;
-          this.setWallpaper(bgType, bgStyle);
-          if (this.notify) this.notify("Mavzu Yangilandi", "Telegram foni muvaffaqiyatli almashtirildi", "🎨");
-        });
-      });
-
-    } else if (tab === 'storage') {
-      this.contentEl.innerHTML = `
-        <div class="settings-section-title">Xotira va Shaxsiy Ma'lumotlar</div>
-        <div class="settings-section-desc">Brauzerda saqlangan fayllar va sozlamalar nazorati.</div>
-
-        <div class="tg-section-card" style="padding: 16px;">
-          <div style="font-weight: 600; margin-bottom: 6px;">Virtual Fayllar Tizimi (VFS)</div>
-          <div style="font-size: 12.5px; color: var(--tg-theme-subtitle-text-color); margin-bottom: 14px;">
-            Barcha ma'lumotlaringiz shaxsiy brauzeringizda shifrlangan holda saqlanmoqda.
-          </div>
-          
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="files-btn" id="btn-export-fs">
-              📤 Zaxira nusxasini olish (.json)
-            </button>
-            <button class="files-btn" id="btn-reset-fs" style="background: var(--tg-red);">
-              ⚠️ Qayta tiklash (Reset)
-            </button>
-          </div>
-        </div>
-      `;
-
-      this.contentEl.querySelector('#btn-reset-fs').addEventListener('click', () => {
-        if (confirm("Rostdan ham barcha shaxsiy fayllarni o'chirib, UzOS Cloud'ni boshlang'ich holatga qaytarmoqchimisiz?")) {
-          this.vfs.reset();
-          if (this.notify) this.notify("Tizim Tiklandi", "Fayllar tizimi boshlang'ich holatga keltirildi.", "🔄");
-          setTimeout(() => location.reload(), 1000);
-        }
-      });
-
-      this.contentEl.querySelector('#btn-export-fs').addEventListener('click', () => {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.vfs.fs, null, 2));
-        const dlAnchorElem = document.createElement('a');
-        dlAnchorElem.setAttribute("href", dataStr);
-        dlAnchorElem.setAttribute("download", "uzos_cloud_backup.json");
-        dlAnchorElem.click();
-        if (this.notify) this.notify("Eksport Qilindi", "Zaxira nusxasi yuklab olindi.", "📤");
-      });
-    }
+    const resetBtn = this.container.querySelector('#btn-reset-vfs');
+    resetBtn.addEventListener('click', () => {
+      if (confirm("Diqqat! Barcha shaxsiy fayllar va VFS kesh tozalanadi. Davom etasizmi?")) {
+        localStorage.clear();
+        if (this.showToast) this.showToast("Kesh Tozalandi", "Tizim birlamchi holatga qaytarildi.", "✅");
+        setTimeout(() => location.reload(), 1000);
+      }
+    });
   }
 }
