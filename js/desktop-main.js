@@ -1,13 +1,9 @@
 /* ==============================================================================
-   UzOS Cloud (WebOS) — Main Entry Point
-   Integrates WindowManager, VirtualFileSystem, Taskbar, ContextMenu & Apps
+   UzOS Cloud (WebOS) — 100% Authentic Telegram Web / Desktop Master Script
+   Manages 2-Column Chat Switching, Telegram Folders, Search, Menu & Apps
    ============================================================================== */
 
 import { VirtualFileSystem } from './os/storage.js';
-import { WindowManager } from './os/window-manager.js';
-import { TaskbarController } from './os/taskbar.js';
-import { ContextMenu } from './os/context-menu.js';
-
 import { TerminalApp } from './apps/terminal.js';
 import { FilesApp } from './apps/files.js';
 import { EditorApp } from './apps/editor.js';
@@ -15,250 +11,246 @@ import { AIAssistantApp } from './apps/ai.js';
 import { SettingsApp } from './apps/settings.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const desktopContainer = document.getElementById('desktop-container');
-  const workspaceEl = document.getElementById('workspace');
-
-  // 1. Initialize Storage & Window Manager
+  // 1. Initialize Virtual File System
   const vfs = new VirtualFileSystem();
-  const wm = new WindowManager(workspaceEl);
 
-  // 2. Wallpaper management
-  const savedBg = localStorage.getItem('uzos_wallpaper_style');
-  if (savedBg) {
-    desktopContainer.style.background = savedBg;
-  }
-
-  const setWallpaper = (type, style) => {
-    desktopContainer.style.background = style;
-    localStorage.setItem('uzos_wallpaper_style', style);
-  };
-
-  // 3. App Dispatcher
-  const openApp = (appType, options = {}) => {
-    switch (appType) {
-      case 'terminal': {
-        const win = wm.createWindow({
-          id: 'app-terminal',
-          title: 'UzOS Terminal — Web Shell',
-          icon: '💻',
-          width: 680,
-          height: 440,
-          minWidth: 400,
-          minHeight: 280,
-          appType: 'terminal',
-          content: '<div class="terminal-host" style="height:100%; display:flex;"></div>'
-        });
-        const host = win.element.querySelector('.terminal-host');
-        if (!host.dataset.initialized) {
-          new TerminalApp(host, vfs, wm);
-          host.dataset.initialized = 'true';
-        }
-        break;
-      }
-
-      case 'files': {
-        const win = wm.createWindow({
-          id: 'app-files',
-          title: 'UzOS Fayllar — Shaxsiy Bulut',
-          icon: '📁',
-          width: 720,
-          height: 460,
-          minWidth: 480,
-          minHeight: 320,
-          appType: 'files',
-          content: '<div class="files-host" style="height:100%; display:flex;"></div>'
-        });
-        const host = win.element.querySelector('.files-host');
-        if (!host.dataset.initialized) {
-          new FilesApp(host, vfs, wm, (path, name) => {
-            openApp('editor', { filePath: path, fileName: name });
-          });
-          host.dataset.initialized = 'true';
-        }
-        break;
-      }
-
-      case 'editor': {
-        const winId = 'app-editor';
-        const win = wm.createWindow({
-          id: winId,
-          title: `UzOS Code — ${options.fileName || 'Xush_kelibsiz.txt'}`,
-          icon: '📝',
-          width: 760,
-          height: 500,
-          minWidth: 450,
-          minHeight: 300,
-          appType: 'editor',
-          content: '<div class="editor-host" style="height:100%; display:flex;"></div>'
-        });
-        const host = win.element.querySelector('.editor-host');
-        if (!host.dataset.initialized) {
-          win.editorInstance = new EditorApp(
-            host,
-            vfs,
-            options.filePath || '/Hujjatlar/Xush_kelibsiz.txt',
-            options.fileName || 'Xush_kelibsiz.txt',
-            (title, msg, icon) => taskbar.showNotification(title, msg, icon)
-          );
-          host.dataset.initialized = 'true';
-        } else if (options.filePath && win.editorInstance) {
-          win.editorInstance.openNewFile(options.filePath, options.fileName);
-          win.element.querySelector('.window-title').textContent = `UzOS Code — ${options.fileName}`;
-        }
-        break;
-      }
-
-      case 'ai': {
-        const win = wm.createWindow({
-          id: 'app-ai',
-          title: 'UzOS Milliy Sun\'iy Intellekt',
-          icon: '🤖',
-          width: 620,
-          height: 480,
-          minWidth: 380,
-          minHeight: 340,
-          appType: 'ai',
-          content: '<div class="ai-host" style="height:100%; display:flex;"></div>'
-        });
-        const host = win.element.querySelector('.ai-host');
-        if (!host.dataset.initialized) {
-          new AIAssistantApp(host);
-          host.dataset.initialized = 'true';
-        }
-        break;
-      }
-
-      case 'settings': {
-        const win = wm.createWindow({
-          id: 'app-settings',
-          title: 'Tizim Sozlamalari',
-          icon: '⚙️',
-          width: 680,
-          height: 440,
-          minWidth: 420,
-          minHeight: 300,
-          appType: 'settings',
-          content: '<div class="settings-host" style="height:100%; display:flex;"></div>'
-        });
-        const host = win.element.querySelector('.settings-host');
-        if (!host.dataset.initialized) {
-          new SettingsApp(host, setWallpaper, vfs, (title, msg, icon) => taskbar.showNotification(title, msg, icon));
-          host.dataset.initialized = 'true';
-        }
-        break;
-      }
+  // 2. Chat Metadata Definition
+  const CHATS = {
+    ai: {
+      title: "UzOS Milliy AI",
+      subtitle: "bot, doimiy onlayn",
+      avatarText: "AI",
+      avatarClass: "gradient-purple",
+      verified: true
+    },
+    terminal: {
+      title: "UzOS Terminal",
+      subtitle: "Cloud Shell v2.0 • Web Hypervisor",
+      avatarText: ">_",
+      avatarClass: "gradient-dark",
+      verified: false
+    },
+    files: {
+      title: "UzOS Fayllar",
+      subtitle: "Shaxsiy Bulut Xotirasi (VFS)",
+      avatarText: "📁",
+      avatarClass: "gradient-orange",
+      verified: false
+    },
+    editor: {
+      title: "UzOS Code Editor",
+      subtitle: "JavaScript, Python, Markdown",
+      avatarText: "📝",
+      avatarClass: "gradient-blue",
+      verified: false
+    },
+    settings: {
+      title: "Tizim Sozlamalari",
+      subtitle: "Zero-Telemetry • 100% Shaxsiy",
+      avatarText: "⚙️",
+      avatarClass: "gradient-slate",
+      verified: false
     }
   };
 
-  // 4. Initialize Taskbar Controller
-  const taskbar = new TaskbarController({
-    windowManager: wm,
-    openAppCallback: openApp,
-    vfs
-  });
+  let activeChatId = 'ai';
+  let editorAppInstance = null;
 
-  // 5. Initialize Desktop Context Menu
-  new ContextMenu({
-    workspace: workspaceEl,
-    onAction: (action) => {
-      switch (action) {
-        case 'new-folder': {
-          const name = prompt("Yangi papka nomi:", "Yangi_Papka");
-          if (name) {
-            vfs.createFolder(`/Hujjatlar/${name}`);
-            taskbar.showNotification("Papka Yaratildi", `/Hujjatlar/${name} yaratildi`, "📁");
-            openApp('files');
-          }
-          break;
-        }
-        case 'new-file': {
-          const name = prompt("Yangi fayl nomi:", "hujjat.txt");
-          if (name) {
-            vfs.writeFile(`/Hujjatlar/${name}`, 'Yangi fayl matni...');
-            taskbar.showNotification("Fayl Yaratildi", `/Hujjatlar/${name} yaratildi`, "📄");
-            openApp('editor', { filePath: `/Hujjatlar/${name}`, fileName: name });
-          }
-          break;
-        }
-        case 'open-terminal':
-          openApp('terminal');
-          break;
-        case 'open-settings':
-          openApp('settings');
-          break;
-        case 'about':
-          openApp('settings');
-          break;
-        case 'reload':
-          location.reload();
-          break;
-      }
-    }
-  });
+  // DOM Elements
+  const headerAvatar = document.getElementById('header-avatar');
+  const headerTitle = document.getElementById('header-title');
+  const headerSubtitle = document.getElementById('header-subtitle');
+  const chatList = document.getElementById('tg-chat-list');
+  const searchInput = document.getElementById('tg-search-input');
+  const foldersBar = document.getElementById('tg-folders-bar');
+  const menuBtn = document.getElementById('btn-tg-menu');
+  const sideMenu = document.getElementById('tg-side-menu');
+  const menuOverlay = document.getElementById('tg-menu-overlay');
+  const homeBtn = document.getElementById('btn-home');
+  const fullscreenBtn = document.getElementById('btn-fullscreen');
 
-  // 6. Bind Sidebar Buttons
-  document.querySelectorAll('.sidebar-app-btn[data-app]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const app = btn.dataset.app;
-      openApp(app);
-    });
-  });
+  // 3. Initialize Built-in Apps into their containers
+  const initApps = () => {
+    // AI
+    const aiHost = document.querySelector('.app-host-ai');
+    new AIAssistantApp(aiHost);
 
-  // 7. Bind Drawer Items
-  document.querySelectorAll('.drawer-item[data-app]').forEach(item => {
-    item.addEventListener('click', () => {
-      const app = item.dataset.app;
-      openApp(app);
-      document.getElementById('drawer').classList.add('collapsed');
-    });
-  });
+    // Terminal
+    const termHost = document.querySelector('.app-host-terminal');
+    new TerminalApp(termHost, vfs, null);
 
-  // 8. Bind Desktop Icons (Single or Double Click)
-  document.querySelectorAll('.desktop-icon-cell[data-app]').forEach(iconCell => {
-    let clickTimeout = null;
-
-    iconCell.addEventListener('click', () => {
-      document.querySelectorAll('.desktop-icon-cell').forEach(c => c.classList.remove('selected'));
-      iconCell.classList.add('selected');
+    // Files
+    const filesHost = document.querySelector('.app-host-files');
+    new FilesApp(filesHost, vfs, null, (filePath, fileName) => {
+      switchChat('editor', { filePath, fileName });
     });
 
-    iconCell.addEventListener('dblclick', () => {
-      clearTimeout(clickTimeout);
-      const app = iconCell.dataset.app;
-      openApp(app);
-    });
-  });
-
-  // Deselect icons when clicking workspace empty area
-  workspaceEl.addEventListener('click', (e) => {
-    if (!e.target.closest('.desktop-icon-cell')) {
-      document.querySelectorAll('.desktop-icon-cell').forEach(c => c.classList.remove('selected'));
-    }
-  });
-
-  // Navigation back to Landing Page
-  const goHome = () => { window.location.href = 'index.html'; };
-  document.getElementById('topbar-home-btn')?.addEventListener('click', goHome);
-  document.getElementById('sidebar-landing-btn')?.addEventListener('click', goHome);
-
-  // 9. Initial Launch Welcome & Defaults
-  setTimeout(() => {
-    taskbar.showNotification(
-      "UzOS Cloud 2.0 Ishga Tushdi",
-      "100% Zero-Telemetry va shaxsiy suveren bulut muhitiga xush kelibsiz! 🇺🇿",
-      "🚀"
+    // Editor
+    const editorHost = document.querySelector('.app-host-editor');
+    editorAppInstance = new EditorApp(
+      editorHost,
+      vfs,
+      '/Hujjatlar/Xush_kelibsiz.txt',
+      'Xush_kelibsiz.txt',
+      (title, msg, icon) => showToast(title, msg, icon)
     );
-  }, 400);
 
-  // Auto-launch Terminal and Welcome Note by default
-  setTimeout(() => {
-    openApp('terminal');
-  }, 600);
+    // Settings
+    const settingsHost = document.querySelector('.app-host-settings');
+    new SettingsApp(
+      settingsHost,
+      (type, style) => {
+        document.querySelector('.tg-right-body').style.background = style;
+      },
+      vfs,
+      (title, msg, icon) => showToast(title, msg, icon)
+    );
+  };
 
-  setTimeout(() => {
-    openApp('editor', {
-      filePath: '/Hujjatlar/Xush_kelibsiz.txt',
-      fileName: 'Xush_kelibsiz.txt'
+  // 4. Switch Active Chat / App View
+  const switchChat = (chatId, options = {}) => {
+    if (!CHATS[chatId]) return;
+    activeChatId = chatId;
+    const meta = CHATS[chatId];
+
+    // Update left chat list items
+    chatList.querySelectorAll('.tg-chat-item').forEach(item => {
+      item.classList.toggle('active', item.dataset.chatId === chatId);
     });
-  }, 1000);
+
+    // Update right header
+    headerAvatar.textContent = meta.avatarText;
+    headerAvatar.className = `tg-header-avatar ${meta.avatarClass}`;
+    
+    headerTitle.innerHTML = `
+      <span>${meta.title}</span>
+      ${meta.verified ? `
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+          <path d="M8 0L9.8 1.9L12.4 1.5L13.4 3.9L15.9 4.9L15.6 7.5L17.2 9.5L15.6 11.5L15.9 14.1L13.4 15.1L12.4 17.5L9.8 17.1L8 19L6.2 17.1L3.6 17.5L2.6 15.1L0.1 14.1L0.4 11.5L-1.2 9.5L0.4 7.5L0.1 4.9L2.6 3.9L3.6 1.5L6.2 1.9L8 0Z" transform="scale(0.8) translate(2, 0)" fill="#3390ec"/>
+          <path d="M4.5 8L6.8 10.3L11.5 5.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      ` : ''}
+    `;
+    headerSubtitle.textContent = meta.subtitle;
+
+    // Switch view container
+    document.querySelectorAll('.tg-app-view').forEach(view => {
+      view.classList.remove('active');
+    });
+    const targetView = document.getElementById(`view-${chatId}`);
+    if (targetView) {
+      targetView.classList.add('active');
+    }
+
+    // If opening editor with specific file
+    if (chatId === 'editor' && options.filePath && editorAppInstance) {
+      editorAppInstance.openNewFile(options.filePath, options.fileName);
+    }
+  };
+
+  // 5. Toast Notification System
+  const showToast = (title, msg, icon = '✈️') => {
+    const container = document.getElementById('tg-toast-container');
+    const toast = document.createElement('div');
+    toast.className = 'tg-toast';
+    toast.innerHTML = `
+      <div style="font-size: 20px;">${icon}</div>
+      <div>
+        <div style="font-size: 13px; font-weight: 600; color: #fff;">${title}</div>
+        <div style="font-size: 12px; color: var(--tg-text-secondary);">${msg}</div>
+      </div>
+    `;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(-10px)';
+      setTimeout(() => toast.remove(), 250);
+    }, 3500);
+  };
+
+  // 6. Bind Chat Item Click Events
+  chatList.querySelectorAll('.tg-chat-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const chatId = item.dataset.chatId;
+      switchChat(chatId);
+      // Remove unread badge once opened
+      const badge = item.querySelector('.tg-unread-badge');
+      if (badge) badge.remove();
+    });
+  });
+
+  // 7. Bind Search Input Filter
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    chatList.querySelectorAll('.tg-chat-item').forEach(item => {
+      const name = item.querySelector('.tg-chat-name').textContent.toLowerCase();
+      const desc = item.querySelector('.tg-chat-desc').textContent.toLowerCase();
+      if (name.includes(query) || desc.includes(query)) {
+        item.style.display = 'flex';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+
+  // 8. Bind Telegram Folders Bar Tabs
+  foldersBar.querySelectorAll('.tg-folder-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      foldersBar.querySelectorAll('.tg-folder-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const folder = tab.dataset.folder;
+      chatList.querySelectorAll('.tg-chat-item').forEach(item => {
+        const itemFolders = item.dataset.folder.split(',');
+        if (folder === 'all' || itemFolders.includes(folder)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // 9. Bind Slide-out Menu (Hamburger)
+  const toggleMenu = (open) => {
+    sideMenu.classList.toggle('visible', open);
+    menuOverlay.classList.toggle('visible', open);
+  };
+
+  menuBtn.addEventListener('click', () => toggleMenu(true));
+  menuOverlay.addEventListener('click', () => toggleMenu(false));
+
+  sideMenu.querySelectorAll('.tg-menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const action = item.dataset.action;
+      toggleMenu(false);
+      if (action === 'home') {
+        window.location.href = 'index.html';
+      } else if (CHATS[action]) {
+        switchChat(action);
+      }
+    });
+  });
+
+  // 10. Bind Top Actions (Home, Fullscreen)
+  homeBtn.addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+
+  fullscreenBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  });
+
+  // 11. Initialize everything
+  initApps();
+  switchChat('ai');
+
+  // Welcome Toast
+  setTimeout(() => {
+    showToast("UzOS Cloud Faol", "Telegram WebOS interfeysi muvaffaqiyatli ishga tushdi.", "🇺🇿");
+  }, 500);
 });
