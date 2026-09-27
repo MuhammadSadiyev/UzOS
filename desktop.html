@@ -345,64 +345,13 @@
               <polygon points="16,11.7 19.7,13.8 19.7,18.2 16,20.3 12.3,18.2 12.3,13.8" fill="white"/>
             </svg>
           </button>
-          
-          <div class="taskbar-brand">
-            <span class="brand-title">UzOS</span>
-            <span class="taskbar-active-app" id="topbar-active-app">UzOS Cloud</span>
-          </div>
         </div>
 
-        <!-- Center: Pinned Dock Apps + Running Task Switcher Pills -->
+        <!-- Center: Running Window Pills (Active/Minimized windows switcher) -->
         <div class="taskbar-center">
-          
-          <div class="taskbar-apps">
-            <button class="taskbar-app-btn" data-app="files" title="Bulut Fayllar" aria-label="Bulut Fayllar">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
-              </svg>
-              <span class="app-running-indicator"></span>
-            </button>
-
-            <button class="taskbar-app-btn" data-app="terminal" title="Web Terminal" aria-label="Web Terminal">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="4 17 10 11 4 5"></polyline>
-                <line x1="12" y1="19" x2="20" y2="19"></line>
-              </svg>
-              <span class="app-running-indicator"></span>
-            </button>
-
-            <button class="taskbar-app-btn" data-app="editor" title="Kod Muharriri" aria-label="Kod Muharriri">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 20h9"></path>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-              </svg>
-              <span class="app-running-indicator"></span>
-            </button>
-
-            <button class="taskbar-app-btn" data-app="ai" title="Milliy AI" aria-label="Milliy AI">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect width="18" height="18" x="3" y="3" rx="4"></rect>
-                <path d="M9 9h.01"></path>
-                <path d="M15 9h.01"></path>
-                <path d="M8 15s1.5 2 4 2 4-2 4-2"></path>
-                <path d="M12 3v-2"></path>
-              </svg>
-              <span class="app-running-indicator"></span>
-            </button>
-
-            <button class="taskbar-app-btn" data-app="settings" title="Tizim Sozlamalari" aria-label="Sozlamalar">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3"></circle>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-              </svg>
-              <span class="app-running-indicator"></span>
-            </button>
-          </div>
-
           <div id="topbar-running-tasks">
             <!-- Running task pills rendered dynamically by TaskbarController -->
           </div>
-
         </div>
 
         <!-- Right: System Tray & Control Center -->

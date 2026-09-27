@@ -155,103 +155,14 @@ html, body {
   box-shadow: 0 6px 16px rgba(2, 132, 199, 0.55);
 }
 
-.taskbar-brand {
+/* Center Running Window Taskbar Switcher */
+.taskbar-center {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-
-.taskbar-brand:hover {
-  background: var(--bg-surface-hover);
-}
-
-.brand-icon {
-  width: 22px;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.brand-title {
-  font-weight: 700;
-  font-size: 13.5px;
-  letter-spacing: -0.2px;
-  color: #ffffff;
-}
-
-.taskbar-active-app, .topbar-active-app {
-  font-size: 12.5px;
-  color: var(--tg-blue);
-  font-weight: 500;
-  padding-left: 6px;
-  border-left: 1px solid var(--border);
-}
-
-/* Center Dock Apps */
-.taskbar-apps {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(0, 0, 0, 0.22);
-  padding: 3px 6px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.taskbar-app-btn, .sidebar-app-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.15s ease;
-  text-decoration: none;
-}
-
-.taskbar-app-btn svg, .sidebar-app-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
-.taskbar-app-btn:hover, .sidebar-app-btn:hover {
-  background: var(--bg-surface-hover);
-  color: #ffffff;
-  transform: translateY(-2px);
-}
-
-.taskbar-app-btn.active, .sidebar-app-btn.active {
-  background: rgba(51, 144, 236, 0.2);
-  color: #ffffff;
-  border-color: rgba(51, 144, 236, 0.4);
-}
-
-.app-running-indicator {
-  position: absolute;
-  bottom: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--tg-blue);
-  box-shadow: 0 0 6px var(--tg-blue);
-  display: none;
-}
-
-.taskbar-app-btn.running .app-running-indicator,
-.sidebar-app-btn.running .app-running-indicator {
-  display: block;
+  flex: 1;
+  padding: 0 10px;
+  overflow-x: auto;
 }
 
 /* Center Running Window Taskbar Switcher */
@@ -259,7 +170,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
-  max-width: 32vw;
+  max-width: 65vw;
   overflow-x: auto;
 }
 
