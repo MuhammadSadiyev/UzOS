@@ -1,10 +1,10 @@
 /* ==============================================================================
-   UzOS Cloud (WebOS) — 100% Authentic Telegram Desktop / Web Apps Styling
-   Exact 1:1 replica of Telegram Desktop Chat, Files, Terminal, Studio & Settings
+   UzOS Cloud (WebOS) — 100% Authentic Telegram Web Apps Styling
+   Exact 1:1 replica of Telegram Web (Web K / Web A) Chat, Documents, & Settings
    ============================================================================== */
 
 /* ==============================================================================
-   1. UzOS Milliy AI (100% Authentic Telegram Chat Experience)
+   1. UzOS Milliy AI (100% Authentic Web Telegram Chat)
    ============================================================================== */
 .app-ai {
   flex: 1;
@@ -15,39 +15,49 @@
   overflow: hidden;
 }
 
-/* Telegram Chat Messages Area */
+/* Centered Messages Scroll Container (Telegram Web Layout) */
 .ai-chat-messages {
   flex: 1;
-  padding: 20px 24px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  padding: 16px 20px 8px 20px;
 }
 
-/* Telegram Date Separator Pill */
+.ai-messages-inner {
+  max-width: 780px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Telegram Web Centered Date Bubble */
 .tg-date-pill {
   align-self: center;
-  background: rgba(0, 0, 0, 0.35);
-  color: var(--tg-text-secondary);
-  font-size: 11.5px;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 12px;
-  margin: 6px 0 10px;
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 14px;
+  border-radius: 14px;
+  margin: 4px 0 10px;
+  backdrop-filter: blur(8px);
+  user-select: none;
 }
 
-/* Telegram Chat Bubble Rows */
+/* Message Rows */
 .tg-bubble-row {
   display: flex;
   width: 100%;
-  align-items: flex-end;
-  gap: 8px;
+  margin-bottom: 2px;
 }
 
 .tg-bubble-row.bot {
   justify-content: flex-start;
+  align-items: flex-end;
+  gap: 8px;
 }
 
 .tg-bubble-row.user {
@@ -56,8 +66,8 @@
 
 /* Small Bot Avatar beside incoming bubble */
 .bubble-avatar {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
   display: flex;
@@ -67,109 +77,105 @@
   color: #fff;
   font-weight: 700;
   flex-shrink: 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  margin-bottom: 2px;
 }
 
-/* 1:1 Telegram Speech Bubble with Official Tails */
+/* 1:1 Pixel-Perfect Telegram Web Speech Bubbles */
 .ai-bubble {
-  max-width: 76%;
-  padding: 9px 14px 7px 14px;
+  max-width: 540px;
+  padding: 8px 12px 6px 14px;
   border-radius: 16px;
-  font-size: 13.5px;
-  line-height: 1.48;
+  font-size: 15px;
+  line-height: 1.4;
   position: relative;
   word-break: break-word;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
-/* Incoming Bot Bubble (Slate Dark #182533) */
+/* Incoming Bot Bubble (#182533) */
 .ai-bubble.bot {
   background: #182533;
   color: #ffffff;
-  border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 4px;
 }
 
-/* Left Speech Bubble Tail */
+/* Authentic Curved Tail for Bot Bubble */
 .ai-bubble.bot::before {
   content: '';
   position: absolute;
   bottom: 0;
   left: -7px;
-  width: 8px;
+  width: 9px;
   height: 14px;
   background: #182533;
   clip-path: polygon(100% 0, 0 100%, 100% 100%);
 }
 
-/* Outgoing User Bubble (Telegram Blue #2b5278) */
+/* Outgoing User Bubble (#2b5278) */
 .ai-bubble.user {
   background: #2b5278;
   color: #ffffff;
-  border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 4px;
 }
 
-/* Right Speech Bubble Tail */
+/* Authentic Curved Tail for User Bubble */
 .ai-bubble.user::after {
   content: '';
   position: absolute;
   bottom: 0;
   right: -7px;
-  width: 8px;
+  width: 9px;
   height: 14px;
   background: #2b5278;
   clip-path: polygon(0 0, 100% 100%, 0 100%);
 }
 
-/* Bubble Content Formatting */
-.ai-bubble b, .ai-bubble strong {
-  font-weight: 600;
-  color: #fff;
-}
-
+/* Code & Pre inside message bubble */
 .ai-bubble pre {
   margin: 8px 0;
-  padding: 10px 12px;
+  padding: 10px 14px;
   background: #090e15;
   border-radius: 8px;
   color: #38bdf8;
   font-family: var(--tg-font-mono);
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.45;
   overflow-x: auto;
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .ai-bubble code {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.35);
   padding: 2px 6px;
   border-radius: 4px;
   font-family: var(--tg-font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: #38bdf8;
 }
 
+/* Bubble Meta (Timestamp & Checkmarks) */
 .bubble-meta {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 11px;
+  font-size: 11.5px;
   color: rgba(255, 255, 255, 0.6);
   float: right;
-  margin-top: 4px;
-  margin-left: 10px;
+  margin-top: 5px;
+  margin-left: 12px;
   user-select: none;
 }
 
 .tg-ticks {
-  color: #4fae4e;
-  font-size: 11px;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
 }
 
-/* Telegram Interactive Inline Keyboard Buttons */
+/* Telegram Web Bot Inline Keyboard Buttons */
 .tg-inline-keyboard {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 6px;
   margin-top: 10px;
   width: 100%;
@@ -180,9 +186,9 @@
   border: none;
   border-radius: 8px;
   color: #3390ec;
-  padding: 8px 12px;
-  font-size: 12.5px;
-  font-weight: 600;
+  padding: 9px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
   cursor: pointer;
   text-align: center;
   transition: all 0.15s ease;
@@ -202,8 +208,8 @@
   align-items: center;
   gap: 8px;
   padding: 4px 10px;
-  color: var(--tg-blue-bright);
-  font-size: 12px;
+  color: var(--tg-blue);
+  font-size: 13px;
   font-weight: 500;
 }
 
@@ -220,7 +226,7 @@
 .tg-typing-dots span {
   width: 5px;
   height: 5px;
-  background: var(--tg-blue-bright);
+  background: var(--tg-blue);
   border-radius: 50%;
   animation: tgTypingJump 1.2s infinite ease-in-out;
 }
@@ -233,15 +239,15 @@
   40% { transform: translateY(-4px); opacity: 1; }
 }
 
-/* Telegram Chat Quick Action Prompt Chips Bar */
+/* Telegram Quick Prompts Chips */
 .ai-quick-prompts {
+  max-width: 780px;
+  width: 100%;
+  margin: 0 auto;
   display: flex;
   gap: 8px;
-  padding: 8px 18px;
-  background: var(--tg-bg-left);
-  border-top: 1px solid var(--tg-border);
+  padding: 6px 16px;
   overflow-x: auto;
-  align-items: center;
 }
 
 .ai-quick-prompts::-webkit-scrollbar {
@@ -249,11 +255,11 @@
 }
 
 .ai-chip {
-  background: var(--tg-surface-card);
+  background: var(--tg-bg-sidebar);
   border: 1px solid var(--tg-border);
   border-radius: 16px;
   padding: 5px 12px;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 500;
   color: var(--tg-text-secondary);
   cursor: pointer;
@@ -265,72 +271,93 @@
 }
 
 .ai-chip:hover {
-  background: var(--tg-surface-active);
+  background: var(--tg-active);
   color: #ffffff;
-  border-color: var(--tg-blue-bright);
+  border-color: var(--tg-blue);
 }
 
-/* Telegram Message Input Bar */
-.ai-input-area {
-  padding: 10px 16px;
-  background: var(--tg-bg-left);
-  border-top: 1px solid var(--tg-border);
+/* ==============================================================================
+   Telegram Web Floating Message Input Bar (Centered 760px)
+   ============================================================================== */
+.ai-input-container {
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 16px 16px 16px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.tg-attach-btn, .tg-emoji-btn {
+.ai-input-box {
+  flex: 1;
+  background: var(--tg-bg-sidebar);
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  gap: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.ai-input-box:focus-within {
+  border-color: rgba(51, 144, 236, 0.5);
+}
+
+.tg-input-icon-btn {
   background: transparent;
   border: none;
   color: var(--tg-text-secondary);
-  font-size: 20px;
   cursor: pointer;
-  padding: 6px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.15s ease;
+  flex-shrink: 0;
 }
 
-.tg-attach-btn:hover, .tg-emoji-btn:hover {
+.tg-input-icon-btn:hover {
   color: #ffffff;
-  background: var(--tg-surface-hover);
+  background: var(--tg-hover);
 }
 
 .ai-input {
   flex: 1;
-  background: var(--tg-bg-right);
-  border: 1px solid transparent;
-  border-radius: 20px;
-  padding: 9px 16px;
-  color: #ffffff;
-  font-size: 13.5px;
+  background: transparent;
+  border: none;
   outline: none;
+  color: #ffffff;
+  font-size: 15px;
   font-family: var(--tg-font);
-  transition: border-color 0.2s ease, background 0.2s ease;
+  padding: 8px 4px;
 }
 
-.ai-input:focus {
-  border-color: var(--tg-blue-bright);
-  background: #090e15;
+.ai-input::placeholder {
+  color: var(--tg-text-secondary);
+  font-size: 15px;
 }
 
+/* Circular Blue Paper Airplane Send Button */
 .ai-send-btn {
-  background: var(--tg-blue-bright);
+  background: var(--tg-blue);
   color: #ffffff;
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
   box-shadow: 0 2px 10px rgba(51, 144, 236, 0.4);
   transition: transform 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
 }
 
 .ai-send-btn:hover {
@@ -346,20 +373,19 @@
   background: #090e15;
   color: #e2e8f0;
   font-family: var(--tg-font-mono);
-  font-size: 13px;
+  font-size: 13.5px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
-/* Terminal Action Bar */
 .term-toolbar {
-  height: 42px;
-  background: var(--tg-bg-left);
+  height: 44px;
+  background: var(--tg-bg-sidebar);
   border-bottom: 1px solid var(--tg-border);
   display: flex;
   align-items: center;
-  padding: 0 14px;
+  padding: 0 16px;
   gap: 8px;
   overflow-x: auto;
 }
@@ -369,27 +395,27 @@
 }
 
 .term-btn {
-  background: var(--tg-surface-card);
+  background: var(--tg-bg-search);
   border: 1px solid var(--tg-border);
-  border-radius: 12px;
+  border-radius: 14px;
   color: #ffffff;
-  padding: 4px 10px;
-  font-size: 11.5px;
-  font-weight: 600;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;
 }
 
 .term-btn:hover {
-  background: var(--tg-surface-active);
-  border-color: var(--tg-blue-bright);
+  background: var(--tg-active);
+  border-color: var(--tg-blue);
 }
 
 .terminal-output {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
+  padding: 18px 24px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -398,27 +424,27 @@
   line-height: 1.45;
 }
 
-.terminal-line.info { color: var(--tg-blue-bright); }
-.terminal-line.success { color: var(--tg-green); }
-.terminal-line.warning { color: var(--tg-orange); }
-.terminal-line.error { color: var(--tg-red); }
+.terminal-line.info { color: #38bdf8; }
+.terminal-line.success { color: #4ade80; }
+.terminal-line.warning { color: #f5a623; }
+.terminal-line.error { color: #ef4444; }
 
 .terminal-prompt-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
-  background: rgba(0, 0, 0, 0.4);
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.45);
   border-top: 1px solid var(--tg-border);
 }
 
 .terminal-prompt-user {
-  color: var(--tg-green);
+  color: #4ade80;
   font-weight: 600;
 }
 
 .terminal-prompt-path {
-  color: var(--tg-blue-bright);
+  color: #38bdf8;
 }
 
 .terminal-input {
@@ -428,44 +454,44 @@
   outline: none;
   color: #ffffff;
   font-family: var(--tg-font-mono);
-  font-size: 13px;
+  font-size: 13.5px;
 }
 
 /* ==============================================================================
-   3. UzOS Files (Telegram Shared Files / Media Style)
+   3. UzOS Files (Telegram Shared Media / Documents 1:1)
    ============================================================================== */
 .app-files {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--tg-bg-right);
+  background: var(--tg-bg-chat);
 }
 
 .files-toolbar {
-  height: 48px;
-  background: var(--tg-bg-left);
+  height: 52px;
+  background: var(--tg-bg-sidebar);
   border-bottom: 1px solid var(--tg-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 20px;
   gap: 12px;
 }
 
 .files-nav-btns {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .files-btn {
-  background: var(--tg-surface-card);
+  background: var(--tg-bg-search);
   border: 1px solid var(--tg-border);
   border-radius: 8px;
   color: #ffffff;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 500;
-  padding: 6px 12px;
+  padding: 7px 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -474,18 +500,18 @@
 }
 
 .files-btn:hover {
-  background: var(--tg-surface-active);
-  border-color: var(--tg-blue-bright);
+  background: var(--tg-active);
+  border-color: var(--tg-blue);
 }
 
 .files-breadcrumb {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--tg-surface-card);
+  background: var(--tg-bg-search);
   border-radius: 8px;
   padding: 6px 14px;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--tg-text-secondary);
   flex: 1;
   max-width: 380px;
@@ -498,9 +524,9 @@
 }
 
 .files-sidebar {
-  width: 190px;
-  min-width: 190px;
-  background: var(--tg-bg-left);
+  width: 200px;
+  min-width: 200px;
+  background: var(--tg-bg-sidebar);
   border-right: 1px solid var(--tg-border);
   padding: 12px 8px;
   display: flex;
@@ -511,33 +537,37 @@
 .files-nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 13px;
+  gap: 12px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
   color: var(--tg-text-secondary);
   cursor: pointer;
   transition: all 0.12s ease;
 }
 
 .files-nav-item:hover {
-  background: var(--tg-surface-card);
+  background: var(--tg-hover);
   color: #ffffff;
 }
 
 .files-nav-item.active {
-  background: var(--tg-surface-active);
+  background: var(--tg-active);
   color: #ffffff;
 }
 
-/* Telegram Document File Cards */
+/* Telegram Document File Rows */
 .files-grid {
   flex: 1;
-  padding: 16px 20px;
+  padding: 16px 24px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .tg-file-row {
@@ -545,7 +575,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 14px;
-  background: var(--tg-surface-card);
+  background: var(--tg-bg-sidebar);
   border-radius: 12px;
   border: 1px solid var(--tg-border);
   cursor: pointer;
@@ -553,32 +583,33 @@
 }
 
 .tg-file-row:hover {
-  background: var(--tg-surface-hover);
-  border-color: var(--tg-blue-bright);
+  background: var(--tg-hover);
+  border-color: var(--tg-blue);
   transform: translateX(2px);
 }
 
 .tg-file-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   min-width: 0;
 }
 
 .tg-file-icon-box {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #fff;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
-.tg-file-icon-box.folder { background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); }
+.tg-file-icon-box.folder { background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); font-size: 20px; }
 .tg-file-icon-box.doc { background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%); }
 .tg-file-icon-box.code { background: linear-gradient(135deg, #059669 0%, #34d399 100%); }
 .tg-file-icon-box.text { background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%); }
@@ -587,12 +618,13 @@
 .tg-file-meta {
   display: flex;
   flex-direction: column;
+  gap: 2px;
   min-width: 0;
 }
 
 .tg-file-title {
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
@@ -600,7 +632,7 @@
 }
 
 .tg-file-sub {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--tg-text-secondary);
 }
 
@@ -615,16 +647,16 @@
   border: 1px solid var(--tg-border);
   color: var(--tg-text-secondary);
   border-radius: 8px;
-  padding: 5px 10px;
-  font-size: 12px;
+  padding: 6px 12px;
+  font-size: 12.5px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .tg-file-act-btn:hover {
-  background: var(--tg-surface-active);
+  background: var(--tg-active);
   color: #ffffff;
-  border-color: var(--tg-blue-bright);
+  border-color: var(--tg-blue);
 }
 
 .tg-file-act-btn.delete:hover {
@@ -644,20 +676,20 @@
 }
 
 .editor-tabs {
-  height: 40px;
-  background: var(--tg-bg-left);
+  height: 44px;
+  background: var(--tg-bg-sidebar);
   border-bottom: 1px solid var(--tg-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 12px;
+  padding: 0 16px;
   gap: 8px;
 }
 
 .editor-tab-list {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   overflow-x: auto;
 }
 
@@ -666,10 +698,10 @@
 }
 
 .editor-tab {
-  background: var(--tg-surface-card);
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: 12px;
+  background: var(--tg-bg-search);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--tg-text-secondary);
   display: flex;
@@ -687,7 +719,7 @@
 .editor-tab.active {
   background: #0f1620;
   color: #ffffff;
-  border: 1px solid var(--tg-blue-bright);
+  border: 1.5px solid var(--tg-blue);
 }
 
 .editor-actions {
@@ -697,23 +729,23 @@
 }
 
 .editor-act-btn {
-  background: var(--tg-surface-card);
+  background: var(--tg-bg-search);
   border: 1px solid var(--tg-border);
   color: #ffffff;
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-size: 12px;
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   transition: all 0.15s ease;
 }
 
 .editor-act-btn:hover {
-  background: var(--tg-surface-active);
-  border-color: var(--tg-blue-bright);
+  background: var(--tg-active);
+  border-color: var(--tg-blue);
 }
 
 .editor-act-btn.run {
@@ -733,13 +765,13 @@
 }
 
 .editor-linenums {
-  width: 48px;
-  background: var(--tg-bg-left);
+  width: 50px;
+  background: var(--tg-bg-sidebar);
   border-right: 1px solid var(--tg-border);
   color: var(--tg-text-muted);
   font-family: var(--tg-font-mono);
-  font-size: 12.5px;
-  padding: 14px 8px;
+  font-size: 13px;
+  padding: 14px 10px;
   text-align: right;
   line-height: 20px;
   user-select: none;
@@ -752,9 +784,9 @@
   outline: none;
   color: #e2e8f0;
   font-family: var(--tg-font-mono);
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 20px;
-  padding: 14px 16px;
+  padding: 14px 18px;
   resize: none;
   white-space: pre;
   tab-size: 2;
@@ -765,34 +797,34 @@
   max-height: 140px;
   background: #070b10;
   border-top: 1px solid var(--tg-border);
-  padding: 10px 14px;
+  padding: 12px 18px;
   overflow-y: auto;
   font-family: var(--tg-font-mono);
-  font-size: 12px;
+  font-size: 12.5px;
   color: #38bdf8;
   white-space: pre-wrap;
 }
 
 .editor-status {
   height: 28px;
-  background: var(--tg-bg-left);
+  background: var(--tg-bg-sidebar);
   border-top: 1px solid var(--tg-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
-  font-size: 11.5px;
+  padding: 0 16px;
+  font-size: 12px;
   color: var(--tg-text-muted);
   font-family: var(--tg-font-mono);
 }
 
 /* ==============================================================================
-   5. UzOS Settings (100% Authentic Telegram Settings Screen)
+   5. UzOS Settings (100% Authentic Telegram Web Settings Modal/View)
    ============================================================================== */
 .app-settings {
   flex: 1;
   display: flex;
-  background: var(--tg-bg-right);
+  background: var(--tg-bg-chat);
   overflow-y: auto;
   padding: 24px;
   justify-content: center;
@@ -800,36 +832,36 @@
 
 .settings-container {
   width: 100%;
-  max-width: 680px;
+  max-width: 660px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* Telegram Profile Banner Card */
+/* Telegram Web Profile Card */
 .settings-profile-card {
-  background: var(--tg-surface-card);
-  border-radius: 14px;
+  background: var(--tg-bg-sidebar);
+  border-radius: 16px;
   border: 1px solid var(--tg-border);
-  padding: 20px 24px;
+  padding: 22px 24px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .settings-avatar {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
+  font-size: 28px;
   color: #fff;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
 }
 
 .settings-profile-info {
@@ -837,8 +869,8 @@
 }
 
 .settings-name {
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -846,13 +878,13 @@
 }
 
 .settings-username {
-  font-size: 13px;
-  color: var(--tg-blue-bright);
+  font-size: 13.5px;
+  color: var(--tg-blue);
   margin-top: 2px;
 }
 
 .settings-bio {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--tg-text-secondary);
   margin-top: 4px;
 }
@@ -865,17 +897,17 @@
 }
 
 .settings-group-header {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 700;
-  color: var(--tg-blue-bright);
+  color: var(--tg-blue);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 0 8px;
+  padding: 0 10px;
 }
 
 .settings-card {
-  background: var(--tg-surface-card);
-  border-radius: 14px;
+  background: var(--tg-bg-sidebar);
+  border-radius: 16px;
   border: 1px solid var(--tg-border);
   overflow: hidden;
 }
@@ -884,9 +916,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 18px;
+  padding: 14px 20px;
   border-bottom: 1px solid var(--tg-divider);
-  font-size: 13.5px;
+  font-size: 14px;
 }
 
 .settings-row:last-child {
@@ -896,17 +928,17 @@
 .settings-row-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .settings-icon-bubble {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
+  font-size: 17px;
   color: #fff;
 }
 
@@ -919,6 +951,7 @@
 .settings-row-text {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .settings-row-title {
@@ -927,11 +960,11 @@
 }
 
 .settings-row-desc {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--tg-text-secondary);
 }
 
-/* Telegram Toggle Switch */
+/* Telegram Web Toggle Switch */
 .tg-switch {
   position: relative;
   display: inline-block;
@@ -949,7 +982,7 @@
   position: absolute;
   cursor: pointer;
   inset: 0;
-  background-color: var(--tg-surface-hover);
+  background-color: var(--tg-bg-search);
   border-radius: 24px;
   transition: 0.2s;
   border: 1px solid var(--tg-border);
@@ -968,14 +1001,14 @@
 }
 
 input:checked + .tg-slider {
-  background-color: var(--tg-blue-bright);
+  background-color: var(--tg-blue);
 }
 
 input:checked + .tg-slider:before {
   transform: translateX(20px);
 }
 
-/* Telegram Button in Settings */
+/* Danger Reset Button */
 .settings-btn-danger {
   width: 100%;
   padding: 12px;
@@ -983,7 +1016,7 @@ input:checked + .tg-slider:before {
   border: 1px solid rgba(229, 57, 53, 0.3);
   color: #ef4444;
   border-radius: 12px;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;

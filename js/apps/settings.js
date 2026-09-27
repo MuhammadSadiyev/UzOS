@@ -1,6 +1,6 @@
 /* ==============================================================================
    UzOS Cloud (WebOS) — Settings Application
-   100% Authentic Telegram Desktop Settings Screen
+   100% Authentic Telegram Web Settings Screen
    ============================================================================== */
 
 export class SettingsApp {
@@ -18,13 +18,13 @@ export class SettingsApp {
       <div class="app-settings">
         <div class="settings-container">
           
-          <!-- Profile Card -->
+          <!-- Profile Card (Telegram Web Style) -->
           <div class="settings-profile-card">
             <div class="settings-avatar">UZ</div>
             <div class="settings-profile-info">
               <div class="settings-name">
                 <span>UzOS Foydalanuvchisi</span>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
                   <path d="M8 0L9.8 1.9L12.4 1.5L13.4 3.9L15.9 4.9L15.6 7.5L17.2 9.5L15.6 11.5L15.9 14.1L13.4 15.1L12.4 17.5L9.8 17.1L8 19L6.2 17.1L3.6 17.5L2.6 15.1L0.1 14.1L0.4 11.5L-1.2 9.5L0.4 7.5L0.1 4.9L2.6 3.9L3.6 1.5L6.2 1.9L8 0Z" transform="scale(0.8) translate(2, 0)" fill="#3390ec"/>
                   <path d="M4.5 8L6.8 10.3L11.5 5.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -75,7 +75,7 @@ export class SettingsApp {
                     <span class="settings-row-desc">Milliy identifikatsiya tizimi bog'langan</span>
                   </div>
                 </div>
-                <span style="color:#4ade80; font-size:12px; font-weight:700;">FAOL</span>
+                <span style="color:#4ade80; font-size:12.5px; font-weight:700;">FAOL</span>
               </div>
 
             </div>
@@ -94,7 +94,7 @@ export class SettingsApp {
                     <span class="settings-row-desc">Dark (Asosiy), Blue (Klassik), Night (Chuqur)</span>
                   </div>
                 </div>
-                <select id="theme-selector" style="background:var(--tg-surface-card); color:#fff; border:1px solid var(--tg-border); padding:6px 12px; border-radius:8px; outline:none; font-size:12.5px;">
+                <select id="theme-selector" style="background:var(--tg-bg-search); color:#fff; border:1px solid var(--tg-border); padding:7px 14px; border-radius:10px; outline:none; font-size:13px;">
                   <option value="dark">Telegram Dark</option>
                   <option value="blue">Telegram Blue</option>
                   <option value="night">Telegram Night</option>
@@ -109,7 +109,7 @@ export class SettingsApp {
                     <span class="settings-row-desc">O'zbek tili (Lotin alifbosi)</span>
                   </div>
                 </div>
-                <span style="color:var(--tg-blue-bright); font-size:12.5px; font-weight:600;">O'zbekcha</span>
+                <span style="color:var(--tg-blue); font-size:13px; font-weight:600;">O'zbekcha</span>
               </div>
 
             </div>
@@ -128,10 +128,10 @@ export class SettingsApp {
                     <span class="settings-row-desc">IndexedDB / LocalStorage orqali saqlanmoqda</span>
                   </div>
                 </div>
-                <span style="color:var(--tg-text-secondary); font-size:12.5px; font-weight:600;">~112 KB</span>
+                <span style="color:var(--tg-text-secondary); font-size:13px; font-weight:600;">~112 KB</span>
               </div>
 
-              <div style="padding:14px 18px;">
+              <div style="padding:16px 20px;">
                 <button class="settings-btn-danger" id="btn-reset-vfs">
                   ⚠️ Barcha VFS Xotirani Tozalash (Factory Reset)
                 </button>
@@ -151,7 +151,7 @@ export class SettingsApp {
               </div>
               <div class="settings-row">
                 <span style="color:var(--tg-text-secondary);">Dasturiy Huquqlar</span>
-                <span style="color:var(--tg-blue-bright); font-weight:600;">100% Ochiq Kodli (MIT)</span>
+                <span style="color:var(--tg-blue); font-weight:600;">100% Ochiq Kodli (MIT)</span>
               </div>
               <div class="settings-row">
                 <span style="color:var(--tg-text-secondary);">Yadro Tizimi</span>

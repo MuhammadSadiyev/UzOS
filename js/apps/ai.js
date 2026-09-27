@@ -1,6 +1,6 @@
 /* ==============================================================================
-   UzOS Cloud (WebOS) — Milliy AI Assistant (100% Authentic Telegram Chat UI)
-   Exact 1:1 Telegram Speech Bubbles with Tails, Inline Buttons & Audio Feedback
+   UzOS Cloud (WebOS) — Milliy AI Assistant (100% Authentic Telegram Web Chat UI)
+   Exact 1:1 Telegram Speech Bubbles with Tails, Vector SVGs & Floating Input Bar
    ============================================================================== */
 
 export class AIAssistantApp {
@@ -53,42 +53,44 @@ export class AIAssistantApp {
     this.container.innerHTML = `
       <div class="app-ai">
         
-        <!-- Telegram Chat Messages Container -->
+        <!-- Telegram Chat Messages Scroll View -->
         <div class="ai-chat-messages" id="ai-messages">
-          
-          <!-- Date Separator Pill -->
-          <div class="tg-date-pill">Bugun, 27-Sentabr 2026</div>
+          <div class="ai-messages-inner" id="ai-messages-inner">
+            
+            <!-- Date Separator Pill -->
+            <div class="tg-date-pill">Bugun, 27-Sentabr 2026</div>
 
-          <!-- Initial Bot Greeting Bubble -->
-          <div class="tg-bubble-row bot">
-            <div class="bubble-avatar">AI</div>
-            <div class="ai-bubble bot">
-              Assalomu alaykum! Men <b>UzOS Milliy Sun'iy Intellekt</b> maslahatchisiman. 🇺🇿<br><br>
-              Tizim xavfsizligi, kiber-suverenitet, dasturlash yoki O'zbekiston IT qonunchiligi bo'yicha qanday yordam bera olaman? Quyidagi tugmalardan birini tanlashingiz mumkin:
-              
-              <!-- Telegram Inline Keyboard -->
-              <div class="tg-inline-keyboard">
-                <button class="tg-inline-btn" data-query="Kiber-xavfsizlik auditi">⚡ Xavfsizlik Auditi</button>
-                <button class="tg-inline-btn" data-query="Zero-Telemetry nima?">🛡️ Zero-Telemetry</button>
-                <button class="tg-inline-btn" data-query="Windows vs UzOS farqi?">📊 UzOS vs Windows</button>
-                <button class="tg-inline-btn" data-query="O'zbekiston IT qonunlari">🇺🇿 IT Qonunlari</button>
-                <button class="tg-inline-btn" data-query="Python skript yozib ber">💻 Python Skript</button>
-              </div>
+            <!-- Initial Bot Greeting Bubble -->
+            <div class="tg-bubble-row bot">
+              <div class="bubble-avatar">AI</div>
+              <div class="ai-bubble bot">
+                Assalomu alaykum! Men <b>UzOS Milliy Sun'iy Intellekt</b> maslahatchisiman. 🇺🇿<br><br>
+                Tizim xavfsizligi, kiber-suverenitet, dasturlash yoki O'zbekiston IT qonunchiligi bo'yicha qanday yordam bera olaman? Quyidagi tezkor tugmalardan birini tanlashingiz mumkin:
+                
+                <!-- Telegram Inline Keyboard -->
+                <div class="tg-inline-keyboard">
+                  <button class="tg-inline-btn" data-query="Kiber-xavfsizlik auditi">⚡ Xavfsizlik Auditi</button>
+                  <button class="tg-inline-btn" data-query="Zero-Telemetry nima?">🛡️ Zero-Telemetry</button>
+                  <button class="tg-inline-btn" data-query="Windows vs UzOS farqi?">📊 UzOS vs Windows</button>
+                  <button class="tg-inline-btn" data-query="O'zbekiston IT qonunlari">🇺🇿 IT Qonunlari</button>
+                  <button class="tg-inline-btn" data-query="Python skript yozib ber">💻 Python Skript</button>
+                </div>
 
-              <div class="bubble-meta">
-                <span>${this.getCurrentTime()}</span>
+                <div class="bubble-meta">
+                  <span>${this.getCurrentTime()}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Typing Row (Hidden by default) -->
-          <div class="tg-typing-row" id="tg-typing-row">
-            <div class="tg-typing-dots">
-              <span></span><span></span><span></span>
+            <!-- Typing Row (Hidden by default) -->
+            <div class="tg-typing-row" id="tg-typing-row">
+              <div class="tg-typing-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span>UzOS AI yozmoqda...</span>
             </div>
-            <span>UzOS AI yozmoqda...</span>
-          </div>
 
+          </div>
         </div>
 
         <!-- Telegram Quick Prompt Chips Bar -->
@@ -100,15 +102,32 @@ export class AIAssistantApp {
           <div class="ai-chip" data-prompt="O'zbekiston kiberxavfsizlik qonunlari">🇺🇿 Qonunchilik</div>
         </div>
 
-        <!-- Telegram Message Input Bar -->
-        <div class="ai-input-area">
-          <button class="tg-attach-btn" id="ai-attach-btn" title="Fayl biriktirish">📎</button>
-          <input type="text" class="ai-input" id="ai-input-field" placeholder="Xabar yozing..." autocomplete="off" />
-          <button class="tg-emoji-btn" id="ai-emoji-btn" title="Emotsiyalar">😊</button>
-          <button class="ai-send-btn" id="ai-send-btn" title="Yuborish (Enter)">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        <!-- Telegram Web Floating Message Input Bar -->
+        <div class="ai-input-container">
+          <div class="ai-input-box">
+            
+            <button class="tg-input-icon-btn" id="ai-emoji-btn" title="Emotsiyalar" aria-label="Emoji">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+              </svg>
+            </button>
+
+            <input type="text" class="ai-input" id="ai-input-field" placeholder="Xabar yozing..." autocomplete="off" />
+
+            <button class="tg-input-icon-btn" id="ai-attach-btn" title="Fayl biriktirish" aria-label="Biriktirish">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+              </svg>
+            </button>
+
+          </div>
+
+          <button class="ai-send-btn" id="ai-send-btn" title="Yuborish (Enter)" aria-label="Yuborish">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="white"/>
             </svg>
           </button>
         </div>
@@ -117,6 +136,7 @@ export class AIAssistantApp {
     `;
 
     this.messagesEl = this.container.querySelector('#ai-messages');
+    this.messagesInner = this.container.querySelector('#ai-messages-inner');
     this.typingRow = this.container.querySelector('#tg-typing-row');
     this.inputEl = this.container.querySelector('#ai-input-field');
     this.sendBtn = this.container.querySelector('#ai-send-btn');
@@ -187,11 +207,16 @@ export class AIAssistantApp {
         ${this.escapeHtml(text)}
         <div class="bubble-meta">
           <span>${this.getCurrentTime()}</span>
-          <span class="tg-ticks">✓✓</span>
+          <span class="tg-ticks">
+            <svg width="15" height="10" viewBox="0 0 16 11" fill="none">
+              <path d="M1 5.5L4.5 9L11 2" stroke="#4fae4e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M5.5 5.5L9 9L15.5 2" stroke="#4fae4e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
         </div>
       </div>
     `;
-    this.messagesEl.insertBefore(row, this.typingRow);
+    this.messagesInner.insertBefore(row, this.typingRow);
     this.scrollToBottom();
   }
 
@@ -207,7 +232,7 @@ export class AIAssistantApp {
         </div>
       </div>
     `;
-    this.messagesEl.insertBefore(row, this.typingRow);
+    this.messagesInner.insertBefore(row, this.typingRow);
     this.scrollToBottom();
   }
 
@@ -252,7 +277,7 @@ export class AIAssistantApp {
         • <b>RAM sarfi:</b> Windows bo'sh holatda ~3.5 GB sarflaydi; UzOS bor-yo'g'i ~110 MB talab qiladi (30 barobar yengil!).<br>
         • <b>Narxi:</b> Windows qimmat litsenziya talab qiladi; UzOS 100% ochiq kodli va tekin.<br>
         • <b>Maxfiylik:</b> Windows telemetriya yig'adi; UzOS da 0 bayt telemetriya.<br>
-        • <b>Interfeys:</b> UzOS o'zbek foydalanuvchilariga tanish Telegram Desktop UI asosida yaratilgan.`;
+        • <b>Interfeys:</b> UzOS o'zbek foydalanuvchilariga tanish Telegram Web UI asosida yaratilgan.`;
       } else if (q.includes('qonun') || q.includes('it') || q.includes('suveren')) {
         response = `🇺🇿 <b>O'zbekiston IT va Kiberxavfsizlik Qonunchiligi:</b><br><br>
         O'zbekiston Respublikasining <i>"Kiberxavfsizlik to'g'risida"</i>gi (O'RQ-764) hamda <i>"Shaxsga doir ma'lumotlar to'g'risida"</i>gi Qonuniga muvofiq, fuqarolarning shaxsiy ma'lumotlari O'zbekiston hududidagi serverlarda saqlanishi shart.<br><br>
@@ -271,12 +296,12 @@ def audit_network():
 audit_network()</pre>
         Ushbu kodni <b>UzOS Kod Muharriri</b>da ochib, <i>▶ Bajarish</i> tugmasi orqali ishga tushirishingiz mumkin!`;
       } else {
-        response = `Sizning savolingiz: <i>"${this.escapeHtml(query)}"</i><br><br>
-        UzOS Milliy AI tizimi buni qayta ishladi. Agar texnik yordam kerak bo'lsa, <b>Terminal</b> orqali buyruqlarni yuborishingiz, <b>Fayllar</b> bo'limida hujjatlaringizni boshqarishingiz yoki <b>Kod Muharriri</b>da yangi ilovalarni yaratishingiz mumkin! 🚀`;
+        response = `Savolingiz: <i>"${this.escapeHtml(query)}"</i><br><br>
+        UzOS Milliy AI tizimi buni muvaffaqiyatli qayta ishladi. Agar texnik yordam kerak bo'lsa, <b>Terminal</b> orqali buyruqlarni yuborishingiz, <b>Fayllar</b> bo'limida hujjatlaringizni boshqarishingiz yoki <b>Kod Muharriri</b>da yangi ilovalarni yaratishingiz mumkin! 🚀`;
       }
 
       this.addBotMessage(response);
       this.playTelegramSound('receive');
-    }, 600);
+    }, 550);
   }
 }
