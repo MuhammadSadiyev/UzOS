@@ -207,13 +207,13 @@ body {
 
 /* TON.org _heading_SRZB1 _hero_FAhG- _title_LpTcC (1:1 with .heading-title) */
 .hero-title {
-  font-size: clamp(30px, 3.1vw, 40px);
-  line-height: 1.2;
-  font-weight: 500;
-  letter-spacing: -0.015em;
+  font-size: clamp(28px, 2.9vw, 38px);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin: 0 0 28px 0;
   padding: 0;
-  max-width: 520px;
+  max-width: 500px;
   color: #ffffff;
   font-family: var(--font-sans);
   text-align: left;
@@ -223,7 +223,7 @@ body {
 .split-title {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   align-items: flex-start;
   text-align: left;
   width: 100%;
@@ -231,8 +231,11 @@ body {
 
 .split-title > span {
   display: block;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
   text-align: left;
+  max-width: 100%;
 }
 
 .telegram-phrase {
