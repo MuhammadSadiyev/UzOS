@@ -443,16 +443,17 @@ html, body {
 
 .desktop-icons-grid {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
   z-index: 50;
 }
 
 .desktop-icon-cell {
-  width: 78px;
+  position: absolute;
+  width: 82px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -460,8 +461,11 @@ html, body {
   padding: 8px 6px;
   border-radius: 12px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
   border: 1px solid transparent;
+  pointer-events: auto;
+  user-select: none;
+  touch-action: none;
 }
 
 .desktop-icon-cell:hover {
@@ -473,6 +477,17 @@ html, body {
 .desktop-icon-cell.selected {
   background: rgba(51, 144, 236, 0.25);
   border-color: var(--tg-blue);
+}
+
+.desktop-icon-cell.dragging {
+  opacity: 0.9;
+  transform: scale(1.08) !important;
+  z-index: 999;
+  transition: none !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
+  cursor: grabbing !important;
+  border-color: rgba(51, 144, 236, 0.5);
+  background: rgba(51, 144, 236, 0.2);
 }
 
 .desktop-icon-box {
@@ -540,6 +555,78 @@ html, body {
   width: 100% !important;
   height: 100% !important;
   border-radius: 0 !important;
+}
+
+/* ==============================================================================
+   Windows Aero Snap & Wall Docking States
+   ============================================================================== */
+.uzos-window.snapped-left {
+  top: 0 !important;
+  left: 0 !important;
+  width: 50% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+.uzos-window.snapped-right {
+  top: 0 !important;
+  left: 50% !important;
+  width: 50% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+.uzos-window.snapped-top-left {
+  top: 0 !important;
+  left: 0 !important;
+  width: 50% !important;
+  height: 50% !important;
+  border-radius: 0 0 10px 0 !important;
+}
+
+.uzos-window.snapped-top-right {
+  top: 0 !important;
+  left: 50% !important;
+  width: 50% !important;
+  height: 50% !important;
+  border-radius: 0 0 0 10px !important;
+}
+
+.uzos-window.snapped-bottom-left {
+  top: 50% !important;
+  left: 0 !important;
+  width: 50% !important;
+  height: 50% !important;
+  border-radius: 0 10px 0 0 !important;
+}
+
+.uzos-window.snapped-bottom-right {
+  top: 50% !important;
+  left: 50% !important;
+  width: 50% !important;
+  height: 50% !important;
+  border-radius: 10px 0 0 0 !important;
+}
+
+/* Translucent Blue Aero Snap Outline/Preview (Windows 11 Glass effect) */
+.window-snap-preview {
+  position: absolute;
+  background: rgba(51, 144, 236, 0.16);
+  border: 2px solid rgba(51, 144, 236, 0.7);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(51, 144, 236, 0.25), inset 0 0 20px rgba(51, 144, 236, 0.1);
+  pointer-events: none;
+  z-index: 8500;
+  transition: all 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.window-snap-preview.visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Window Titlebar (macOS / Telegram Dark Control Dots) */

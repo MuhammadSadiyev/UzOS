@@ -9,6 +9,12 @@ export class WindowManager {
     this.windows = new Map(); // id -> window state
     this.activeWindowId = null;
     this.highestZIndex = 100;
+    this.currentSnapCandidate = null;
+
+    // Aero Snap Ghost Preview Overlay (Windows Snap)
+    this.snapPreview = document.createElement('div');
+    this.snapPreview.className = 'window-snap-preview';
+    this.workspace.appendChild(this.snapPreview);
     
     // Event callbacks
     this.onWindowListChange = null;
@@ -97,6 +103,7 @@ export class WindowManager {
       element: winEl,
       minimized: false,
       maximized: false,
+      snapped: null,
       minWidth,
       minHeight,
       prevBounds: { x: defaultX, y: defaultY, width, height }
@@ -152,12 +159,15 @@ export class WindowManager {
 
   enableDragging(winState, handle) {
     let isDragging = false;
+    let hasMoved = false;
     let startX = 0, startY = 0;
     let initialX = 0, initialY = 0;
 
     const onPointerDown = (e) => {
-      if (e.target.closest('.win-btn') || winState.maximized) return;
+      if (e.target.closest('.win-btn')) return;
+      if (e.button !== 0) return;
       isDragging = true;
+      hasMoved = false;
       this.focusWindow(winState.id);
 
       startX = e.clientX;
@@ -178,24 +188,101 @@ export class WindowManager {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
 
+      if (!hasMoved && Math.hypot(dx, dy) > 4) {
+        hasMoved = true;
+      }
+      if (!hasMoved) return;
+
       const wsRect = this.workspace.getBoundingClientRect();
-      const elRect = winState.element.getBoundingClientRect();
+
+      // If user drags a maximized or snapped window, un-dock & center under cursor
+      if (winState.maximized || winState.snapped) {
+        const restoreW = winState.prevBounds ? winState.prevBounds.width : 680;
+        const restoreH = winState.prevBounds ? winState.prevBounds.height : 480;
+
+        this.clearSnapClasses(winState);
+        winState.maximized = false;
+        winState.snapped = null;
+
+        winState.element.style.width = `${restoreW}px`;
+        winState.element.style.height = `${restoreH}px`;
+
+        const pointerX = e.clientX - wsRect.left;
+        let newLeft = pointerX - (restoreW / 2);
+        let newTop = (e.clientY - wsRect.top) - 18;
+
+        newLeft = Math.max(10, Math.min(wsRect.width - restoreW - 10, newLeft));
+        newTop = Math.max(0, Math.min(wsRect.height - 40, newTop));
+
+        winState.element.style.left = `${newLeft}px`;
+        winState.element.style.top = `${newTop}px`;
+
+        initialX = newLeft;
+        initialY = newTop;
+        startX = e.clientX;
+        startY = e.clientY;
+        return;
+      }
 
       let nextX = initialX + dx;
       let nextY = initialY + dy;
 
-      // Bound clamping
+      const elRect = winState.element.getBoundingClientRect();
       nextX = Math.max(-elRect.width + 100, Math.min(wsRect.width - 100, nextX));
       nextY = Math.max(0, Math.min(wsRect.height - 40, nextY));
 
       winState.element.style.left = `${nextX}px`;
       winState.element.style.top = `${nextY}px`;
+
+      // Wall Touching / Edge Snapping Detection
+      const pointerX = e.clientX - wsRect.left;
+      const pointerY = e.clientY - wsRect.top;
+
+      const EDGE_MARGIN = 16;
+      const CORNER_MARGIN = 80;
+      let snapCandidate = null;
+
+      if (pointerY <= EDGE_MARGIN) {
+        if (pointerX <= CORNER_MARGIN) snapCandidate = 'top-left';
+        else if (pointerX >= wsRect.width - CORNER_MARGIN) snapCandidate = 'top-right';
+        else snapCandidate = 'maximize';
+      } else if (pointerX <= EDGE_MARGIN) {
+        if (pointerY <= CORNER_MARGIN) snapCandidate = 'top-left';
+        else if (pointerY >= wsRect.height - CORNER_MARGIN) snapCandidate = 'bottom-left';
+        else snapCandidate = 'left';
+      } else if (pointerX >= wsRect.width - EDGE_MARGIN) {
+        if (pointerY <= CORNER_MARGIN) snapCandidate = 'top-right';
+        else if (pointerY >= wsRect.height - CORNER_MARGIN) snapCandidate = 'bottom-right';
+        else snapCandidate = 'right';
+      }
+
+      this.currentSnapCandidate = snapCandidate;
+      this.updateSnapPreview(snapCandidate);
     };
 
     const onPointerUp = () => {
+      if (!isDragging) return;
       isDragging = false;
       document.removeEventListener('pointermove', onPointerMove);
       document.removeEventListener('pointerup', onPointerUp);
+
+      this.hideSnapPreview();
+
+      if (hasMoved) {
+        if (this.currentSnapCandidate) {
+          this.applySnap(winState, this.currentSnapCandidate);
+          this.currentSnapCandidate = null;
+        } else {
+          const rect = winState.element.getBoundingClientRect();
+          const wsRect = this.workspace.getBoundingClientRect();
+          winState.prevBounds = {
+            x: rect.left - wsRect.left,
+            y: rect.top - wsRect.top,
+            width: rect.width,
+            height: rect.height
+          };
+        }
+      }
     };
 
     handle.addEventListener('pointerdown', onPointerDown);
@@ -211,7 +298,7 @@ export class WindowManager {
       let startLeft = 0, startTop = 0;
 
       const onPointerDown = (e) => {
-        if (winState.maximized) return;
+        if (winState.maximized || winState.snapped) return;
         e.preventDefault();
         e.stopPropagation();
         isResizing = true;
@@ -321,7 +408,7 @@ export class WindowManager {
     const winState = this.windows.get(id);
     const el = winState.element;
 
-    if (!winState.maximized) {
+    if (!winState.maximized && !winState.snapped) {
       // Save current bounds
       const rect = el.getBoundingClientRect();
       const wsRect = this.workspace.getBoundingClientRect();
@@ -332,15 +419,19 @@ export class WindowManager {
         height: rect.height
       };
 
+      this.clearSnapClasses(winState);
       el.classList.add('maximized');
       winState.maximized = true;
+      winState.snapped = null;
     } else {
-      el.classList.remove('maximized');
+      this.clearSnapClasses(winState);
+      winState.maximized = false;
+      winState.snapped = null;
+
       el.style.left = `${winState.prevBounds.x}px`;
       el.style.top = `${winState.prevBounds.y}px`;
       el.style.width = `${winState.prevBounds.width}px`;
       el.style.height = `${winState.prevBounds.height}px`;
-      winState.maximized = false;
     }
   }
 
@@ -379,6 +470,107 @@ export class WindowManager {
         active: w.id === this.activeWindowId
       }));
       this.onWindowListChange(list);
+    }
+  }
+
+  updateSnapPreview(snap) {
+    if (!snap) {
+      this.hideSnapPreview();
+      return;
+    }
+    const p = this.snapPreview;
+    p.classList.add('visible');
+
+    switch (snap) {
+      case 'maximize':
+        p.style.left = '4px';
+        p.style.top = '4px';
+        p.style.width = 'calc(100% - 8px)';
+        p.style.height = 'calc(100% - 8px)';
+        break;
+      case 'left':
+        p.style.left = '4px';
+        p.style.top = '4px';
+        p.style.width = 'calc(50% - 6px)';
+        p.style.height = 'calc(100% - 8px)';
+        break;
+      case 'right':
+        p.style.left = 'calc(50% + 2px)';
+        p.style.top = '4px';
+        p.style.width = 'calc(50% - 6px)';
+        p.style.height = 'calc(100% - 8px)';
+        break;
+      case 'top-left':
+        p.style.left = '4px';
+        p.style.top = '4px';
+        p.style.width = 'calc(50% - 6px)';
+        p.style.height = 'calc(50% - 6px)';
+        break;
+      case 'top-right':
+        p.style.left = 'calc(50% + 2px)';
+        p.style.top = '4px';
+        p.style.width = 'calc(50% - 6px)';
+        p.style.height = 'calc(50% - 6px)';
+        break;
+      case 'bottom-left':
+        p.style.left = '4px';
+        p.style.top = 'calc(50% + 2px)';
+        p.style.width = 'calc(50% - 6px)';
+        p.style.height = 'calc(50% - 6px)';
+        break;
+      case 'bottom-right':
+        p.style.left = 'calc(50% + 2px)';
+        p.style.top = 'calc(50% + 2px)';
+        p.style.width = 'calc(50% - 6px)';
+        p.style.height = 'calc(50% - 6px)';
+        break;
+    }
+  }
+
+  hideSnapPreview() {
+    if (this.snapPreview) {
+      this.snapPreview.classList.remove('visible');
+    }
+  }
+
+  clearSnapClasses(winState) {
+    winState.element.classList.remove(
+      'maximized',
+      'snapped-left',
+      'snapped-right',
+      'snapped-top-left',
+      'snapped-top-right',
+      'snapped-bottom-left',
+      'snapped-bottom-right'
+    );
+  }
+
+  applySnap(winState, snapType) {
+    if (!winState.maximized && !winState.snapped) {
+      const rect = winState.element.getBoundingClientRect();
+      const wsRect = this.workspace.getBoundingClientRect();
+      winState.prevBounds = {
+        x: rect.left - wsRect.left,
+        y: rect.top - wsRect.top,
+        width: rect.width,
+        height: rect.height
+      };
+    }
+
+    this.clearSnapClasses(winState);
+
+    // Smooth snap transition
+    winState.element.style.transition = 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)';
+    setTimeout(() => { winState.element.style.transition = ''; }, 200);
+
+    if (snapType === 'maximize') {
+      winState.maximized = true;
+      winState.snapped = null;
+      winState.element.classList.add('maximized');
+    } else {
+      winState.maximized = false;
+      winState.snapped = snapType;
+      winState.element.classList.add(`snapped-${snapType}`);
     }
   }
 }

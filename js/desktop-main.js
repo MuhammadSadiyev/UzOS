@@ -157,14 +157,134 @@ document.addEventListener('DOMContentLoaded', () => {
 
   openAppRef = openApp;
 
-  // 6. Bind Desktop Icons (Single click = select, Double click = launch)
+  // 6. Desktop Icons Drag-and-Drop, Free Placement & Persistence System
   const desktopCells = document.querySelectorAll('.desktop-icon-cell');
+  const GRID_SIZE_X = 92;
+  const GRID_SIZE_Y = 100;
+  const GRID_OFFSET_X = 20;
+  const GRID_OFFSET_Y = 20;
+
+  const defaultPositions = {
+    files: { col: 0, row: 0 },
+    terminal: { col: 0, row: 1 },
+    editor: { col: 0, row: 2 },
+    ai: { col: 0, row: 3 },
+    settings: { col: 0, row: 4 }
+  };
+
+  let savedPositions = {};
+  try {
+    const raw = localStorage.getItem('uzos_desktop_icon_positions');
+    if (raw) savedPositions = JSON.parse(raw);
+  } catch (err) {
+    savedPositions = {};
+  }
+
+  function applyIconPositions() {
+    const wsRect = workspaceEl.getBoundingClientRect();
+    const maxCols = Math.max(0, Math.floor((wsRect.width - GRID_OFFSET_X - 82) / GRID_SIZE_X));
+    const maxRows = Math.max(0, Math.floor((wsRect.height - GRID_OFFSET_Y - 92) / GRID_SIZE_Y));
+
+    desktopCells.forEach(cell => {
+      const app = cell.dataset.app;
+      const pos = savedPositions[app] || defaultPositions[app] || { col: 0, row: 0 };
+      const col = Math.min(pos.col, maxCols);
+      const row = Math.min(pos.row, maxRows);
+      const left = GRID_OFFSET_X + col * GRID_SIZE_X;
+      const top = GRID_OFFSET_Y + row * GRID_SIZE_Y;
+      cell.style.left = `${left}px`;
+      cell.style.top = `${top}px`;
+    });
+  }
+
+  applyIconPositions();
+  window.addEventListener('resize', applyIconPositions);
+
   desktopCells.forEach(cell => {
-    cell.addEventListener('click', (e) => {
-      e.stopPropagation();
+    let isDragging = false;
+    let hasMoved = false;
+    let startX = 0, startY = 0;
+    let initLeft = 0, initTop = 0;
+
+    const onPointerDown = (e) => {
+      if (e.button !== 0) return;
+      isDragging = true;
+      hasMoved = false;
+      startX = e.clientX;
+      startY = e.clientY;
+
+      const rect = cell.getBoundingClientRect();
+      const wsRect = workspaceEl.getBoundingClientRect();
+      initLeft = rect.left - wsRect.left;
+      initTop = rect.top - wsRect.top;
+
       desktopCells.forEach(c => c.classList.remove('selected'));
       cell.classList.add('selected');
-    });
+
+      document.addEventListener('pointermove', onPointerMove);
+      document.addEventListener('pointerup', onPointerUp);
+    };
+
+    const onPointerMove = (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if (!hasMoved && Math.hypot(dx, dy) > 4) {
+        hasMoved = true;
+        cell.classList.add('dragging');
+      }
+
+      if (hasMoved) {
+        const wsRect = workspaceEl.getBoundingClientRect();
+        let curX = initLeft + dx;
+        let curY = initTop + dy;
+        curX = Math.max(10, Math.min(wsRect.width - 82, curX));
+        curY = Math.max(10, Math.min(wsRect.height - 92, curY));
+
+        cell.style.left = `${curX}px`;
+        cell.style.top = `${curY}px`;
+      }
+    };
+
+    const onPointerUp = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
+
+      if (hasMoved) {
+        cell.classList.remove('dragging');
+        const wsRect = workspaceEl.getBoundingClientRect();
+        const curLeft = parseFloat(cell.style.left) || initLeft;
+        const curTop = parseFloat(cell.style.top) || initTop;
+
+        const col = Math.max(0, Math.round((curLeft - GRID_OFFSET_X) / GRID_SIZE_X));
+        const row = Math.max(0, Math.round((curTop - GRID_OFFSET_Y) / GRID_SIZE_Y));
+
+        const maxCols = Math.max(0, Math.floor((wsRect.width - GRID_OFFSET_X - 82) / GRID_SIZE_X));
+        const maxRows = Math.max(0, Math.floor((wsRect.height - GRID_OFFSET_Y - 92) / GRID_SIZE_Y));
+
+        const finalCol = Math.min(col, maxCols);
+        const finalRow = Math.min(row, maxRows);
+
+        const snapLeft = GRID_OFFSET_X + finalCol * GRID_SIZE_X;
+        const snapTop = GRID_OFFSET_Y + finalRow * GRID_SIZE_Y;
+
+        cell.style.transition = 'left 0.2s cubic-bezier(0.16, 1, 0.3, 1), top 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
+        cell.style.left = `${snapLeft}px`;
+        cell.style.top = `${snapTop}px`;
+        setTimeout(() => { cell.style.transition = ''; }, 220);
+
+        const app = cell.dataset.app;
+        savedPositions[app] = { col: finalCol, row: finalRow };
+        try {
+          localStorage.setItem('uzos_desktop_icon_positions', JSON.stringify(savedPositions));
+        } catch (err) {}
+      }
+    };
+
+    cell.addEventListener('pointerdown', onPointerDown);
 
     cell.addEventListener('dblclick', (e) => {
       e.stopPropagation();
@@ -232,6 +352,22 @@ document.addEventListener('DOMContentLoaded', () => {
             openApp('editor', { filePath: path, fileName: name });
             taskbar.showNotification("Fayl Yaratildi", `'${name}' VFS xotirasida ochildi.`, ICONS.newFile);
           }
+          break;
+        }
+
+        case 'arrange-icons': {
+          savedPositions = {};
+          try {
+            localStorage.removeItem('uzos_desktop_icon_positions');
+          } catch (e) {}
+          desktopCells.forEach(cell => {
+            cell.style.transition = 'left 0.3s cubic-bezier(0.16, 1, 0.3, 1), top 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+          });
+          applyIconPositions();
+          setTimeout(() => {
+            desktopCells.forEach(cell => { cell.style.transition = ''; });
+          }, 320);
+          taskbar.showNotification("Belgilar Tartiblandi", "Ish stoli belgilari birlamchi ustunga joylashtirildi.", ICONS.files);
           break;
         }
 
