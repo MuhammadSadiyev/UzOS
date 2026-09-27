@@ -1,23 +1,18 @@
 /* ==============================================================================
-   UzOS Cloud (WebOS) — 100% Authentic Telegram Web 1:1 Interface
-   Pixel-perfect replica of Web Telegram (web.telegram.org - Web K / Web A)
+   UzOS Cloud (WebOS) — Telegram Dark Glassmorphism Operating System
+   Full Desktop Environment: Windows, Taskbar, Dock, Drawer & Control Center
    ============================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --tg-bg-sidebar: #17212b;
-  --tg-bg-chat: #0e1621;
-  --tg-bg-input: #17212b;
-  --tg-bg-search: #242f3d;
-  --tg-bg-search-focus: #1d2733;
-  
-  --tg-hover: rgba(255, 255, 255, 0.06);
-  --tg-active: #2b5278;
-  
-  --tg-text: #ffffff;
-  --tg-text-secondary: #707579;
-  --tg-text-muted: #5e6b77;
+  --bg-darkest: #0e1621;
+  --bg-sidebar: rgba(14, 22, 33, 0.85);
+  --bg-topbar: rgba(23, 33, 43, 0.88);
+  --bg-drawer: #17212b;
+  --bg-surface: #242f3d;
+  --bg-surface-hover: #2b394a;
+  --bg-active: #2b5278;
   
   --tg-blue: #3390ec;
   --tg-blue-hover: #2b84da;
@@ -26,34 +21,36 @@
   --tg-red: #e53935;
   --tg-orange: #f5a623;
   --tg-purple: #8774e1;
+
+  --text-primary: #ffffff;
+  --text-secondary: #707579;
+  --text-muted: #5e6b77;
   
-  --tg-bubble-in: #182533;
-  --tg-bubble-out: #2b5278;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(51, 144, 236, 0.5);
   
+  --glass-blur: blur(20px);
+  --shadow-window: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.09);
+  --shadow-popover: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  
+  --topbar-height: 42px;
+  --sidebar-width: 60px;
+  --drawer-width: 320px;
+  
+  --font-sans: -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+
+  /* Telegram Theme Tokens */
+  --tg-bg-chat: #0e1621;
+  --tg-bg-sidebar: #17212b;
+  --tg-bg-search: #242f3d;
   --tg-border: rgba(255, 255, 255, 0.08);
-  --tg-divider: rgba(255, 255, 255, 0.06);
-  
-  --tg-font: -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", Arial, sans-serif;
-  --tg-font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
-  
-  --sidebar-width: 400px;
-}
-
-/* Light / Classic Blue Theme Override */
-body.tg-theme-blue {
-  --tg-bg-sidebar: #212d3b;
-  --tg-bg-chat: #18222d;
-  --tg-bg-input: #212d3b;
-  --tg-bg-search: #2b394a;
-  --tg-active: #315882;
-}
-
-body.tg-theme-night {
-  --tg-bg-sidebar: #0b1118;
-  --tg-bg-chat: #080d14;
-  --tg-bg-input: #0b1118;
-  --tg-bg-search: #151d27;
-  --tg-active: #1d3550;
+  --tg-text-secondary: #707579;
+  --tg-text-muted: #5e6b77;
+  --tg-active: #2b5278;
+  --tg-hover: #202b36;
+  --tg-font: var(--font-sans);
+  --tg-font-mono: var(--font-mono);
 }
 
 *, *::before, *::after {
@@ -68,643 +65,915 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  font-family: var(--tg-font);
-  background-color: var(--tg-bg-chat);
-  color: var(--tg-text);
+  font-family: var(--font-sans);
+  background-color: var(--bg-darkest);
+  color: var(--text-primary);
   font-size: 14px;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Telegram Custom Slim Scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+/* ==============================================================================
+   Desktop Container & Wallpaper Canvas
+   ============================================================================== */
+#desktop-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-darkest);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.4s ease;
+  overflow: hidden;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+/* Default Wallpaper: Telegram Dark Vector Doodle Ambient Mesh Gradient */
+.default-wallpaper {
+  background-color: #0e1621;
+  background-image: 
+    radial-gradient(circle at 12% 18%, rgba(36, 129, 204, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 88% 82%, rgba(51, 144, 236, 0.14) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='260' height='260' viewBox='0 0 260 260' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 40l18 6-12 12-6-18z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5' stroke-linejoin='round'/%3E%3Ccircle cx='95' cy='35' r='8' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M160 30h20v14h-20z' rx='3' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M215 75l6 14 14 6-14 6-6 14-6-14-14-6 14-6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M45 110c0-8 6-14 14-14s14 6 14 14c0 10-14 18-14 18s-14-8-14-18z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M120 100l12 20h-24z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M175 115a12 12 0 1 0 24 0 12 12 0 1 0-24 0z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M30 185c4-6 14-6 18 0 4 6-2 14-9 14s-13-8-9-14z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M90 180l10-10 10 10-10 10z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M150 185h22v12h-22z' rx='2' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M215 165l12 18-18-6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M70 65l6-6 6 6-6 6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M140 45l8 14-16 0z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M190 205a8 8 0 1 1 0-16 8 8 0 0 1 0 16z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3C/svg%3E");
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+.wallpaper-mesh {
+  background-color: #0b1118 !important;
+  background-image: 
+    radial-gradient(circle at 80% 20%, rgba(135, 116, 225, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(2, 132, 199, 0.22) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='260' height='260' viewBox='0 0 260 260' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 40l18 6-12 12-6-18z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5' stroke-linejoin='round'/%3E%3Ccircle cx='95' cy='35' r='8' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M160 30h20v14h-20z' rx='3' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M215 75l6 14 14 6-14 6-6 14-6-14-14-6 14-6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M45 110c0-8 6-14 14-14s14 6 14 14c0 10-14 18-14 18s-14-8-14-18z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M120 100l12 20h-24z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M175 115a12 12 0 1 0 24 0 12 12 0 1 0-24 0z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M30 185c4-6 14-6 18 0 4 6-2 14-9 14s-13-8-9-14z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M90 180l10-10 10 10-10 10z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M150 185h22v12h-22z' rx='2' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M215 165l12 18-18-6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M70 65l6-6 6 6-6 6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M140 45l8 14-16 0z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M190 205a8 8 0 1 1 0-16 8 8 0 0 1 0 16z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3C/svg%3E") !important;
 }
 
 /* ==============================================================================
-   Main App Container (Telegram Web 2-Column: Sidebar + Main Chat/App)
+   Top Status Bar (TopBar)
    ============================================================================== */
-#tg-app-container {
+#topbar {
+  height: var(--topbar-height);
+  min-height: var(--topbar-height);
+  background: var(--bg-topbar);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--border);
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  z-index: 9000;
   position: relative;
 }
 
-/* ==============================================================================
-   COLUMN 1: Telegram Web Sidebar (Left 400px)
-   ============================================================================== */
-#tg-left-col {
-  width: var(--sidebar-width);
-  min-width: 320px;
-  max-width: 440px;
-  height: 100vh;
-  background: var(--tg-bg-sidebar);
-  border-right: 1px solid var(--tg-border);
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-  flex-shrink: 0;
-}
-
-/* Sidebar Top Header (Hamburger + Search) */
-.tg-left-header {
-  height: 56px;
-  min-height: 56px;
+.topbar-left, .topbar-center, .topbar-right {
   display: flex;
   align-items: center;
-  padding: 0 14px;
-  gap: 12px;
-  border-bottom: 1px solid var(--tg-divider);
+  gap: 10px;
 }
 
-.tg-hamburger-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: transparent;
-  border: none;
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.topbar-brand:hover {
+  background: var(--bg-surface-hover);
+}
+
+.brand-icon {
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--tg-text-secondary);
-  transition: all 0.15s ease;
-  flex-shrink: 0;
 }
 
-.tg-hamburger-btn:hover {
-  background: var(--tg-hover);
+.brand-title {
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: -0.2px;
   color: #ffffff;
 }
 
-.tg-search-wrapper {
-  flex: 1;
-  background: var(--tg-bg-search);
-  border: 1.5px solid transparent;
-  border-radius: 22px;
-  height: 40px;
+.topbar-active-app {
+  font-size: 12.5px;
+  color: var(--tg-blue);
+  font-weight: 500;
+  padding-left: 6px;
+  border-left: 1px solid var(--border);
+}
+
+/* Center Running Window Taskbar Switcher */
+#topbar-running-tasks {
   display: flex;
   align-items: center;
-  padding: 0 14px;
-  gap: 10px;
-  transition: all 0.2s ease;
-  position: relative;
+  gap: 6px;
+  max-width: 50vw;
+  overflow-x: auto;
 }
 
-.tg-search-wrapper:focus-within {
+#topbar-running-tasks::-webkit-scrollbar {
+  display: none;
+}
+
+.taskbar-win-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.taskbar-win-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.taskbar-win-pill.active {
+  background: var(--bg-active);
+  color: #fff;
   border-color: var(--tg-blue);
-  background: var(--tg-bg-search-focus);
 }
 
-.tg-search-icon {
-  color: var(--tg-text-secondary);
+.taskbar-win-pill.minimized {
+  opacity: 0.6;
+}
+
+.pill-icon {
+  width: 14px;
+  height: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
-.tg-search-input {
+.pill-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Topbar Right Tray & Controls */
+.topbar-tray {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tray-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tray-item:hover {
+  background: var(--bg-surface-hover);
+  color: #ffffff;
+}
+
+.tray-item.active {
+  color: var(--tg-blue);
+}
+
+.tray-item svg {
+  width: 16px;
+  height: 16px;
+}
+
+.zero-badge {
+  background: rgba(79, 174, 78, 0.15);
+  color: var(--tg-green);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.topbar-clock {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #ffffff;
+  padding: 2px 6px;
+}
+
+/* ==============================================================================
+   Desktop Body Layout (Sidebar Dock + Workspace Canvas)
+   ============================================================================== */
+#desktop-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Left Sidebar Dock */
+#sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  background: var(--bg-sidebar);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  gap: 10px;
+  z-index: 1000;
+}
+
+.sidebar-logo-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.sidebar-logo-btn:hover {
+  transform: scale(1.06);
+}
+
+.sidebar-apps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.sidebar-app-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.sidebar-app-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar-app-btn:hover {
+  background: var(--bg-surface-hover);
+  color: #ffffff;
+}
+
+.sidebar-app-btn.active {
+  background: rgba(51, 144, 236, 0.2);
+  color: #ffffff;
+  border-color: rgba(51, 144, 236, 0.4);
+}
+
+.app-running-indicator {
+  position: absolute;
+  left: -2px;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--tg-blue);
+  display: none;
+}
+
+.sidebar-app-btn.running .app-running-indicator {
+  display: block;
+}
+
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==============================================================================
+   Telegram Web App Drawer / Start Menu (Sliding Glass Popover)
+   ============================================================================== */
+#drawer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--sidebar-width);
+  width: var(--drawer-width);
+  background: rgba(23, 33, 43, 0.94);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-right: 1px solid var(--border);
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  z-index: 950;
+  transform: translateX(0);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#drawer.collapsed {
+  transform: translateX(-105%);
+}
+
+.drawer-search-box {
+  padding: 14px 16px 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-input-wrapper {
+  background: var(--bg-surface);
+  border: 1.5px solid transparent;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+  height: 38px;
+  transition: border-color 0.2s;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: var(--tg-blue);
+}
+
+.search-icon svg {
+  width: 15px;
+  height: 15px;
+  color: var(--text-secondary);
+}
+
+.drawer-search-input {
   flex: 1;
   background: transparent;
   border: none;
   outline: none;
   color: #ffffff;
-  font-size: 14px;
-  font-family: var(--tg-font);
+  font-size: 13.5px;
+  font-family: var(--font-sans);
 }
 
-.tg-search-input::placeholder {
-  color: var(--tg-text-secondary);
-  font-size: 14px;
+.drawer-search-input::placeholder {
+  color: var(--text-secondary);
 }
 
-.tg-search-clear {
-  color: var(--tg-text-secondary);
-  cursor: pointer;
-  font-size: 14px;
-  display: none;
-}
-
-.tg-search-wrapper.has-text .tg-search-clear {
-  display: block;
-}
-
-/* Telegram Folders Bar (Smooth Underline Navigation) */
-.tg-folders-bar {
-  display: flex;
-  align-items: center;
-  height: 44px;
-  min-height: 44px;
-  padding: 0 8px;
-  border-bottom: 1px solid var(--tg-divider);
-  overflow-x: auto;
-  gap: 2px;
-}
-
-.tg-folders-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.tg-folder-tab {
-  padding: 10px 14px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--tg-text-secondary);
-  cursor: pointer;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.15s ease;
-  position: relative;
-  border-bottom: 2.5px solid transparent;
-}
-
-.tg-folder-tab:hover {
-  color: #ffffff;
-}
-
-.tg-folder-tab.active {
-  color: var(--tg-blue);
-  border-bottom-color: var(--tg-blue);
-}
-
-.tg-folder-badge {
-  background: var(--tg-blue);
-  color: #fff;
-  font-size: 10.5px;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 10px;
-}
-
-/* Telegram Chat List Container */
-.tg-chat-list {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  padding: 6px 0;
-}
-
-/* Telegram Web Chat Row (Exact 72px Height, Floating Rounded Box) */
-.tg-chat-item {
-  height: 72px;
-  min-height: 72px;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  margin: 1px 8px;
-  border-radius: 12px;
-  gap: 12px;
-  cursor: pointer;
-  transition: background 0.12s ease;
-  position: relative;
-}
-
-.tg-chat-item:hover {
-  background: var(--tg-hover);
-}
-
-.tg-chat-item.active {
-  background: var(--tg-active);
-}
-
-.tg-chat-item.active .tg-chat-name {
-  color: #ffffff;
-}
-
-.tg-chat-item.active .tg-chat-desc {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.tg-chat-item.active .tg-chat-time {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* 54px Circular Telegram Web Avatar */
-.tg-avatar {
-  width: 54px;
-  height: 54px;
-  min-width: 54px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  position: relative;
-  flex-shrink: 0;
-}
-
-.tg-avatar.gradient-purple { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); }
-.tg-avatar.gradient-dark { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1.5px solid rgba(255,255,255,0.12); }
-.tg-avatar.gradient-orange { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); }
-.tg-avatar.gradient-blue { background: linear-gradient(135deg, #2481cc 0%, #3390ec 100%); }
-.tg-avatar.gradient-slate { background: linear-gradient(135deg, #475569 0%, #64748b 100%); }
-
-.tg-chat-info {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
-}
-
-.tg-chat-top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.tg-chat-name {
-  font-size: 15px;
-  font-weight: 500;
-  color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.tg-chat-time {
-  font-size: 12px;
-  color: var(--tg-text-secondary);
-  flex-shrink: 0;
-}
-
-.tg-chat-bottom-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.tg-chat-desc {
-  font-size: 14px;
-  color: var(--tg-text-secondary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.tg-chat-badges {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.tg-pin-icon {
-  display: flex;
-  align-items: center;
-  color: var(--tg-text-secondary);
-}
-
-.tg-unread-badge {
-  background: var(--tg-blue);
-  color: #ffffff;
+.drawer-header {
+  padding: 12px 18px 6px;
   font-size: 11.5px;
   font-weight: 700;
-  padding: 1px 7px;
-  border-radius: 12px;
-  min-width: 20px;
-  text-align: center;
+  color: var(--tg-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* ==============================================================================
-   COLUMN 2: Telegram Web Main Active View (Right)
-   ============================================================================== */
-#tg-right-col {
+.drawer-list {
   flex: 1;
-  height: 100vh;
-  background: var(--tg-bg-chat);
+  overflow-y: auto;
+  padding: 6px 10px;
   display: flex;
   flex-direction: column;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Telegram Web Top Chat Header (56px) */
-.tg-right-header {
-  height: 56px;
-  min-height: 56px;
-  background: var(--tg-bg-sidebar);
-  border-bottom: 1px solid var(--tg-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  z-index: 50;
-}
-
-.tg-header-contact {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-}
-
-.tg-back-mobile-btn {
-  display: none;
-  background: transparent;
-  border: none;
-  color: var(--tg-text-secondary);
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 50%;
-}
-
-.tg-header-avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-  color: #fff;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.tg-header-details {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.tg-header-title {
-  font-size: 15.5px;
-  font-weight: 500;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.tg-header-subtitle {
-  font-size: 13px;
-  color: var(--tg-text-secondary);
-}
-
-.tg-header-actions {
-  display: flex;
-  align-items: center;
   gap: 4px;
 }
 
-.tg-header-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: transparent;
-  border: none;
-  color: var(--tg-text-secondary);
+.drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
   cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.drawer-item:hover {
+  background: var(--bg-surface-hover);
+}
+
+.drawer-item-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease;
-  text-decoration: none;
+  color: #ffffff;
+  flex-shrink: 0;
 }
 
-.tg-header-btn:hover {
-  background: var(--tg-hover);
+.drawer-item-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.drawer-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.drawer-item-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-item-title {
+  font-size: 14px;
+  font-weight: 500;
   color: #ffffff;
 }
 
-/* ==============================================================================
-   Right Content Body with Telegram Web Authentic Vector Wallpaper
-   ============================================================================== */
-.tg-right-body {
-  flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background-color: var(--tg-bg-chat);
-  /* 1:1 Pixel-Perfect Telegram Web Wallpaper Pattern */
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(51, 144, 236, 0.07) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(36, 129, 204, 0.07) 0%, transparent 45%),
-    url("data:image/svg+xml,%3Csvg width='260' height='260' viewBox='0 0 260 260' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 40l18 6-12 12-6-18z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5' stroke-linejoin='round'/%3E%3Ccircle cx='95' cy='35' r='8' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M160 30h20v14h-20z' rx='3' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M215 75l6 14 14 6-14 6-6 14-6-14-14-6 14-6z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M45 110c0-8 6-14 14-14s14 6 14 14c0 10-14 18-14 18s-14-8-14-18z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M120 100l12 20h-24z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M175 115a12 12 0 1 0 24 0 12 12 0 1 0-24 0z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M30 185c4-6 14-6 18 0 4 6-2 14-9 14s-13-8-9-14z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M90 180l10-10 10 10-10 10z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M150 185h22v12h-22z' rx='2' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M215 165l12 18-18-6z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M70 65l6-6 6 6-6 6z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M140 45l8 14-16 0z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M190 205a8 8 0 1 1 0-16 8 8 0 0 1 0 16z' stroke='%23ffffff' stroke-opacity='0.045' stroke-width='1.5'/%3E%3C/svg%3E");
-  background-repeat: repeat;
+.drawer-item-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1px 5px;
+  border-radius: 4px;
 }
 
-/* Active App View Container */
-.tg-app-view {
+.drawer-item-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==============================================================================
+   Desktop Workspace Canvas & Icons
+   ============================================================================== */
+#workspace {
+  position: relative;
   flex: 1;
-  display: none;
-  flex-direction: column;
-  width: 100%;
   height: 100%;
   overflow: hidden;
 }
 
-.tg-app-view.active {
-  display: flex;
-}
-
-/* ==============================================================================
-   Telegram Web Left Slide-out Menu (Drawer)
-   ============================================================================== */
-#tg-menu-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(2px);
-  z-index: 1000;
-  display: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-#tg-menu-overlay.visible {
-  display: block;
-  opacity: 1;
-}
-
-#tg-side-menu {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: -320px;
-  width: 320px;
-  background: var(--tg-bg-sidebar);
-  z-index: 1001;
+.desktop-icons-grid {
+  position: absolute;
+  top: 20px;
+  left: 20px;
   display: flex;
   flex-direction: column;
-  box-shadow: 4px 0 30px rgba(0, 0, 0, 0.6);
-  transition: left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  gap: 16px;
+  z-index: 50;
 }
 
-#tg-side-menu.visible {
-  left: 0;
-}
-
-.tg-menu-profile {
-  padding: 24px 20px 16px;
-  background: var(--tg-bg-search);
+.desktop-icon-cell {
+  width: 78px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 6px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
 }
 
-.tg-menu-avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #2481cc 0%, #3390ec 100%);
+.desktop-icon-cell:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.desktop-icon-cell.selected {
+  background: rgba(51, 144, 236, 0.25);
+  border-color: var(--tg-blue);
+}
+
+.desktop-icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(51, 144, 236, 0.4);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease;
 }
 
-.tg-menu-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: #fff;
+.desktop-icon-cell:hover .desktop-icon-box {
+  transform: scale(1.05);
 }
 
-.tg-menu-username {
-  font-size: 13px;
-  color: var(--tg-blue);
+.desktop-icon-box svg {
+  width: 26px;
+  height: 26px;
 }
 
-.tg-menu-items {
-  flex: 1;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  overflow-y: auto;
-}
+.desktop-icon-box.files { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); }
+.desktop-icon-box.terminal { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1.5px solid rgba(255,255,255,0.12); }
+.desktop-icon-box.editor { background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); }
+.desktop-icon-box.ai { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); }
+.desktop-icon-box.settings { background: linear-gradient(135deg, #475569 0%, #64748b 100%); }
 
-.tg-menu-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 14.5px;
+.desktop-icon-label {
+  font-size: 12px;
   font-weight: 500;
   color: #ffffff;
-  cursor: pointer;
-  transition: background 0.12s ease;
-}
-
-.tg-menu-item:hover {
-  background: var(--tg-hover);
-}
-
-.tg-menu-item-icon {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--tg-text-secondary);
-}
-
-.tg-menu-item:hover .tg-menu-item-icon {
-  color: var(--tg-blue);
-}
-
-.tg-menu-footer {
-  padding: 14px 20px;
-  border-top: 1px solid var(--tg-border);
-  font-size: 12px;
-  color: var(--tg-text-secondary);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  line-height: 1.2;
 }
 
 /* ==============================================================================
-   Telegram Web Toast Notification
+   Multi-Window Manager Window Frames (Telegram Dark Glass Windows)
    ============================================================================== */
-#tg-toast-container {
+.uzos-window {
   position: absolute;
-  top: 70px;
-  right: 20px;
+  background: var(--bg-darkest);
+  border-radius: 12px;
+  box-shadow: var(--shadow-window);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  z-index: 9999;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: box-shadow 0.2s ease;
+}
+
+.uzos-window.active {
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 0 1.5px var(--border-focus);
+}
+
+.uzos-window.minimized {
+  display: none !important;
+}
+
+.uzos-window.maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+}
+
+/* Window Titlebar (macOS / Telegram Dark Control Dots) */
+.window-titlebar {
+  height: 38px;
+  min-height: 38px;
+  background: var(--bg-drawer);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  cursor: move;
+  user-select: none;
+}
+
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.win-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.win-btn:hover {
+  transform: scale(1.15);
+}
+
+.win-btn.close { background: #ef4444; }
+.win-btn.minimize { background: #f59e0b; }
+.win-btn.maximize { background: #10b981; }
+
+.window-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   pointer-events: none;
 }
 
-.tg-toast {
-  background: var(--tg-bg-sidebar);
-  border: 1px solid var(--tg-border);
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  padding: 12px 18px;
+.window-icon {
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
-  gap: 14px;
-  pointer-events: auto;
-  animation: tgToastSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  min-width: 280px;
+  justify-content: center;
+  color: var(--tg-blue);
 }
 
-@keyframes tgToastSlide {
-  from { opacity: 0; transform: translateY(-12px); }
-  to { opacity: 1; transform: translateY(0); }
+.window-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.window-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.window-titlebar-right {
+  width: 50px;
+}
+
+.window-body {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Window Resizing Handles */
+.resize-handle {
+  position: absolute;
+  z-index: 100;
+}
+
+.resize-n { top: 0; left: 0; right: 0; height: 5px; cursor: n-resize; }
+.resize-s { bottom: 0; left: 0; right: 0; height: 5px; cursor: s-resize; }
+.resize-e { top: 0; bottom: 0; right: 0; width: 5px; cursor: e-resize; }
+.resize-w { top: 0; bottom: 0; left: 0; width: 5px; cursor: w-resize; }
+.resize-ne { top: 0; right: 0; width: 10px; height: 10px; cursor: ne-resize; }
+.resize-nw { top: 0; left: 0; width: 10px; height: 10px; cursor: nw-resize; }
+.resize-se { bottom: 0; right: 0; width: 10px; height: 10px; cursor: se-resize; }
+.resize-sw { bottom: 0; left: 0; width: 10px; height: 10px; cursor: sw-resize; }
+
+/* ==============================================================================
+   Quick Settings Control Center Popover (Top Right)
+   ============================================================================== */
+#quick-settings {
+  position: absolute;
+  top: 52px;
+  right: 14px;
+  width: 320px;
+  background: rgba(23, 33, 43, 0.94);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-popover);
+  padding: 18px;
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 9200;
+}
+
+#quick-settings.visible {
+  display: flex;
+}
+
+.qs-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.qs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.qs-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.qs-card:hover {
+  background: var(--bg-surface-hover);
+}
+
+.qs-card.active {
+  background: var(--bg-active);
+  border-color: var(--tg-blue);
+}
+
+.qs-card-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.qs-card.active .qs-card-icon {
+  color: #ffffff;
+}
+
+.qs-card-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.qs-card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.qs-card-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.qs-card-status {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.qs-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--bg-surface);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.qs-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+}
+
+.qs-slider-row svg {
+  width: 16px;
+  height: 16px;
+}
+
+.qs-range {
+  flex: 1;
+  accent-color: var(--tg-blue);
+  height: 4px;
+  cursor: pointer;
 }
 
 /* ==============================================================================
-   Responsive Behavior (Mobile / Small Screen Support)
+   Desktop Right-Click Context Menu
    ============================================================================== */
-@media (max-width: 800px) {
-  #tg-left-col {
-    width: 100%;
-    max-width: 100%;
-  }
-  
-  #tg-right-col {
-    display: none;
-  }
-  
-  #tg-right-col.mobile-active {
-    display: flex;
-    position: fixed;
-    inset: 0;
-    z-index: 200;
-  }
+#context-menu {
+  position: absolute;
+  width: 220px;
+  background: rgba(23, 33, 43, 0.95);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-popover);
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 9999;
+}
 
-  .tg-back-mobile-btn {
-    display: flex;
-  }
+.ctx-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.12s ease;
+}
+
+.ctx-item svg {
+  width: 16px;
+  height: 16px;
+  color: var(--text-secondary);
+}
+
+.ctx-item:hover {
+  background: var(--tg-blue);
+  color: #ffffff;
+}
+
+.ctx-item:hover svg {
+  color: #ffffff;
+}
+
+.ctx-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 6px;
+}
+
+/* ==============================================================================
+   Notification Toast Container
+   ============================================================================== */
+#notification-container {
+  position: absolute;
+  top: 52px;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 9990;
+  pointer-events: none;
+}
+
+.toast-item {
+  background: rgba(23, 33, 43, 0.95);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+  pointer-events: auto;
+  animation: toastSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastSlide {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.toast-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tg-blue);
+}
+
+.toast-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.toast-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toast-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.toast-msg {
+  font-size: 12px;
+  color: var(--text-secondary);
 }

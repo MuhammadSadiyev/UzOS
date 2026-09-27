@@ -1,6 +1,6 @@
 /* ==============================================================================
    UzOS Cloud (WebOS) — Window Manager (Core Engine)
-   Multi-window, Dragging, Resizing, Z-Index, Snapping, Minimize/Maximize
+   Multi-window, Dragging, Resizing, Z-Index, Minimize/Maximize with SVG Controls
    ============================================================================== */
 
 export class WindowManager {
@@ -8,7 +8,6 @@ export class WindowManager {
     this.workspace = workspaceElement;
     this.windows = new Map(); // id -> window state
     this.activeWindowId = null;
-    this.baseZIndex = 100;
     this.highestZIndex = 100;
     
     // Event callbacks
@@ -26,16 +25,9 @@ export class WindowManager {
         this.focusWindow(winEl.dataset.windowId);
       }
     });
-
-    // Handle Escape or shortcut keys
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.activeWindowId) {
-        // Optional quick actions
-      }
-    });
   }
 
-  createWindow({ id, title, icon = '🪟', width = 640, height = 440, minWidth = 360, minHeight = 260, content = '', appType = 'generic' }) {
+  createWindow({ id, title, icon = '', width = 680, height = 480, minWidth = 380, minHeight = 280, content = '', appType = 'generic' }) {
     if (this.windows.has(id)) {
       const existing = this.windows.get(id);
       if (existing.minimized) {
@@ -48,8 +40,8 @@ export class WindowManager {
     // Smart cascade positioning
     const wsRect = this.workspace.getBoundingClientRect();
     const count = this.windows.size;
-    const defaultX = Math.max(20, Math.min(wsRect.width - width - 40, 40 + (count % 8) * 30));
-    const defaultY = Math.max(20, Math.min(wsRect.height - height - 40, 30 + (count % 8) * 30));
+    const defaultX = Math.max(20, Math.min(wsRect.width - width - 40, 60 + (count % 6) * 35));
+    const defaultY = Math.max(20, Math.min(wsRect.height - height - 40, 40 + (count % 6) * 35));
 
     // Create DOM element
     const winEl = document.createElement('div');
@@ -61,19 +53,22 @@ export class WindowManager {
     winEl.style.top = `${defaultY}px`;
     winEl.style.zIndex = ++this.highestZIndex;
 
-    // Window Inner Structure
+    // Window Inner Structure (macOS / Telegram Dark Style)
     winEl.innerHTML = `
       <!-- Titlebar -->
       <div class="window-titlebar">
+        <div class="window-controls">
+          <button class="win-btn close" title="Yopish" aria-label="Yopish"></button>
+          <button class="win-btn minimize" title="Kichraytirish" aria-label="Kichraytirish"></button>
+          <button class="win-btn maximize" title="Kattalashtirish" aria-label="Kattalashtirish"></button>
+        </div>
+        
         <div class="window-info">
           <span class="window-icon">${icon}</span>
           <span class="window-title">${title}</span>
         </div>
-        <div class="window-controls">
-          <button class="win-btn minimize" title="Kichraytirish (Minimize)">―</button>
-          <button class="win-btn maximize" title="Kattalashtirish (Maximize)">□</button>
-          <button class="win-btn close" title="Yopish (Close)">✕</button>
-        </div>
+
+        <div class="window-titlebar-right"></div>
       </div>
       
       <!-- Body -->
@@ -81,7 +76,7 @@ export class WindowManager {
         ${content}
       </div>
 
-      <!-- Resizing Handles -->
+      <!-- Resizing Handles (8 directions) -->
       <div class="resize-handle resize-n"></div>
       <div class="resize-handle resize-s"></div>
       <div class="resize-handle resize-e"></div>
@@ -286,108 +281,87 @@ export class WindowManager {
 
   focusWindow(id) {
     if (!this.windows.has(id)) return;
-    const win = this.windows.get(id);
+    const winState = this.windows.get(id);
 
-    if (this.activeWindowId === id && !win.minimized) return;
-
-    // Reset others
-    this.windows.forEach(w => {
-      w.element.classList.remove('active');
-    });
-
-    win.element.classList.add('active');
-    win.element.style.zIndex = ++this.highestZIndex;
+    // Update z-index
+    winState.element.style.zIndex = ++this.highestZIndex;
     this.activeWindowId = id;
 
+    // Toggle active classes
+    this.windows.forEach(w => {
+      w.element.classList.toggle('active', w.id === id);
+    });
+
     if (this.onActiveChange) {
-      this.onActiveChange(id);
+      this.onActiveChange(winState);
     }
   }
 
   minimizeWindow(id) {
-    const win = this.windows.get(id);
-    if (!win) return;
-
-    win.minimized = true;
-    win.element.classList.add('minimized');
-    win.element.classList.remove('active');
-
-    // Find next window to focus
-    let nextWin = null;
-    let maxZ = 0;
-    this.windows.forEach(w => {
-      if (!w.minimized && parseInt(w.element.style.zIndex || 0) > maxZ) {
-        maxZ = parseInt(w.element.style.zIndex);
-        nextWin = w;
-      }
-    });
-
-    if (nextWin) {
-      this.focusWindow(nextWin.id);
-    } else {
-      this.activeWindowId = null;
-      if (this.onActiveChange) this.onActiveChange(null);
-    }
+    if (!this.windows.has(id)) return;
+    const winState = this.windows.get(id);
+    winState.minimized = true;
+    winState.element.classList.add('minimized');
 
     this.triggerWindowListChange();
   }
 
   restoreWindow(id) {
-    const win = this.windows.get(id);
-    if (!win) return;
-
-    win.minimized = false;
-    win.element.classList.remove('minimized');
+    if (!this.windows.has(id)) return;
+    const winState = this.windows.get(id);
+    winState.minimized = false;
+    winState.element.classList.remove('minimized');
     this.focusWindow(id);
+
     this.triggerWindowListChange();
   }
 
   toggleMaximizeWindow(id) {
-    const win = this.windows.get(id);
-    if (!win) return;
+    if (!this.windows.has(id)) return;
+    const winState = this.windows.get(id);
+    const el = winState.element;
 
-    if (win.maximized) {
-      // Restore previous size
-      win.maximized = false;
-      win.element.classList.remove('maximized');
-      win.element.style.left = `${win.prevBounds.x}px`;
-      win.element.style.top = `${win.prevBounds.y}px`;
-      win.element.style.width = `${win.prevBounds.width}px`;
-      win.element.style.height = `${win.prevBounds.height}px`;
-    } else {
+    if (!winState.maximized) {
       // Save current bounds
-      const rect = win.element.getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
       const wsRect = this.workspace.getBoundingClientRect();
-      win.prevBounds = {
+      winState.prevBounds = {
         x: rect.left - wsRect.left,
         y: rect.top - wsRect.top,
         width: rect.width,
         height: rect.height
       };
 
-      win.maximized = true;
-      win.element.classList.add('maximized');
+      el.classList.add('maximized');
+      winState.maximized = true;
+    } else {
+      el.classList.remove('maximized');
+      el.style.left = `${winState.prevBounds.x}px`;
+      el.style.top = `${winState.prevBounds.y}px`;
+      el.style.width = `${winState.prevBounds.width}px`;
+      el.style.height = `${winState.prevBounds.height}px`;
+      winState.maximized = false;
     }
   }
 
   closeWindow(id) {
-    const win = this.windows.get(id);
-    if (!win) return;
-
-    win.element.remove();
+    if (!this.windows.has(id)) return;
+    const winState = this.windows.get(id);
+    winState.element.remove();
     this.windows.delete(id);
 
     if (this.activeWindowId === id) {
       this.activeWindowId = null;
-      let nextWin = null;
-      let maxZ = 0;
+      // Focus highest remaining window
+      let topWin = null;
+      let topZ = -1;
       this.windows.forEach(w => {
-        if (!w.minimized && parseInt(w.element.style.zIndex || 0) > maxZ) {
-          maxZ = parseInt(w.element.style.zIndex);
-          nextWin = w;
+        if (!w.minimized && parseInt(w.element.style.zIndex) > topZ) {
+          topZ = parseInt(w.element.style.zIndex);
+          topWin = w;
         }
       });
-      if (nextWin) this.focusWindow(nextWin.id);
+      if (topWin) this.focusWindow(topWin.id);
       else if (this.onActiveChange) this.onActiveChange(null);
     }
 

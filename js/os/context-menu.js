@@ -1,5 +1,6 @@
 /* ==============================================================================
    UzOS Cloud (WebOS) — Desktop Context Menu (Right Click)
+   Vector SVG Icons, Telegram Dark Glassmorphism Styling
    ============================================================================== */
 
 export class ContextMenu {
@@ -13,7 +14,7 @@ export class ContextMenu {
 
   init() {
     this.workspace.addEventListener('contextmenu', (e) => {
-      // If clicking inside a window or another interactive control, let default or window handle
+      // If clicking inside a window or topbar/sidebar, let them handle it
       if (e.target.closest('.uzos-window') || e.target.closest('#sidebar') || e.target.closest('#topbar')) {
         return;
       }

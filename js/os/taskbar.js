@@ -1,6 +1,9 @@
 /* ==============================================================================
-   UzOS Cloud (WebOS) — Taskbar, TopBar, Drawer, Notifications & Audio FX
+   UzOS Cloud (WebOS) — Taskbar, TopBar, Drawer, Control Center & Audio FX
+   100% Vector SVG Icons, Zero Emojis, Authentic WebOS Multitasking
    ============================================================================== */
+
+import { ICONS } from './icons.js';
 
 export class TaskbarController {
   constructor({ windowManager, openAppCallback, vfs }) {
@@ -9,6 +12,8 @@ export class TaskbarController {
     this.vfs = vfs;
 
     this.topbarClock = document.getElementById('topbar-clock');
+    this.topbarRunningTasks = document.getElementById('topbar-running-tasks');
+    this.topbarActiveApp = document.getElementById('topbar-active-app');
     this.drawer = document.getElementById('drawer');
     this.drawerList = document.getElementById('drawer-list');
     this.drawerSearch = document.getElementById('drawer-search');
@@ -103,19 +108,17 @@ export class TaskbarController {
       this.btnFullscreen.addEventListener('click', () => {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen().catch(() => {});
-          this.btnFullscreen.textContent = '⤓ Chiqish';
         } else {
           document.exitFullscreen().catch(() => {});
-          this.btnFullscreen.textContent = '⛶ To\'liq ekran';
         }
       });
     }
   }
 
   bindWindowEvents() {
-    // When windows open, close, or focus, update sidebar running indicators
+    // When windows open, close, or focus, update sidebar running indicators and topbar pills
     this.wm.onWindowListChange = (windows) => {
-      // Update sidebar buttons
+      // Update sidebar dock buttons
       document.querySelectorAll('.sidebar-app-btn').forEach(btn => {
         const app = btn.dataset.app;
         const isRunning = windows.some(w => w.appType === app);
@@ -124,16 +127,45 @@ export class TaskbarController {
         btn.classList.toggle('running', isRunning);
         btn.classList.toggle('active', isActive);
       });
+
+      // Update topbar running task pills
+      if (this.topbarRunningTasks) {
+        this.topbarRunningTasks.innerHTML = '';
+        windows.forEach(w => {
+          const pill = document.createElement('div');
+          pill.className = `taskbar-win-pill ${w.active ? 'active' : ''} ${w.minimized ? 'minimized' : ''}`;
+          pill.innerHTML = `
+            <span class="pill-icon">${w.icon}</span>
+            <span class="pill-title">${w.title}</span>
+          `;
+          pill.addEventListener('click', () => {
+            if (w.minimized) {
+              this.wm.restoreWindow(w.id);
+            } else if (w.active) {
+              this.wm.minimizeWindow(w.id);
+            } else {
+              this.wm.focusWindow(w.id);
+            }
+          });
+          this.topbarRunningTasks.appendChild(pill);
+        });
+      }
+    };
+
+    this.wm.onActiveChange = (activeWin) => {
+      if (this.topbarActiveApp) {
+        this.topbarActiveApp.textContent = activeWin ? activeWin.title : 'UzOS Cloud';
+      }
     };
   }
 
-  showNotification(title, message, icon = '✈️') {
+  showNotification(title, message, iconSvg = ICONS.ai) {
     this.playNotificationSound();
 
     const toast = document.createElement('div');
     toast.className = 'toast-item';
     toast.innerHTML = `
-      <div class="toast-icon">${icon}</div>
+      <div class="toast-icon">${iconSvg}</div>
       <div class="toast-content">
         <div class="toast-title">${title}</div>
         <div class="toast-msg">${message}</div>
@@ -146,7 +178,7 @@ export class TaskbarController {
       toast.style.opacity = '0';
       toast.style.transform = 'translateX(40px)';
       setTimeout(() => toast.remove(), 300);
-    }, 4000);
+    }, 3800);
   }
 
   playNotificationSound() {

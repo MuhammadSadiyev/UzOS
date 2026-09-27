@@ -1,6 +1,6 @@
 /* ==============================================================================
    UzOS Cloud (WebOS) — Terminal Application
-   Full-featured Interactive Web Shell with Toolbar, uzosfetch & Command History
+   Full-featured Interactive Web Shell, uzosfetch ASCII Art, Zero Vibe Emojis
    ============================================================================== */
 
 export class TerminalApp {
@@ -21,27 +21,27 @@ export class TerminalApp {
         
         <!-- Terminal Quick Action Buttons Toolbar -->
         <div class="term-toolbar">
-          <button class="term-btn" data-cmd="uzosfetch">⚡ uzosfetch</button>
-          <button class="term-btn" data-cmd="help">❓ help</button>
-          <button class="term-btn" data-cmd="ls">📁 ls</button>
-          <button class="term-btn" data-cmd="matrix">🟢 matrix</button>
-          <button class="term-btn" data-cmd="whoami">👤 whoami</button>
-          <button class="term-btn" data-cmd="date">📅 date</button>
-          <button class="term-btn" data-cmd="clear">🧹 tozalash</button>
+          <button class="term-btn" data-cmd="uzosfetch">uzosfetch</button>
+          <button class="term-btn" data-cmd="help">help</button>
+          <button class="term-btn" data-cmd="ls">ls -la</button>
+          <button class="term-btn" data-cmd="matrix">matrix</button>
+          <button class="term-btn" data-cmd="whoami">whoami</button>
+          <button class="term-btn" data-cmd="date">date</button>
+          <button class="term-btn" data-cmd="clear">clear</button>
         </div>
 
         <!-- Terminal Output Area -->
         <div class="terminal-output" id="term-output">
           <div class="terminal-line info">UzOS Cloud [Versiya 2.0.4 WebOS Hypervisor Shell]</div>
-          <div class="terminal-line info">(c) 2026 UzOS Raqamli Suverenitet Ekotizimi. 100% Zero-Telemetry.</div>
-          <div class="terminal-line">Mavjud buyruqlarni ko'rish uchun <span style="color:#38bdf8;">'help'</span> deb yozing yoki yuqoridagi tugmalarni bosing.</div>
+          <div class="terminal-line info">(c) 2026 UzOS Raqamli Suverenitet Ekotizimi. Zero-Telemetry.</div>
+          <div class="terminal-line">Mavjud buyruqlarni ko'rish uchun <span style="color:#38bdf8;font-weight:600;">'help'</span> deb yozing yoki yuqoridagi tugmalarni bosing.</div>
           <div class="terminal-line"></div>
         </div>
 
         <!-- Terminal Prompt Input Row -->
         <div class="terminal-prompt-row">
           <span class="terminal-prompt-user">uzos@cloud</span>:<span class="terminal-prompt-path" id="term-path">~${this.currentPath}</span>$&nbsp;
-          <input type="text" class="terminal-input" id="term-input" autofocus autocomplete="off" spellcheck="false" placeholder="Buyruq yozing..." />
+          <input type="text" class="terminal-input" id="term-input" autofocus autocomplete="off" spellcheck="false" placeholder="Buyruq kiriting..." />
         </div>
 
       </div>
@@ -115,14 +115,14 @@ export class TerminalApp {
     switch (cmd.toLowerCase()) {
       case 'help':
         this.appendOutput(`Mavjud buyruqlar ro'yxati:
-  uzosfetch    - Tizim haqida to'liq vizual ma'lumot
-  ls           - Joriy katalogdagi fayllar va papkalar
+  uzosfetch    - Tizim parametrlari va arxitektura ma'lumoti
+  ls           - Joriy katalogdagi fayl va papkalar
   cd <yo'l>    - Boshqa katalogga o'tish (masalan: cd /Rasmlar)
-  pwd          - Joriy to'liq yo'lni ko'rsatish
-  cat <fayl>   - Fayl matnini o'qish va ekranga chiqarish
-  whoami       - Joriy foydalanuvchi ma'lumoti
-  date         - Sana va vaqt
-  matrix       - Matritsa kodlar animatsiyasi
+  pwd          - Joriy to'liq yo'lni chop etish
+  cat <fayl>   - Fayl matnini terminalda o'qish
+  whoami       - Joriy tizim foydalanuvchisi va huquqlari
+  date         - Real vaqt va sana ma'lumoti
+  matrix       - Matritsa xavfsizlik oqimi
   clear        - Terminal ekranini tozalash`, 'info');
         break;
 
@@ -131,12 +131,12 @@ export class TerminalApp {
          /\\           Foydalanuvchi: uzos@cloud
         /  \\          OS: UzOS Cloud 2.0.4 (Telegram Desktop WebOS)
        / /\\ \\         Yadro: Web Hypervisor VFS / Rust WebAssembly
-      / /  \\ \\        Dizayn: 100% Telegram Desktop 1:1 UI
+      / /  \\ \\        Dizayn: 100% Telegram Web 1:1 UI
      / / /\\ \\ \\       Telemetriya: 0 B (100% Zero-Telemetry)
     / / /  \\ \\ \\      Kriptografiya: AES-GCM 256-bit Mahalliy
    /_/ /    \\ \\_\\     Xotira: 112 MB / 8 GB (30x Yengil)
      \\ \\    / /       Uptime: 99.9% (Web Sandbox)
-      \\ \\__/ /        Holat: 100% Suveren & Faol ⚡
+      \\ \\__/ /        Holat: 100% Suveren va Xavfsiz
        \\____/
 `, 'info');
         break;
@@ -145,7 +145,7 @@ export class TerminalApp {
         const folder = this.vfs.getFolder(this.currentPath);
         if (folder && folder.children) {
           const names = Object.entries(folder.children).map(([name, item]) => {
-            return item.type === 'directory' ? `📁 ${name}/` : `📄 ${name}`;
+            return item.type === 'directory' ? `[DIR]  ${name}/` : `[FILE] ${name}`;
           });
           this.appendOutput(names.join('    ') || '(katalog bo\'sh)', 'success');
         } else {

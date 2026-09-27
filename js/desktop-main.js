@@ -1,9 +1,15 @@
 /* ==============================================================================
-   UzOS Cloud (WebOS) — 100% Authentic Telegram Web Master Script
-   Manages 2-Column Sidebar, Chats, Folders, Drawer Menu & Built-in Apps
+   UzOS Cloud (WebOS) — Desktop Environment Master Controller
+   Coordinates Multi-Window Manager, Taskbar, Dock, Drawer, VFS & Built-in Apps
+   100% Vector SVG Icons, Zero Emojis, Authentic Telegram Web UI Styling
    ============================================================================== */
 
 import { VirtualFileSystem } from './os/storage.js';
+import { WindowManager } from './os/window-manager.js';
+import { TaskbarController } from './os/taskbar.js';
+import { ContextMenu } from './os/context-menu.js';
+import { ICONS } from './os/icons.js';
+
 import { TerminalApp } from './apps/terminal.js';
 import { FilesApp } from './apps/files.js';
 import { EditorApp } from './apps/editor.js';
@@ -14,307 +20,259 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize Virtual File System
   const vfs = new VirtualFileSystem();
 
-  // 2. Chat Metadata Definition
-  const CHATS = {
-    ai: {
-      title: "UzOS Milliy AI",
-      subtitle: "bot, doimiy onlayn",
-      avatarText: "AI",
-      avatarClass: "gradient-purple",
-      verified: true
-    },
-    terminal: {
-      title: "UzOS Terminal",
-      subtitle: "Web Shell v2.0 • Web Hypervisor",
-      avatarText: ">_",
-      avatarClass: "gradient-dark",
-      verified: false
-    },
-    files: {
-      title: "UzOS Fayllar",
-      subtitle: "Shaxsiy Bulut Xotirasi (VFS)",
-      avatarText: "📁",
-      avatarClass: "gradient-orange",
-      verified: false
-    },
-    editor: {
-      title: "UzOS Code Studio",
-      subtitle: "JavaScript, Python, Markdown",
-      avatarText: "📝",
-      avatarClass: "gradient-blue",
-      verified: false
-    },
-    settings: {
-      title: "Tizim Sozlamalari",
-      subtitle: "Zero-Telemetry • 100% Shaxsiy",
-      avatarText: "⚙️",
-      avatarClass: "gradient-slate",
-      verified: false
-    }
-  };
+  // 2. Initialize Window Manager on Workspace Canvas
+  const workspaceEl = document.getElementById('workspace');
+  const wm = new WindowManager(workspaceEl);
 
-  let activeChatId = 'ai';
+  // 3. Initialize Taskbar, Topbar, Drawer & Audio Controller
+  let openAppRef = null;
+  const taskbar = new TaskbarController({
+    windowManager: wm,
+    openAppCallback: (appType, opts) => openApp(appType, opts),
+    vfs
+  });
+
+  // 4. App Instances Map & Window Configurations
   let editorAppInstance = null;
 
-  // DOM Elements
-  const headerAvatar = document.getElementById('header-avatar');
-  const headerTitle = document.getElementById('header-title');
-  const headerSubtitle = document.getElementById('header-subtitle');
-  const chatList = document.getElementById('tg-chat-list');
-  const searchInput = document.getElementById('tg-search-input');
-  const searchClear = document.getElementById('tg-search-clear');
-  const searchWrapper = document.getElementById('tg-search-wrapper');
-  const foldersBar = document.getElementById('tg-folders-bar');
-  const menuBtn = document.getElementById('btn-tg-menu');
-  const sideMenu = document.getElementById('tg-side-menu');
-  const menuOverlay = document.getElementById('tg-menu-overlay');
-  const homeBtn = document.getElementById('btn-home');
-  const fullscreenBtn = document.getElementById('btn-fullscreen');
-  const mobileBackBtn = document.getElementById('btn-mobile-back');
-  const rightCol = document.getElementById('tg-right-col');
-
-  // 3. Initialize Built-in Apps into their containers
-  const initApps = () => {
-    // AI
-    const aiHost = document.querySelector('.app-host-ai');
-    if (aiHost) new AIAssistantApp(aiHost);
-
-    // Terminal
-    const termHost = document.querySelector('.app-host-terminal');
-    if (termHost) new TerminalApp(termHost, vfs, null);
-
-    // Files
-    const filesHost = document.querySelector('.app-host-files');
-    if (filesHost) {
-      new FilesApp(filesHost, vfs, null, (filePath, fileName) => {
-        switchChat('editor', { filePath, fileName });
-      });
-    }
-
-    // Editor
-    const editorHost = document.querySelector('.app-host-editor');
-    if (editorHost) {
-      editorAppInstance = new EditorApp(
-        editorHost,
-        vfs,
-        '/Hujjatlar/Xush_kelibsiz.txt',
-        'Xush_kelibsiz.txt',
-        (title, msg, icon) => showToast(title, msg, icon)
-      );
-    }
-
-    // Settings
-    const settingsHost = document.querySelector('.app-host-settings');
-    if (settingsHost) {
-      new SettingsApp(
-        settingsHost,
-        (type, style) => {},
-        vfs,
-        (title, msg, icon) => showToast(title, msg, icon)
-      );
+  const APP_CONFIGS = {
+    ai: {
+      id: 'win-ai',
+      title: 'UzOS Milliy AI',
+      icon: ICONS.ai,
+      width: 680,
+      height: 520,
+      minWidth: 420,
+      minHeight: 360
+    },
+    terminal: {
+      id: 'win-terminal',
+      title: 'UzOS Terminal',
+      icon: ICONS.terminal,
+      width: 700,
+      height: 460,
+      minWidth: 440,
+      minHeight: 300
+    },
+    files: {
+      id: 'win-files',
+      title: 'Bulut Fayllar',
+      icon: ICONS.folder,
+      width: 740,
+      height: 480,
+      minWidth: 460,
+      minHeight: 320
+    },
+    editor: {
+      id: 'win-editor',
+      title: 'Kod Muharriri',
+      icon: ICONS.editor,
+      width: 780,
+      height: 520,
+      minWidth: 480,
+      minHeight: 340
+    },
+    settings: {
+      id: 'win-settings',
+      title: 'Tizim Sozlamalari',
+      icon: ICONS.settings,
+      width: 620,
+      height: 520,
+      minWidth: 400,
+      minHeight: 350
     }
   };
 
-  // 4. Switch Active Chat / App View
-  const switchChat = (chatId, options = {}) => {
-    if (!CHATS[chatId]) return;
-    activeChatId = chatId;
-    const meta = CHATS[chatId];
+  // 5. Master Open App Function
+  function openApp(appType, options = {}) {
+    const config = APP_CONFIGS[appType];
+    if (!config) return;
 
-    // Update left chat list items
-    chatList.querySelectorAll('.tg-chat-item').forEach(item => {
-      item.classList.toggle('active', item.dataset.chatId === chatId);
+    // Check if already open
+    if (wm.windows.has(config.id)) {
+      const win = wm.windows.get(config.id);
+      if (win.minimized) {
+        wm.restoreWindow(config.id);
+      }
+      wm.focusWindow(config.id);
+
+      if (appType === 'editor' && options.filePath && editorAppInstance) {
+        editorAppInstance.openNewFile(options.filePath, options.fileName);
+      }
+      return win;
+    }
+
+    // Create window frame
+    const win = wm.createWindow({
+      id: config.id,
+      title: config.title,
+      icon: config.icon,
+      width: config.width,
+      height: config.height,
+      minWidth: config.minWidth,
+      minHeight: config.minHeight,
+      appType
     });
 
-    // Update right header
-    if (headerAvatar) {
-      headerAvatar.textContent = meta.avatarText;
-      headerAvatar.className = `tg-header-avatar ${meta.avatarClass}`;
-    }
-    
-    if (headerTitle) {
-      headerTitle.innerHTML = `
-        <span>${meta.title}</span>
-        ${meta.verified ? `
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M8 0L9.8 1.9L12.4 1.5L13.4 3.9L15.9 4.9L15.6 7.5L17.2 9.5L15.6 11.5L15.9 14.1L13.4 15.1L12.4 17.5L9.8 17.1L8 19L6.2 17.1L3.6 17.5L2.6 15.1L0.1 14.1L0.4 11.5L-1.2 9.5L0.4 7.5L0.1 4.9L2.6 3.9L3.6 1.5L6.2 1.9L8 0Z" transform="scale(0.8) translate(2, 0)" fill="#3390ec"/>
-            <path d="M4.5 8L6.8 10.3L11.5 5.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        ` : ''}
-      `;
+    const host = win.element.querySelector('.window-body');
+
+    // Instantiate app inside window body
+    switch (appType) {
+      case 'ai':
+        new AIAssistantApp(host);
+        break;
+
+      case 'terminal':
+        new TerminalApp(host, vfs, wm);
+        break;
+
+      case 'files':
+        new FilesApp(host, vfs, wm, (filePath, fileName) => {
+          openApp('editor', { filePath, fileName });
+        });
+        break;
+
+      case 'editor':
+        editorAppInstance = new EditorApp(
+          host,
+          vfs,
+          options.filePath || '/Hujjatlar/Xush_kelibsiz.txt',
+          options.fileName || 'Xush_kelibsiz.txt',
+          (title, msg, icon) => taskbar.showNotification(title, msg, icon)
+        );
+        break;
+
+      case 'settings':
+        new SettingsApp(
+          host,
+          (type, style) => {},
+          vfs,
+          (title, msg, icon) => taskbar.showNotification(title, msg, icon)
+        );
+        break;
     }
 
-    if (headerSubtitle) {
-      headerSubtitle.textContent = meta.subtitle;
-    }
+    return win;
+  }
 
-    // Switch view container
-    document.querySelectorAll('.tg-app-view').forEach(view => {
-      view.classList.remove('active');
+  openAppRef = openApp;
+
+  // 6. Bind Desktop Icons (Single click = select, Double click = launch)
+  const desktopCells = document.querySelectorAll('.desktop-icon-cell');
+  desktopCells.forEach(cell => {
+    cell.addEventListener('click', (e) => {
+      e.stopPropagation();
+      desktopCells.forEach(c => c.classList.remove('selected'));
+      cell.classList.add('selected');
     });
-    const targetView = document.getElementById(`view-${chatId}`);
-    if (targetView) {
-      targetView.classList.add('active');
-    }
 
-    // Mobile view activation
-    if (rightCol && window.innerWidth <= 800) {
-      rightCol.classList.add('mobile-active');
-    }
+    cell.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      const app = cell.dataset.app;
+      openApp(app);
+    });
 
-    // If opening editor with specific file
-    if (chatId === 'editor' && options.filePath && editorAppInstance) {
-      editorAppInstance.openNewFile(options.filePath, options.fileName);
-    }
-  };
-
-  // 5. Toast Notification System
-  const showToast = (title, msg, icon = '✈️') => {
-    const container = document.getElementById('tg-toast-container');
-    if (!container) return;
-    const toast = document.createElement('div');
-    toast.className = 'tg-toast';
-    toast.innerHTML = `
-      <div style="font-size: 20px;">${icon}</div>
-      <div>
-        <div style="font-size: 13.5px; font-weight: 600; color: #fff;">${title}</div>
-        <div style="font-size: 12px; color: var(--tg-text-secondary);">${msg}</div>
-      </div>
-    `;
-    container.appendChild(toast);
-    setTimeout(() => {
-      toast.style.opacity = '0';
-      toast.style.transform = 'translateY(-10px)';
-      setTimeout(() => toast.remove(), 250);
-    }, 3500);
-  };
-
-  // 6. Bind Chat Item Click Events
-  chatList.querySelectorAll('.tg-chat-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const chatId = item.dataset.chatId;
-      switchChat(chatId);
-      // Remove unread badge once opened
-      const badge = item.querySelector('.tg-unread-badge');
-      if (badge) badge.remove();
+    cell.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const app = cell.dataset.app;
+        openApp(app);
+      }
     });
   });
 
-  // 7. Bind Search Input Filter
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      if (searchWrapper) {
-        searchWrapper.classList.toggle('has-text', query.length > 0);
-      }
-      chatList.querySelectorAll('.tg-chat-item').forEach(item => {
-        const name = item.querySelector('.tg-chat-name').textContent.toLowerCase();
-        const desc = item.querySelector('.tg-chat-desc').textContent.toLowerCase();
-        if (name.includes(query) || desc.includes(query)) {
-          item.style.display = 'flex';
+  // Clicking on workspace clears icon selection
+  workspaceEl.addEventListener('click', (e) => {
+    if (!e.target.closest('.desktop-icon-cell')) {
+      desktopCells.forEach(c => c.classList.remove('selected'));
+    }
+  });
+
+  // 7. Bind Sidebar Dock Buttons (Toggle / Focus / Launch)
+  document.querySelectorAll('.sidebar-app-btn[data-app]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const app = btn.dataset.app;
+      const config = APP_CONFIGS[app];
+      if (!config) return;
+
+      if (wm.windows.has(config.id)) {
+        const win = wm.windows.get(config.id);
+        if (win.minimized) {
+          wm.restoreWindow(config.id);
+        } else if (win.id === wm.activeWindowId) {
+          wm.minimizeWindow(config.id);
         } else {
-          item.style.display = 'none';
+          wm.focusWindow(config.id);
         }
-      });
+      } else {
+        openApp(app);
+      }
     });
-  }
+  });
 
-  if (searchClear) {
-    searchClear.addEventListener('click', () => {
-      searchInput.value = '';
-      if (searchWrapper) searchWrapper.classList.remove('has-text');
-      chatList.querySelectorAll('.tg-chat-item').forEach(item => {
-        item.style.display = 'flex';
-      });
-      searchInput.focus();
+  // 8. Bind Drawer / Start Menu App Item Click
+  document.querySelectorAll('.drawer-item[data-app]').forEach(item => {
+    item.addEventListener('click', () => {
+      const app = item.dataset.app;
+      openApp(app);
+      const drawer = document.getElementById('drawer');
+      if (drawer) drawer.classList.add('collapsed');
     });
-  }
+  });
 
-  // 8. Bind Telegram Folders Bar Tabs
-  if (foldersBar) {
-    foldersBar.querySelectorAll('.tg-folder-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        foldersBar.querySelectorAll('.tg-folder-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
-        const folder = tab.dataset.folder;
-        chatList.querySelectorAll('.tg-chat-item').forEach(item => {
-          const itemFolders = item.dataset.folder.split(',');
-          if (folder === 'all' || itemFolders.includes(folder)) {
-            item.style.display = 'flex';
-          } else {
-            item.style.display = 'none';
+  // 9. Initialize Desktop Right-Click Context Menu
+  new ContextMenu({
+    workspace: workspaceEl,
+    onAction: (action) => {
+      switch (action) {
+        case 'new-file': {
+          const name = prompt("Yangi fayl nomi (masalan: loyiha.txt):", "yangi_hujjat.txt");
+          if (name) {
+            const path = `/Hujjatlar/${name}`;
+            vfs.writeFile(path, `# ${name}\nYangi yaratilgan hujjat.`);
+            openApp('editor', { filePath: path, fileName: name });
+            taskbar.showNotification("Fayl Yaratildi", `'${name}' VFS xotirasida ochildi.`, ICONS.newFile);
           }
-        });
-      });
-    });
-  }
-
-  // 9. Bind Slide-out Menu (Hamburger)
-  const toggleMenu = (open) => {
-    if (sideMenu && menuOverlay) {
-      sideMenu.classList.toggle('visible', open);
-      menuOverlay.classList.toggle('visible', open);
-    }
-  };
-
-  if (menuBtn) menuBtn.addEventListener('click', () => toggleMenu(true));
-  if (menuOverlay) menuOverlay.addEventListener('click', () => toggleMenu(false));
-
-  if (sideMenu) {
-    sideMenu.querySelectorAll('.tg-menu-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const action = item.dataset.action;
-        toggleMenu(false);
-        if (action === 'home') {
-          window.location.href = 'index.html';
-        } else if (action === 'theme') {
-          toggleTheme();
-        } else if (CHATS[action]) {
-          switchChat(action);
+          break;
         }
-      });
-    });
-  }
 
-  // 10. Theme toggle
-  const toggleTheme = () => {
-    if (document.body.classList.contains('tg-theme-blue')) {
-      document.body.className = 'tg-theme-night';
-      showToast("Mavzu: Telegram Night", "Qora chuqur rejim faol.", "🌙");
-    } else if (document.body.classList.contains('tg-theme-night')) {
-      document.body.className = '';
-      showToast("Mavzu: Telegram Dark", "Standart qorong'i rejim faol.", "🌑");
-    } else {
-      document.body.classList.add('tg-theme-blue');
-      showToast("Mavzu: Telegram Blue", "Klassik ko'k rejim faol.", "💙");
+        case 'refresh':
+          taskbar.showNotification("Ish Stoli Yangilandi", "Tizim jarayonlari muvaffaqiyatli sinxronlandi.", ICONS.refresh);
+          break;
+
+        case 'wallpaper': {
+          const container = document.getElementById('desktop-container');
+          if (container.classList.contains('wallpaper-mesh')) {
+            container.className = 'default-wallpaper';
+            taskbar.showNotification("Fon Rasmi", "Telegram Dark Vector fon faol.", ICONS.palette);
+          } else {
+            container.className = 'default-wallpaper wallpaper-mesh';
+            taskbar.showNotification("Fon Rasmi", "Telegram Deep Indigo fon faol.", ICONS.palette);
+          }
+          break;
+        }
+
+        case 'sys-info':
+          openApp('terminal');
+          taskbar.showNotification("UzOS Cloud 2.0.4", "WebOS Web Hypervisor • 100% Zero-Telemetry", ICONS.info);
+          break;
+      }
     }
-  };
+  });
 
-  // 11. Fullscreen toggle
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
-    } else {
-      document.exitFullscreen().catch(() => {});
-    }
-  };
-
-  if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
-
-  // 12. Mobile Back Button
-  if (mobileBackBtn && rightCol) {
-    mobileBackBtn.addEventListener('click', () => {
-      rightCol.classList.remove('mobile-active');
-    });
-  }
-
-  // 13. Initialize everything
-  initApps();
-  switchChat('ai');
-
-  // Welcome Toast
+  // 10. Auto-launch default welcome windows in cascaded arrangement
   setTimeout(() => {
-    showToast("UzOS Cloud Faol", "100% Telegram Web 1:1 interfeysi ishga tushdi.", "🇺🇿");
-  }, 400);
+    openApp('terminal');
+    setTimeout(() => {
+      openApp('ai');
+    }, 180);
+  }, 250);
+
+  // Welcome Toast Notification
+  setTimeout(() => {
+    taskbar.showNotification(
+      "UzOS Cloud WebOS Faol",
+      "Ko'p oynali WebOS va 100% Telegram Web dizayn tili ishga tushdi.",
+      ICONS.ai
+    );
+  }, 700);
 });

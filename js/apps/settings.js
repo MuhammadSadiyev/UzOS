@@ -1,7 +1,9 @@
 /* ==============================================================================
    UzOS Cloud (WebOS) — Settings Application
-   100% Authentic Telegram Web Settings Screen
+   100% Authentic Telegram Web Settings Screen with Vector SVGs, Zero Emojis
    ============================================================================== */
+
+import { ICONS } from '../os/icons.js';
 
 export class SettingsApp {
   constructor(container, setWallpaperCallback, vfs, showToast) {
@@ -24,10 +26,7 @@ export class SettingsApp {
             <div class="settings-profile-info">
               <div class="settings-name">
                 <span>UzOS Foydalanuvchisi</span>
-                <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
-                  <path d="M8 0L9.8 1.9L12.4 1.5L13.4 3.9L15.9 4.9L15.6 7.5L17.2 9.5L15.6 11.5L15.9 14.1L13.4 15.1L12.4 17.5L9.8 17.1L8 19L6.2 17.1L3.6 17.5L2.6 15.1L0.1 14.1L0.4 11.5L-1.2 9.5L0.4 7.5L0.1 4.9L2.6 3.9L3.6 1.5L6.2 1.9L8 0Z" transform="scale(0.8) translate(2, 0)" fill="#3390ec"/>
-                  <path d="M4.5 8L6.8 10.3L11.5 5.5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                ${ICONS.verified}
               </div>
               <div class="settings-username">@uzos_cloud • Administrator</div>
               <div class="settings-bio">O'zbekiston Milliy Raqamli Suveren Bulut Tizimi</div>
@@ -41,7 +40,9 @@ export class SettingsApp {
               
               <div class="settings-row">
                 <div class="settings-row-left">
-                  <div class="settings-icon-bubble green">🛡️</div>
+                  <div class="settings-icon-bubble green">
+                    ${ICONS.shield}
+                  </div>
                   <div class="settings-row-text">
                     <span class="settings-row-title">Zero-Telemetry Qalqoni</span>
                     <span class="settings-row-desc">Xorijiy kuzatuv serverlariga so'rov: 0 bayt</span>
@@ -55,7 +56,9 @@ export class SettingsApp {
 
               <div class="settings-row">
                 <div class="settings-row-left">
-                  <div class="settings-icon-bubble blue">🔒</div>
+                  <div class="settings-icon-bubble blue">
+                    ${ICONS.shield}
+                  </div>
                   <div class="settings-row-text">
                     <span class="settings-row-title">Mahalliy AES-256 Shifrlash</span>
                     <span class="settings-row-desc">Barcha VFS fayllari brauzer ichida shifrlanadi</span>
@@ -69,13 +72,15 @@ export class SettingsApp {
 
               <div class="settings-row">
                 <div class="settings-row-left">
-                  <div class="settings-icon-bubble purple">ID</div>
+                  <div class="settings-icon-bubble purple">
+                    ${ICONS.globe}
+                  </div>
                   <div class="settings-row-text">
                     <span class="settings-row-title">OneID.uz Identifikatsiyasi</span>
                     <span class="settings-row-desc">Milliy identifikatsiya tizimi bog'langan</span>
                   </div>
                 </div>
-                <span style="color:#4ade80; font-size:12.5px; font-weight:700;">FAOL</span>
+                <span style="color:#4ade80; font-size:12px; font-weight:700; letter-spacing:0.5px;">FAOL</span>
               </div>
 
             </div>
@@ -88,13 +93,15 @@ export class SettingsApp {
               
               <div class="settings-row">
                 <div class="settings-row-left">
-                  <div class="settings-icon-bubble blue">🎨</div>
+                  <div class="settings-icon-bubble blue">
+                    ${ICONS.palette}
+                  </div>
                   <div class="settings-row-text">
                     <span class="settings-row-title">Telegram Rang Mavzusi</span>
-                    <span class="settings-row-desc">Dark (Asosiy), Blue (Klassik), Night (Chuqur)</span>
+                    <span class="settings-row-desc">Dark (Standart), Blue (Klassik), Night (Chuqur)</span>
                   </div>
                 </div>
-                <select id="theme-selector" style="background:var(--tg-bg-search); color:#fff; border:1px solid var(--tg-border); padding:7px 14px; border-radius:10px; outline:none; font-size:13px;">
+                <select id="theme-selector" style="background:var(--tg-bg-search); color:#fff; border:1px solid var(--tg-border); padding:7px 14px; border-radius:10px; outline:none; font-size:13px; cursor:pointer;">
                   <option value="dark">Telegram Dark</option>
                   <option value="blue">Telegram Blue</option>
                   <option value="night">Telegram Night</option>
@@ -103,7 +110,9 @@ export class SettingsApp {
 
               <div class="settings-row">
                 <div class="settings-row-left">
-                  <div class="settings-icon-bubble orange">🇺🇿</div>
+                  <div class="settings-icon-bubble orange">
+                    ${ICONS.globe}
+                  </div>
                   <div class="settings-row-text">
                     <span class="settings-row-title">Tizim Tili</span>
                     <span class="settings-row-desc">O'zbek tili (Lotin alifbosi)</span>
@@ -122,7 +131,9 @@ export class SettingsApp {
               
               <div class="settings-row">
                 <div class="settings-row-left">
-                  <div class="settings-icon-bubble purple">💾</div>
+                  <div class="settings-icon-bubble purple">
+                    ${ICONS.folder}
+                  </div>
                   <div class="settings-row-text">
                     <span class="settings-row-title">VFS Xotira Sarfi</span>
                     <span class="settings-row-desc">IndexedDB / LocalStorage orqali saqlanmoqda</span>
@@ -131,9 +142,9 @@ export class SettingsApp {
                 <span style="color:var(--tg-text-secondary); font-size:13px; font-weight:600;">~112 KB</span>
               </div>
 
-              <div style="padding:16px 20px;">
-                <button class="settings-btn-danger" id="btn-reset-vfs">
-                  ⚠️ Barcha VFS Xotirani Tozalash (Factory Reset)
+              <div style="padding:14px 18px;">
+                <button class="settings-btn-danger" id="btn-reset-vfs" style="display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;">
+                  <span>Barcha VFS Xotirani Tozalash (Factory Reset)</span>
                 </button>
               </div>
 
@@ -177,7 +188,7 @@ export class SettingsApp {
       } else if (e.target.value === 'night') {
         document.body.classList.add('tg-theme-night');
       }
-      if (this.showToast) this.showToast("Mavzu O'zgartirildi", `${e.target.selectedOptions[0].text} faollashtirildi.`, "🎨");
+      if (this.showToast) this.showToast("Mavzu O'zgartirildi", `${e.target.selectedOptions[0].text} faollashtirildi.`, ICONS.palette);
     });
 
     const zeroTelemetryToggle = this.container.querySelector('#set-zero-telemetry');
@@ -186,7 +197,7 @@ export class SettingsApp {
         this.showToast(
           "Zero-Telemetry",
           e.target.checked ? "Tashqi kuzatuv to'liq bloklandi." : "Ogohlantirish: Qalqon o'chirildi.",
-          e.target.checked ? "🛡️" : "⚠️"
+          ICONS.shield
         );
       }
     });
@@ -195,7 +206,7 @@ export class SettingsApp {
     resetBtn.addEventListener('click', () => {
       if (confirm("Diqqat! Barcha shaxsiy fayllar va VFS kesh tozalanadi. Davom etasizmi?")) {
         localStorage.clear();
-        if (this.showToast) this.showToast("Kesh Tozalandi", "Tizim birlamchi holatga qaytarildi.", "✅");
+        if (this.showToast) this.showToast("Kesh Tozalandi", "Tizim birlamchi holatga qaytarildi.", ICONS.refresh);
         setTimeout(() => location.reload(), 1000);
       }
     });

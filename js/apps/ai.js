@@ -1,6 +1,7 @@
 /* ==============================================================================
    UzOS Cloud (WebOS) — Milliy AI Assistant (100% Authentic Telegram Web Chat UI)
    Exact 1:1 Telegram Speech Bubbles with Tails, Vector SVGs & Floating Input Bar
+   Clean Professional Text & Badges (Zero Vibe-Coder Emojis)
    ============================================================================== */
 
 export class AIAssistantApp {
@@ -64,16 +65,16 @@ export class AIAssistantApp {
             <div class="tg-bubble-row bot">
               <div class="bubble-avatar">AI</div>
               <div class="ai-bubble bot">
-                Assalomu alaykum! Men <b>UzOS Milliy Sun'iy Intellekt</b> maslahatchisiman. 🇺🇿<br><br>
-                Tizim xavfsizligi, kiber-suverenitet, dasturlash yoki O'zbekiston IT qonunchiligi bo'yicha qanday yordam bera olaman? Quyidagi tezkor tugmalardan birini tanlashingiz mumkin:
+                Assalomu alaykum! Men <b>UzOS Milliy Sun'iy Intellekt</b> maslahatchisiman.<br><br>
+                Tizim xavfsizligi, kiber-suverenitet, dasturlash yoki O'zbekiston IT qonunchiligi bo'yicha qanday yordam bera olaman? Quyidagi tezkor mavzulardan birini tanlashingiz mumkin:
                 
                 <!-- Telegram Inline Keyboard -->
                 <div class="tg-inline-keyboard">
-                  <button class="tg-inline-btn" data-query="Kiber-xavfsizlik auditi">⚡ Xavfsizlik Auditi</button>
-                  <button class="tg-inline-btn" data-query="Zero-Telemetry nima?">🛡️ Zero-Telemetry</button>
-                  <button class="tg-inline-btn" data-query="Windows vs UzOS farqi?">📊 UzOS vs Windows</button>
-                  <button class="tg-inline-btn" data-query="O'zbekiston IT qonunlari">🇺🇿 IT Qonunlari</button>
-                  <button class="tg-inline-btn" data-query="Python skript yozib ber">💻 Python Skript</button>
+                  <button class="tg-inline-btn" data-query="Kiber-xavfsizlik auditi">Xavfsizlik Auditi</button>
+                  <button class="tg-inline-btn" data-query="Zero-Telemetry nima?">Zero-Telemetry Qoidasi</button>
+                  <button class="tg-inline-btn" data-query="Windows vs UzOS farqi?">UzOS va Windows Farqi</button>
+                  <button class="tg-inline-btn" data-query="O'zbekiston IT qonunlari">IT Qonunchiligi</button>
+                  <button class="tg-inline-btn" data-query="Python skript yozib ber">Python Audit Skripti</button>
                 </div>
 
                 <div class="bubble-meta">
@@ -95,30 +96,29 @@ export class AIAssistantApp {
 
         <!-- Telegram Quick Prompt Chips Bar -->
         <div class="ai-quick-prompts">
-          <div class="ai-chip" data-prompt="UzOS Cloud nima va qanday ishlaydi?">💡 UzOS nima?</div>
-          <div class="ai-chip" data-prompt="Zero-Telemetry nima?">🛡️ Zero-Telemetry</div>
-          <div class="ai-chip" data-prompt="Windows vs UzOS farqi?">📊 UzOS vs Windows</div>
-          <div class="ai-chip" data-prompt="Python'da Telegram bot yaratish">🤖 Telegram Bot</div>
-          <div class="ai-chip" data-prompt="O'zbekiston kiberxavfsizlik qonunlari">🇺🇿 Qonunchilik</div>
+          <div class="ai-chip" data-prompt="UzOS Cloud nima va qanday ishlaydi?">UzOS nima?</div>
+          <div class="ai-chip" data-prompt="Zero-Telemetry nima?">Zero-Telemetry</div>
+          <div class="ai-chip" data-prompt="Windows vs UzOS farqi?">UzOS vs Windows</div>
+          <div class="ai-chip" data-prompt="Python'da Telegram bot yaratish">Telegram Bot Koding</div>
+          <div class="ai-chip" data-prompt="O'zbekiston kiberxavfsizlik qonunlari">Milliy Qonunchilik</div>
         </div>
 
         <!-- Telegram Web Floating Message Input Bar -->
         <div class="ai-input-container">
           <div class="ai-input-box">
             
-            <button class="tg-input-icon-btn" id="ai-emoji-btn" title="Emotsiyalar" aria-label="Emoji">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <button class="tg-input-icon-btn" id="ai-emoji-btn" title="Tezkor savol" aria-label="Tezkor savol">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
-                <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-                <line x1="9" y1="9" x2="9.01" y2="9"></line>
-                <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
               </svg>
             </button>
 
             <input type="text" class="ai-input" id="ai-input-field" placeholder="Xabar yozing..." autocomplete="off" />
 
             <button class="tg-input-icon-btn" id="ai-attach-btn" title="Fayl biriktirish" aria-label="Biriktirish">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
               </svg>
             </button>
@@ -183,17 +183,15 @@ export class AIAssistantApp {
     });
 
     this.emojiBtn.addEventListener('click', () => {
-      const emojis = ['⚡', '🛡️', '🇺🇿', '🚀', '💻', '🔒', '✅'];
-      const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-      this.inputEl.value += randomEmoji;
+      this.inputEl.value = "Kiber-xavfsizlik auditi natijalarini ko'rsat";
       this.inputEl.focus();
     });
 
     this.attachBtn.addEventListener('click', () => {
-      this.addUserMessage("📎 Hujjat biriktirildi: uzos_suverenitet_akt.pdf (240 KB)");
+      this.addUserMessage("Hujjat biriktirildi: uzos_suverenitet_akt.pdf (240 KB)");
       this.playTelegramSound('send');
       setTimeout(() => {
-        this.addBotMessage("✅ Hujjat qabul qilindi va mahalliy AES-256 xavfsiz VFS xotirasida muvaffaqiyatli tekshirildi. Kiber-tahdidlar aniqlanmadi!");
+        this.addBotMessage("Hujjat qabul qilindi va mahalliy AES-256 xavfsiz VFS xotirasida muvaffaqiyatli tekshirildi. Kiber-tahdidlar aniqlanmadi.");
         this.playTelegramSound('receive');
       }, 700);
     });
@@ -254,50 +252,50 @@ export class AIAssistantApp {
       let response = "";
 
       if (q.includes('xavfsizlik') || q.includes('audit') || q.includes('tekshir')) {
-        response = `🔒 <b>UzOS Kiber-Xavfsizlik Auditi Natijasi:</b><br><br>
+        response = `<b>UzOS Kiber-Xavfsizlik Auditi Natijasi:</b><br><br>
         1. <b>Telemetriya:</b> 0 bayt (Xorijiy kuzatuv tarmoqlariga ulanish yo'q).<br>
         2. <b>Yadro holati:</b> Web Hypervisor VFS faol va suveren.<br>
         3. <b>Mahalliy shifrlash:</b> AES-GCM 256-bit faol.<br>
-        4. <b>Xulosa:</b> Tizim 100% raqamli suverenitet talablariga javob beradi!
+        4. <b>Xulosa:</b> Tizim 100% raqamli suverenitet talablariga to'liq javob beradi!
         
         <div class="tg-inline-keyboard">
-          <button class="tg-inline-btn" data-query="Zero-Telemetry nima?">🛡️ Zero-Telemetry</button>
-          <button class="tg-inline-btn" data-query="Python skript yozib ber">💻 Audit skripti</button>
+          <button class="tg-inline-btn" data-query="Zero-Telemetry nima?">Zero-Telemetry Falsafasi</button>
+          <button class="tg-inline-btn" data-query="Python skript yozib ber">Audit Skripti</button>
         </div>`;
       } else if (q.includes('telemetr') || q.includes('zero')) {
-        response = `🛡️ <b>Zero-Telemetry Falsafasi:</b><br><br>
+        response = `<b>Zero-Telemetry Falsafasi:</b><br><br>
         Ko'plab xorijiy operatsion tizimlar (masalan, Windows) foydalanuvchining bosgan har bir tugmasi, ko'rgan veb-sahifalari va shaxsiy ma'lumotlarini o'z serverlariga jo'natadi.<br><br>
-        <b>UzOS Cloud</b> da bu amaliyot qat'iyan taqiqlangan: barcha fayllar va hisob-kitoblar faqat qurilmangizning o'zida saqlanadi va chetga chiqmaydi!
+        <b>UzOS Cloud</b> da bu amaliyot qat'iyan taqiqlangan: barcha fayllar va hisob-kitoblar faqat qurilmangizning o'zida saqlanadi va chetga chiqmaydi.
         
         <div class="tg-inline-keyboard">
-          <button class="tg-inline-btn" data-query="Windows vs UzOS farqi?">📊 Windows bilan farqi</button>
+          <button class="tg-inline-btn" data-query="Windows vs UzOS farqi?">Windows bilan Farqi</button>
         </div>`;
       } else if (q.includes('windows') || q.includes('farq') || q.includes('solishtir')) {
-        response = `📊 <b>UzOS va Windows Solishtiruvi:</b><br><br>
+        response = `<b>UzOS va Windows Solishtiruvi:</b><br><br>
         • <b>RAM sarfi:</b> Windows bo'sh holatda ~3.5 GB sarflaydi; UzOS bor-yo'g'i ~110 MB talab qiladi (30 barobar yengil!).<br>
         • <b>Narxi:</b> Windows qimmat litsenziya talab qiladi; UzOS 100% ochiq kodli va tekin.<br>
         • <b>Maxfiylik:</b> Windows telemetriya yig'adi; UzOS da 0 bayt telemetriya.<br>
         • <b>Interfeys:</b> UzOS o'zbek foydalanuvchilariga tanish Telegram Web UI asosida yaratilgan.`;
       } else if (q.includes('qonun') || q.includes('it') || q.includes('suveren')) {
-        response = `🇺🇿 <b>O'zbekiston IT va Kiberxavfsizlik Qonunchiligi:</b><br><br>
+        response = `<b>O'zbekiston IT va Kiberxavfsizlik Qonunchiligi:</b><br><br>
         O'zbekiston Respublikasining <i>"Kiberxavfsizlik to'g'risida"</i>gi (O'RQ-764) hamda <i>"Shaxsga doir ma'lumotlar to'g'risida"</i>gi Qonuniga muvofiq, fuqarolarning shaxsiy ma'lumotlari O'zbekiston hududidagi serverlarda saqlanishi shart.<br><br>
         UzOS Cloud mazkur talablarga 100% mos ravishda milliy ma'lumotlar xavfsizligini ta'minlaydi.`;
       } else if (q.includes('python') || q.includes('skript') || q.includes('kod')) {
-        response = `💻 <b>Python Zero-Telemetry Audit Skripti:</b><br>
+        response = `<b>Python Zero-Telemetry Audit Skripti:</b><br>
         <pre># UzOS Kiber-Qalqon Tekshiruvi
 import socket
 
 def audit_network():
     blocked_hosts = ["telemetry.ms.com", "vortex.data.ms.com"]
-    print("🛡️ UzOS Kiber-Qalqoni faol!")
+    print("UzOS Kiber-Qalqoni faol!")
     for host in blocked_hosts:
         print(f"Bloklangan manzil: {host} -> 0.0.0.0 (Xavfsiz)")
 
 audit_network()</pre>
-        Ushbu kodni <b>UzOS Kod Muharriri</b>da ochib, <i>▶ Bajarish</i> tugmasi orqali ishga tushirishingiz mumkin!`;
+        Ushbu kodni <b>UzOS Kod Muharriri</b>da ochib, <i>Bajarish</i> tugmasi orqali ishga tushirishingiz mumkin.`;
       } else {
         response = `Savolingiz: <i>"${this.escapeHtml(query)}"</i><br><br>
-        UzOS Milliy AI tizimi buni muvaffaqiyatli qayta ishladi. Agar texnik yordam kerak bo'lsa, <b>Terminal</b> orqali buyruqlarni yuborishingiz, <b>Fayllar</b> bo'limida hujjatlaringizni boshqarishingiz yoki <b>Kod Muharriri</b>da yangi ilovalarni yaratishingiz mumkin! 🚀`;
+        UzOS Milliy AI tizimi buni muvaffaqiyatli qayta ishladi. Agar texnik yordam kerak bo'lsa, <b>Terminal</b> orqali buyruqlarni yuborishingiz, <b>Fayllar</b> bo'limida hujjatlaringizni boshqarishingiz yoki <b>Kod Muharriri</b>da yangi ilovalarni yaratishingiz mumkin.`;
       }
 
       this.addBotMessage(response);
