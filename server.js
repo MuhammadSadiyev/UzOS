@@ -1,8 +1,8 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -14,11 +14,19 @@ const MIME = {
   '.ico': 'image/x-icon'
 };
 
+const baseDir = fs.existsSync(path.join(import.meta.dirname, 'dist')) 
+  ? path.join(import.meta.dirname, 'dist') 
+  : import.meta.dirname;
+
 const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
   if (reqPath === '/' || reqPath === '') reqPath = '/index.html';
   
-  const filePath = path.join(__dirname, reqPath);
+  let filePath = path.join(baseDir, reqPath);
+  if (!fs.existsSync(filePath) && fs.existsSync(path.join(import.meta.dirname, reqPath))) {
+    filePath = path.join(import.meta.dirname, reqPath);
+  }
+
   const ext = path.extname(filePath).toLowerCase();
 
   fs.readFile(filePath, (err, data) => {
@@ -33,5 +41,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`UzOS Cloud Server running at http://localhost:${PORT}/`);
+  console.log(`UzOS Cloud Server running at http://localhost:${PORT}/ (serving from ${baseDir})`);
 });

@@ -1,0 +1,31 @@
+{
+  "name": "uzos",
+  "version": "1.0.0",
+  "description": "UzOS Cloud — brauzer ichida ishlovchi, 100% ochiq kodli, **Telegram UI** uslubidagi zamonaviy milliy bulut ish stoli (WebOS).",
+  "main": "main.js",
+  "scripts": {
+    "dev": "vite --port 8080 --host",
+    "build": "vite build",
+    "preview": "vite preview --port 8080 --host",
+    "start": "vite --port 8080 --host"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MuhammadSadiyev/UzOS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/MuhammadSadiyev/UzOS/issues"
+  },
+  "homepage": "https://github.com/MuhammadSadiyev/UzOS#readme",
+  "dependencies": {
+    "@telegram-apps/telegram-ui": "^2.1.13",
+    "@vitejs/plugin-react": "^6.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^8.3.1"
+  }
+}
