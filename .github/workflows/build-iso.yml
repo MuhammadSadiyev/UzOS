@@ -10,6 +10,8 @@ jobs:
     name: Build UzOS 24.04 LTS Bootable ISO
     runs-on: ubuntu-24.04
     timeout-minutes: 90
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout Repository
@@ -277,3 +279,22 @@ jobs:
           path: output/uzos-24.04-desktop-amd64.iso
           if-no-files-found: error
           retention-days: 14
+
+      - name: Upload UzOS ISO to Cloudflare R2 (Ultra-Fast CDN)
+        if: ${{ secrets.R2_SECRET_ACCESS_KEY != '' }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          command -v aws &>/dev/null || sudo apt install -y awscli
+
+          echo "UzOS ISO Cloudflare R2 ga yuklanmoqda..."
+          aws s3 cp output/uzos-24.04-desktop-amd64.iso \
+            s3://${{ secrets.R2_BUCKET_NAME }}/uzos-24.04-desktop-amd64.iso \
+            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+
+          echo "================================================================="
+          echo " [UzOS] Cloudflare R2 ga to'liq yuklandi!"
+          echo " Endi faylni Cloudflare CDN orqali maksimal tezlikda olishingiz mumkin."
+          echo "================================================================="
