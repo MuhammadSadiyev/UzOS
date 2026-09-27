@@ -135,11 +135,30 @@ export class SettingsApp {
                     ${ICONS.folder}
                   </div>
                   <div class="settings-row-text">
-                    <span class="settings-row-title">VFS Xotira Sarfi</span>
-                    <span class="settings-row-desc">Brauzer lokal xotirasida (Offline) saqlanmoqda</span>
+                    <span class="settings-row-title">VFS Xotira Dvigateli</span>
+                    <span class="settings-row-desc">IndexedDB + AES-GCM 256-bit (Haqiqiy shifrlangan saqlash)</span>
                   </div>
                 </div>
-                <span id="vfs-size-badge" style="color:var(--tg-blue); font-size:13px; font-weight:600;">~${Math.max(1, Math.round(JSON.stringify(this.vfs.fs || {}).length / 1024))} KB</span>
+                <span id="vfs-size-badge" style="color:var(--tg-blue); font-size:12.5px; font-weight:700;">~${Math.max(1, Math.round(JSON.stringify(this.vfs.fs || {}).length / 1024))} KB • IndexedDB</span>
+              </div>
+
+              <!-- Cloud E2EE Sync Action -->
+              <div class="settings-row" style="flex-wrap:wrap; gap:10px;">
+                <div class="settings-row-left">
+                  <div class="settings-icon-bubble green">
+                    ${ICONS.globe}
+                  </div>
+                  <div class="settings-row-text">
+                    <span class="settings-row-title">Suveren Bulut Sinxronizatsiyasi</span>
+                    <span class="settings-row-desc">Shifrlangan VFS omborini server bilan sinxronlash (E2EE)</span>
+                  </div>
+                </div>
+                <div>
+                  <button id="btn-cloud-sync" style="background:#059669; color:#fff; border:none; padding:7px 16px; border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5 5 5 5-5m-5 5V3"/></svg>
+                    <span>Hozir Sinxronlash</span>
+                  </button>
+                </div>
               </div>
 
               <!-- Backup & Restore Actions -->
@@ -226,6 +245,48 @@ export class SettingsApp {
       }
     });
 
+    const encryptToggle = this.container.querySelector('#set-local-encrypt');
+    if (encryptToggle) {
+      encryptToggle.checked = this.vfs.encryptionEnabled;
+      encryptToggle.addEventListener('change', (e) => {
+        this.vfs.encryptionEnabled = e.target.checked;
+        this.vfs.save();
+        if (this.showToast) {
+          this.showToast(
+            "AES-GCM 256 Shifrlash",
+            e.target.checked 
+              ? "Barcha fayllar IndexedDB ichida apparat kaliti bilan shifrlanmoqda." 
+              : "Ogohlantirish: Mahalliy shifrlash o'chirildi.",
+            ICONS.shield
+          );
+        }
+      });
+    }
+
+    // Cloud E2EE Sync
+    const btnSync = this.container.querySelector('#btn-cloud-sync');
+    if (btnSync) {
+      btnSync.addEventListener('click', async () => {
+        btnSync.disabled = true;
+        const originalContent = btnSync.innerHTML;
+        btnSync.innerHTML = '<span>Sinxronlanmoqda...</span>';
+
+        const res = await this.vfs.syncCloud('uzos_admin');
+        btnSync.disabled = false;
+        btnSync.innerHTML = originalContent;
+
+        if (res.success) {
+          if (this.showToast) {
+            this.showToast("Bulut Sinxronlandi", res.message, ICONS.shield);
+          }
+        } else {
+          if (this.showToast) {
+            this.showToast("Sinxronlash Xatosi", res.error || "Server bilan ulanishda xatolik.", ICONS.shield);
+          }
+        }
+      });
+    }
+
     // Export Backup
     const btnExport = this.container.querySelector('#btn-export-backup');
     if (btnExport) {
@@ -275,9 +336,9 @@ export class SettingsApp {
     }
 
     const resetBtn = this.container.querySelector('#btn-reset-vfs');
-    resetBtn.addEventListener('click', () => {
-      if (confirm("Diqqat! Barcha shaxsiy fayllar va VFS kesh tozalanadi. Davom etasizmi?")) {
-        localStorage.clear();
+    resetBtn.addEventListener('click', async () => {
+      if (confirm("Diqqat! Barcha shaxsiy fayllar, IndexedDB xotirasi va VFS kesh tozalanadi. Davom etasizmi?")) {
+        await this.vfs.reset();
         if (this.showToast) this.showToast("Kesh Tozalandi", "Tizim birlamchi holatga qaytarildi.", ICONS.refresh);
         setTimeout(() => location.reload(), 1000);
       }

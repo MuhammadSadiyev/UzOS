@@ -13,8 +13,8 @@ import { ICONS } from './os/icons.js';
 import { TerminalApp } from './apps/terminal.js';
 import { FilesApp } from './apps/files.js';
 import { EditorApp } from './apps/editor.js';
-import { AIAssistantApp } from './apps/ai.js';
 import { SettingsApp } from './apps/settings.js';
+import { TaskManagerApp } from './apps/taskmanager.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Initialize Virtual File System
@@ -36,15 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let editorAppInstance = null;
 
   const APP_CONFIGS = {
-    ai: {
-      id: 'win-ai',
-      title: 'UzOS Milliy AI',
-      icon: ICONS.ai,
-      width: 680,
-      height: 520,
-      minWidth: 420,
-      minHeight: 360
-    },
     terminal: {
       id: 'win-terminal',
       title: 'UzOS Terminal',
@@ -70,6 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
       width: 780,
       height: 520,
       minWidth: 480,
+      minHeight: 340
+    },
+    taskmanager: {
+      id: 'win-taskmanager',
+      title: 'Vazifalar Menejeri',
+      icon: ICONS.taskmanager,
+      width: 680,
+      height: 480,
+      minWidth: 440,
       minHeight: 340
     },
     settings: {
@@ -118,10 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Instantiate app inside window body
     switch (appType) {
-      case 'ai':
-        new AIAssistantApp(host);
-        break;
-
       case 'terminal':
         new TerminalApp(host, vfs, wm);
         break;
@@ -140,6 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
           options.fileName || 'Xush_kelibsiz.txt',
           (title, msg, icon) => taskbar.showNotification(title, msg, icon)
         );
+        break;
+
+      case 'taskmanager':
+        new TaskManagerApp(host, wm, vfs);
         break;
 
       case 'settings':
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
     files: { col: 0, row: 0 },
     terminal: { col: 0, row: 1 },
     editor: { col: 0, row: 2 },
-    ai: { col: 0, row: 3 },
+    taskmanager: { col: 0, row: 3 },
     settings: { col: 0, row: 4 }
   };
 
@@ -497,9 +497,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 10. Auto-launch default welcome windows in cascaded arrangement
   setTimeout(() => {
     openApp('terminal');
-    setTimeout(() => {
-      openApp('ai');
-    }, 180);
   }, 250);
 
   // Welcome Toast Notification
@@ -507,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
     taskbar.showNotification(
       "UzOS Cloud WebOS Faol",
       "Ko'p oynali WebOS va 100% Telegram Web dizayn tili ishga tushdi.",
-      ICONS.ai
+      ICONS.terminal
     );
   }, 700);
 
@@ -683,6 +680,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.ctrlKey && e.shiftKey && (e.key === 'e' || e.key === 'E')) {
       e.preventDefault();
       openApp('files');
+      return;
+    }
+
+    // 5.1 Quick launch Task Manager (Ctrl+Shift+Esc)
+    if (e.ctrlKey && e.shiftKey && e.key === 'Escape') {
+      e.preventDefault();
+      openApp('taskmanager');
       return;
     }
 

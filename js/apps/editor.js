@@ -187,25 +187,65 @@ export class EditorApp {
     this.consolePane.style.display = 'block';
 
     if (this.currentName.endsWith('.js')) {
-      let logs = [];
-      const customConsole = {
-        log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
-        error: (...args) => logs.push('[Xatolik]: ' + args.join(' ')),
-        warn: (...args) => logs.push('[Ogohlantirish]: ' + args.join(' '))
-      };
+      this.consolePane.textContent = `[UzOS Sandbox]: Skript izolyatsiyalangan Web Worker muhitida ishga tushirilmoqda...`;
+
+      // Build isolated worker script (no access to DOM, cookies, window, or host storage)
+      const workerScript = `
+        const logs = [];
+        const customConsole = {
+          log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)).join(' ')),
+          error: (...args) => logs.push('[Xatolik]: ' + args.join(' ')),
+          warn: (...args) => logs.push('[Ogohlantirish]: ' + args.join(' '))
+        };
+        try {
+          const run = new Function('console', ${JSON.stringify(code)});
+          const result = run(customConsole);
+          let out = logs.join('\\n');
+          if (result !== undefined) {
+            out += (out ? '\\n' : '') + '[Natija]: ' + JSON.stringify(result, null, 2);
+          }
+          self.postMessage({ success: true, output: out });
+        } catch (err) {
+          self.postMessage({ success: false, error: err.message });
+        }
+      `;
 
       try {
-        const runner = new Function('console', code);
-        const result = runner(customConsole);
-        let out = logs.join('\n');
-        if (result !== undefined) {
-          out += (out ? '\n' : '') + `[Natija]: ${JSON.stringify(result, null, 2)}`;
-        }
-        this.consolePane.textContent = `[UzOS JS VFS Interpreteri]:\n${out || '(Skript muvaffaqiyatli bajarildi, chiqish bo\'sh)'}`;
-        if (this.showToast) this.showToast("Skript Bajarildi", "JavaScript muvaffaqiyatli yakunlandi.", ICONS.terminal);
+        const blob = new Blob([workerScript], { type: 'application/javascript' });
+        const workerUrl = URL.createObjectURL(blob);
+        const worker = new Worker(workerUrl);
+
+        // 5-second watchdog timer to protect against infinite loops (while(true))
+        const timeout = setTimeout(() => {
+          worker.terminate();
+          URL.revokeObjectURL(workerUrl);
+          this.consolePane.textContent = `[Xavfsizlik Ogohlantirishi]: Kod 5 soniyadan oshiq vaqt oldi va cheksiz sikl xavfi sababli to'xtatildi.`;
+          if (this.showToast) this.showToast("Skript To'xtatildi", "Vaqt chegarasi oshib ketdi.", ICONS.shield);
+        }, 5000);
+
+        worker.onmessage = (e) => {
+          clearTimeout(timeout);
+          worker.terminate();
+          URL.revokeObjectURL(workerUrl);
+
+          if (e.data.success) {
+            this.consolePane.textContent = `[UzOS Izolyatsiyalangan Sandbox]:\n${e.data.output || '(Skript muvaffaqiyatli bajarildi, chiqish bo\'sh)'}`;
+            if (this.showToast) this.showToast("Skript Bajarildi", "Web Worker izolyatsiyasida yakunlandi.", ICONS.terminal);
+          } else {
+            this.consolePane.textContent = `[Ijro xatosi]:\n${e.data.error}`;
+            if (this.showToast) this.showToast("Skript Xatosi", e.data.error, ICONS.shield);
+          }
+        };
+
+        worker.onerror = (err) => {
+          clearTimeout(timeout);
+          worker.terminate();
+          URL.revokeObjectURL(workerUrl);
+          this.consolePane.textContent = `[Xatolik]:\n${err.message}`;
+          if (this.showToast) this.showToast("Xatolik", err.message, ICONS.shield);
+        };
       } catch (err) {
-        this.consolePane.textContent = `[Sintaksis xatosi]:\n${err.message}`;
-        if (this.showToast) this.showToast("Skript Xatosi", err.message, ICONS.shield);
+        this.consolePane.textContent = `[Sandbox Xatosi]: ${err.message}`;
       }
     } else {
       this.consolePane.textContent = `[${this.currentName} Tahlili]:\nFayl muvaffaqiyatli o'qildi (${code.split('\n').length} qator, ${code.length} bayt).`;

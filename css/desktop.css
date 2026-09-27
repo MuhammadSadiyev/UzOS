@@ -537,7 +537,7 @@ html, body {
 .desktop-icon-box.files { background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%); }
 .desktop-icon-box.terminal { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1.5px solid rgba(255,255,255,0.12); }
 .desktop-icon-box.editor { background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%); }
-.desktop-icon-box.ai { background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%); }
+.desktop-icon-box.taskmanager { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
 .desktop-icon-box.settings { background: linear-gradient(135deg, #475569 0%, #64748b 100%); }
 
 .desktop-icon-label {

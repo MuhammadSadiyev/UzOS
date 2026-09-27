@@ -27,14 +27,10 @@ export const ICONS = {
     </svg>
   `,
 
-  // Milliy AI / Bot Mascot
-  ai: `
+  // Task Manager / Activity Pulse
+  taskmanager: `
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect width="18" height="18" x="3" y="3" rx="4"></rect>
-      <path d="M9 9h.01"></path>
-      <path d="M15 9h.01"></path>
-      <path d="M8 15s1.5 2 4 2 4-2 4-2"></path>
-      <path d="M12 3v-2"></path>
+      <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
     </svg>
   `,
 
