@@ -1,6 +1,7 @@
 name = "uzos"
 compatibility_date = "2024-09-27"
-pages_build_output_dir = "dist"
+[assets]
+directory = "./dist"
 
 [vars]
 ENVIRONMENT = "production"
