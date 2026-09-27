@@ -475,8 +475,31 @@ html, body {
 }
 
 .desktop-icon-cell.selected {
-  background: rgba(51, 144, 236, 0.25);
-  border-color: var(--tg-blue);
+  background: rgba(51, 144, 236, 0.28);
+  border-color: rgba(51, 144, 236, 0.7);
+  box-shadow: 0 4px 16px rgba(51, 144, 236, 0.25);
+}
+
+.desktop-icon-cell.selected .desktop-icon-label {
+  background: var(--tg-blue);
+  border-radius: 4px;
+  padding: 1px 4px;
+}
+
+/* Desktop Rubberband / Marquee Selection Box (Windows 11 Glass) */
+.desktop-marquee {
+  position: absolute;
+  background: rgba(51, 144, 236, 0.22);
+  border: 1px solid rgba(51, 144, 236, 0.85);
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 55;
+  display: none;
+  box-shadow: 0 0 14px rgba(51, 144, 236, 0.25);
+}
+
+.desktop-marquee.active {
+  display: block;
 }
 
 .desktop-icon-cell.dragging {

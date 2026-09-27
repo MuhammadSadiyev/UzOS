@@ -200,26 +200,128 @@ document.addEventListener('DOMContentLoaded', () => {
   applyIconPositions();
   window.addEventListener('resize', applyIconPositions);
 
+  // Desktop Rubberband / Marquee Selection Element
+  const marqueeEl = document.createElement('div');
+  marqueeEl.className = 'desktop-marquee';
+  workspaceEl.appendChild(marqueeEl);
+
+  let isMarquee = false;
+  let marqueeStartX = 0, marqueeStartY = 0;
+
+  workspaceEl.addEventListener('pointerdown', (e) => {
+    // Only primary (left) button
+    if (e.button !== 0) return;
+    // Don't start marquee if user clicked on windows, desktop icons, taskbar, dock, drawer, etc.
+    if (e.target.closest('.uzos-window, .desktop-icon-cell, .window-snap-preview, #taskbar, #drawer, .context-menu')) {
+      return;
+    }
+
+    isMarquee = true;
+    const wsRect = workspaceEl.getBoundingClientRect();
+    marqueeStartX = e.clientX - wsRect.left;
+    marqueeStartY = e.clientY - wsRect.top;
+
+    marqueeEl.style.left = `${marqueeStartX}px`;
+    marqueeEl.style.top = `${marqueeStartY}px`;
+    marqueeEl.style.width = '0px';
+    marqueeEl.style.height = '0px';
+
+    if (!e.ctrlKey && !e.shiftKey && !e.metaKey) {
+      desktopCells.forEach(c => c.classList.remove('selected'));
+    }
+
+    const onPointerMove = (ev) => {
+      if (!isMarquee) return;
+      const currentX = ev.clientX - wsRect.left;
+      const currentY = ev.clientY - wsRect.top;
+
+      const left = Math.min(marqueeStartX, currentX);
+      const top = Math.min(marqueeStartY, currentY);
+      const width = Math.abs(currentX - marqueeStartX);
+      const height = Math.abs(currentY - marqueeStartY);
+
+      if (width > 3 || height > 3) {
+        marqueeEl.classList.add('active');
+        marqueeEl.style.left = `${left}px`;
+        marqueeEl.style.top = `${top}px`;
+        marqueeEl.style.width = `${width}px`;
+        marqueeEl.style.height = `${height}px`;
+
+        const mRight = left + width;
+        const mBottom = top + height;
+
+        // Check intersection with each desktop icon
+        desktopCells.forEach(cell => {
+          const iLeft = cell.offsetLeft;
+          const iTop = cell.offsetTop;
+          const iRight = iLeft + cell.offsetWidth;
+          const iBottom = iTop + cell.offsetHeight;
+
+          const intersects = !(
+            iRight < left ||
+            iLeft > mRight ||
+            iBottom < top ||
+            iTop > mBottom
+          );
+
+          if (intersects) {
+            cell.classList.add('selected');
+          } else if (!ev.ctrlKey && !ev.shiftKey && !ev.metaKey) {
+            cell.classList.remove('selected');
+          }
+        });
+      }
+    };
+
+    const onPointerUp = () => {
+      isMarquee = false;
+      marqueeEl.classList.remove('active');
+      marqueeEl.style.width = '0px';
+      marqueeEl.style.height = '0px';
+      document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerup', onPointerUp);
+    };
+
+    document.addEventListener('pointermove', onPointerMove);
+    document.addEventListener('pointerup', onPointerUp);
+  });
+
+  // Desktop Icons Dragging (Single + Multi-selection Group Dragging)
   desktopCells.forEach(cell => {
     let isDragging = false;
     let hasMoved = false;
     let startX = 0, startY = 0;
-    let initLeft = 0, initTop = 0;
+    let dragGroup = [];
 
     const onPointerDown = (e) => {
       if (e.button !== 0) return;
+      e.stopPropagation();
+
+      const isMultiKey = e.ctrlKey || e.shiftKey || e.metaKey;
+
+      if (isMultiKey) {
+        cell.classList.toggle('selected');
+        return;
+      }
+
+      // If clicked cell is not already selected, clear others and select this one
+      if (!cell.classList.contains('selected')) {
+        desktopCells.forEach(c => c.classList.remove('selected'));
+        cell.classList.add('selected');
+      }
+
+      // Collect all selected cells to drag as a group
+      const selected = Array.from(document.querySelectorAll('.desktop-icon-cell.selected'));
+      dragGroup = selected.map(c => ({
+        cell: c,
+        initLeft: c.offsetLeft,
+        initTop: c.offsetTop
+      }));
+
       isDragging = true;
       hasMoved = false;
       startX = e.clientX;
       startY = e.clientY;
-
-      const rect = cell.getBoundingClientRect();
-      const wsRect = workspaceEl.getBoundingClientRect();
-      initLeft = rect.left - wsRect.left;
-      initTop = rect.top - wsRect.top;
-
-      desktopCells.forEach(c => c.classList.remove('selected'));
-      cell.classList.add('selected');
 
       document.addEventListener('pointermove', onPointerMove);
       document.addEventListener('pointerup', onPointerUp);
@@ -232,18 +334,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!hasMoved && Math.hypot(dx, dy) > 4) {
         hasMoved = true;
-        cell.classList.add('dragging');
+        dragGroup.forEach(item => item.cell.classList.add('dragging'));
       }
 
       if (hasMoved) {
         const wsRect = workspaceEl.getBoundingClientRect();
-        let curX = initLeft + dx;
-        let curY = initTop + dy;
-        curX = Math.max(10, Math.min(wsRect.width - 82, curX));
-        curY = Math.max(10, Math.min(wsRect.height - 92, curY));
-
-        cell.style.left = `${curX}px`;
-        cell.style.top = `${curY}px`;
+        dragGroup.forEach(item => {
+          let curX = item.initLeft + dx;
+          let curY = item.initTop + dy;
+          curX = Math.max(10, Math.min(wsRect.width - 82, curX));
+          curY = Math.max(10, Math.min(wsRect.height - 92, curY));
+          item.cell.style.left = `${curX}px`;
+          item.cell.style.top = `${curY}px`;
+        });
       }
     };
 
@@ -254,30 +357,33 @@ document.addEventListener('DOMContentLoaded', () => {
       document.removeEventListener('pointerup', onPointerUp);
 
       if (hasMoved) {
-        cell.classList.remove('dragging');
         const wsRect = workspaceEl.getBoundingClientRect();
-        const curLeft = parseFloat(cell.style.left) || initLeft;
-        const curTop = parseFloat(cell.style.top) || initTop;
-
-        const col = Math.max(0, Math.round((curLeft - GRID_OFFSET_X) / GRID_SIZE_X));
-        const row = Math.max(0, Math.round((curTop - GRID_OFFSET_Y) / GRID_SIZE_Y));
-
         const maxCols = Math.max(0, Math.floor((wsRect.width - GRID_OFFSET_X - 82) / GRID_SIZE_X));
         const maxRows = Math.max(0, Math.floor((wsRect.height - GRID_OFFSET_Y - 92) / GRID_SIZE_Y));
 
-        const finalCol = Math.min(col, maxCols);
-        const finalRow = Math.min(row, maxRows);
+        dragGroup.forEach(item => {
+          item.cell.classList.remove('dragging');
+          const curLeft = parseFloat(item.cell.style.left) || item.initLeft;
+          const curTop = parseFloat(item.cell.style.top) || item.initTop;
 
-        const snapLeft = GRID_OFFSET_X + finalCol * GRID_SIZE_X;
-        const snapTop = GRID_OFFSET_Y + finalRow * GRID_SIZE_Y;
+          const col = Math.max(0, Math.round((curLeft - GRID_OFFSET_X) / GRID_SIZE_X));
+          const row = Math.max(0, Math.round((curTop - GRID_OFFSET_Y) / GRID_SIZE_Y));
 
-        cell.style.transition = 'left 0.2s cubic-bezier(0.16, 1, 0.3, 1), top 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
-        cell.style.left = `${snapLeft}px`;
-        cell.style.top = `${snapTop}px`;
-        setTimeout(() => { cell.style.transition = ''; }, 220);
+          const finalCol = Math.min(col, maxCols);
+          const finalRow = Math.min(row, maxRows);
 
-        const app = cell.dataset.app;
-        savedPositions[app] = { col: finalCol, row: finalRow };
+          const snapLeft = GRID_OFFSET_X + finalCol * GRID_SIZE_X;
+          const snapTop = GRID_OFFSET_Y + finalRow * GRID_SIZE_Y;
+
+          item.cell.style.transition = 'left 0.2s cubic-bezier(0.16, 1, 0.3, 1), top 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
+          item.cell.style.left = `${snapLeft}px`;
+          item.cell.style.top = `${snapTop}px`;
+          setTimeout(() => { item.cell.style.transition = ''; }, 220);
+
+          const app = item.cell.dataset.app;
+          savedPositions[app] = { col: finalCol, row: finalRow };
+        });
+
         try {
           localStorage.setItem('uzos_desktop_icon_positions', JSON.stringify(savedPositions));
         } catch (err) {}
@@ -298,13 +404,6 @@ document.addEventListener('DOMContentLoaded', () => {
         openApp(app);
       }
     });
-  });
-
-  // Clicking on workspace clears icon selection
-  workspaceEl.addEventListener('click', (e) => {
-    if (!e.target.closest('.desktop-icon-cell')) {
-      desktopCells.forEach(c => c.classList.remove('selected'));
-    }
   });
 
   // 7. Bind Dock Buttons (Toggle / Focus / Launch)
