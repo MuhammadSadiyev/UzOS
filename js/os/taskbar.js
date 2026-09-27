@@ -118,8 +118,8 @@ export class TaskbarController {
   bindWindowEvents() {
     // When windows open, close, or focus, update sidebar running indicators and topbar pills
     this.wm.onWindowListChange = (windows) => {
-      // Update sidebar dock buttons
-      document.querySelectorAll('.sidebar-app-btn').forEach(btn => {
+      // Update dock buttons
+      document.querySelectorAll('.taskbar-app-btn, .sidebar-app-btn').forEach(btn => {
         const app = btn.dataset.app;
         const isRunning = windows.some(w => w.appType === app);
         const isActive = windows.some(w => w.appType === app && w.active);

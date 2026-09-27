@@ -33,9 +33,8 @@
   --shadow-window: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.09);
   --shadow-popover: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);
   
-  --topbar-height: 42px;
-  --sidebar-width: 60px;
-  --drawer-width: 320px;
+  --taskbar-height: 54px;
+  --drawer-width: 340px;
   
   --font-sans: -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
@@ -108,40 +107,65 @@ html, body {
 }
 
 /* ==============================================================================
-   Top Status Bar (TopBar)
+   Bottom Taskbar & Dock (Unified WebOS Panel)
    ============================================================================== */
-#topbar {
-  height: var(--topbar-height);
-  min-height: var(--topbar-height);
+#taskbar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--taskbar-height);
   background: var(--bg-topbar);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 14px;
   z-index: 9000;
-  position: relative;
+  user-select: none;
 }
 
-.topbar-left, .topbar-center, .topbar-right {
+.taskbar-left, .taskbar-center, .taskbar-right {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.topbar-brand {
+/* Launcher Button */
+.taskbar-launcher-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+
+.taskbar-launcher-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 16px rgba(2, 132, 199, 0.55);
+}
+
+.taskbar-brand {
   display: flex;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
   padding: 4px 8px;
   border-radius: 8px;
+  cursor: pointer;
   transition: background 0.15s ease;
 }
 
-.topbar-brand:hover {
+.taskbar-brand:hover {
   background: var(--bg-surface-hover);
 }
 
@@ -160,7 +184,7 @@ html, body {
   color: #ffffff;
 }
 
-.topbar-active-app {
+.taskbar-active-app, .topbar-active-app {
   font-size: 12.5px;
   color: var(--tg-blue);
   font-weight: 500;
@@ -168,15 +192,78 @@ html, body {
   border-left: 1px solid var(--border);
 }
 
+/* Center Dock Apps */
+.taskbar-apps {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.22);
+  padding: 3px 6px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.taskbar-app-btn, .sidebar-app-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.taskbar-app-btn svg, .sidebar-app-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.taskbar-app-btn:hover, .sidebar-app-btn:hover {
+  background: var(--bg-surface-hover);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.taskbar-app-btn.active, .sidebar-app-btn.active {
+  background: rgba(51, 144, 236, 0.2);
+  color: #ffffff;
+  border-color: rgba(51, 144, 236, 0.4);
+}
+
+.app-running-indicator {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--tg-blue);
+  box-shadow: 0 0 6px var(--tg-blue);
+  display: none;
+}
+
+.taskbar-app-btn.running .app-running-indicator,
+.sidebar-app-btn.running .app-running-indicator {
+  display: block;
+}
+
 /* Center Running Window Taskbar Switcher */
-#topbar-running-tasks {
+#taskbar-running-tasks, #topbar-running-tasks {
   display: flex;
   align-items: center;
   gap: 6px;
-  max-width: 50vw;
+  max-width: 32vw;
   overflow-x: auto;
 }
 
+#taskbar-running-tasks::-webkit-scrollbar,
 #topbar-running-tasks::-webkit-scrollbar {
   display: none;
 }
@@ -188,7 +275,7 @@ html, body {
   padding: 4px 12px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   font-size: 12px;
   color: var(--text-secondary);
   cursor: pointer;
@@ -224,11 +311,11 @@ html, body {
   height: 14px;
 }
 
-/* Topbar Right Tray & Controls */
-.topbar-tray {
+/* Taskbar Right Tray & Controls */
+.taskbar-tray, .topbar-tray {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tray-item {
@@ -237,10 +324,13 @@ html, body {
   gap: 5px;
   color: var(--text-secondary);
   font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 5px 8px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s ease;
+  text-decoration: none;
+  background: transparent;
+  border: none;
 }
 
 .tray-item:hover {
@@ -253,8 +343,8 @@ html, body {
 }
 
 .tray-item svg {
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
 }
 
 .zero-badge {
@@ -266,143 +356,52 @@ html, body {
   border-radius: 4px;
 }
 
-.topbar-clock {
+.taskbar-clock, .topbar-clock {
   font-family: var(--font-mono);
   font-size: 12.5px;
   font-weight: 500;
   color: #ffffff;
   padding: 2px 6px;
+  user-select: none;
 }
 
 /* ==============================================================================
-   Desktop Body Layout (Sidebar Dock + Workspace Canvas)
+   Desktop Body Layout (Full Viewport with Bottom Taskbar)
    ============================================================================== */
 #desktop-body {
   position: relative;
-  flex: 1;
-  display: flex;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
 }
 
-/* Left Sidebar Dock */
-#sidebar {
-  width: var(--sidebar-width);
-  min-width: var(--sidebar-width);
-  background: var(--bg-sidebar);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0;
-  gap: 10px;
-  z-index: 1000;
-}
-
-.sidebar-logo-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
-  transition: transform 0.15s ease;
-}
-
-.sidebar-logo-btn:hover {
-  transform: scale(1.06);
-}
-
-.sidebar-apps {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-}
-
-.sidebar-app-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.15s ease;
-  text-decoration: none;
-}
-
-.sidebar-app-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
-.sidebar-app-btn:hover {
-  background: var(--bg-surface-hover);
-  color: #ffffff;
-}
-
-.sidebar-app-btn.active {
-  background: rgba(51, 144, 236, 0.2);
-  color: #ffffff;
-  border-color: rgba(51, 144, 236, 0.4);
-}
-
-.app-running-indicator {
-  position: absolute;
-  left: -2px;
-  top: 14px;
-  bottom: 14px;
-  width: 3px;
-  border-radius: 0 3px 3px 0;
-  background: var(--tg-blue);
-  display: none;
-}
-
-.sidebar-app-btn.running .app-running-indicator {
-  display: block;
-}
-
-.sidebar-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
 /* ==============================================================================
-   Telegram Web App Drawer / Start Menu (Sliding Glass Popover)
+   Telegram Web App Drawer / Start Menu (Sliding Glass Popover from Bottom-Left)
    ============================================================================== */
 #drawer {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--sidebar-width);
+  bottom: calc(var(--taskbar-height) + 12px);
+  left: 14px;
   width: var(--drawer-width);
-  background: rgba(23, 33, 43, 0.94);
+  max-height: 520px;
+  background: rgba(23, 33, 43, 0.95);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-right: 1px solid var(--border);
-  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
-  z-index: 950;
-  transform: translateX(0);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 9500;
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #drawer.collapsed {
-  transform: translateX(-105%);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .drawer-search-box {
@@ -532,9 +531,11 @@ html, body {
    Desktop Workspace Canvas & Icons
    ============================================================================== */
 #workspace {
-  position: relative;
-  flex: 1;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: var(--taskbar-height);
   overflow: hidden;
 }
 
@@ -743,24 +744,30 @@ html, body {
    ============================================================================== */
 #quick-settings {
   position: absolute;
-  top: 52px;
+  bottom: calc(var(--taskbar-height) + 12px);
   right: 14px;
   width: 320px;
-  background: rgba(23, 33, 43, 0.94);
+  background: rgba(23, 33, 43, 0.95);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: var(--shadow-popover);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);
   padding: 18px;
   display: none;
   flex-direction: column;
   gap: 14px;
-  z-index: 9200;
+  z-index: 9500;
 }
 
 #quick-settings.visible {
   display: flex;
+  animation: qsSlideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes qsSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .qs-title {
@@ -915,8 +922,8 @@ html, body {
    ============================================================================== */
 #notification-container {
   position: absolute;
-  top: 52px;
-  right: 14px;
+  top: 20px;
+  right: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;

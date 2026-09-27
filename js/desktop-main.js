@@ -187,8 +187,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 7. Bind Sidebar Dock Buttons (Toggle / Focus / Launch)
-  document.querySelectorAll('.sidebar-app-btn[data-app]').forEach(btn => {
+  // 7. Bind Dock Buttons (Toggle / Focus / Launch)
+  document.querySelectorAll('.taskbar-app-btn[data-app], .sidebar-app-btn[data-app]').forEach(btn => {
     btn.addEventListener('click', () => {
       const app = btn.dataset.app;
       const config = APP_CONFIGS[app];
