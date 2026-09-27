@@ -510,4 +510,219 @@ document.addEventListener('DOMContentLoaded', () => {
       ICONS.ai
     );
   }, 700);
+
+  // ============================================================================
+  // 11. Production PWA Service Worker Registration
+  // ============================================================================
+  if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').then((reg) => {
+        console.log('[UzOS] ServiceWorker registered with scope:', reg.scope);
+      }).catch((err) => {
+        console.warn('[UzOS] ServiceWorker registration failed:', err);
+      });
+    });
+  }
+
+  // ============================================================================
+  // 12. Host File System Integration (Drag & Drop from Windows / Mac Explorer)
+  // ============================================================================
+  const dropzoneOverlay = document.getElementById('desktop-dropzone');
+  let dragCounter = 0;
+
+  window.addEventListener('dragenter', (e) => {
+    if (e.dataTransfer && e.dataTransfer.types && e.dataTransfer.types.includes('Files')) {
+      dragCounter++;
+      if (dropzoneOverlay) dropzoneOverlay.classList.add('active');
+    }
+  });
+
+  window.addEventListener('dragleave', (e) => {
+    dragCounter--;
+    if (dragCounter <= 0) {
+      dragCounter = 0;
+      if (dropzoneOverlay) dropzoneOverlay.classList.remove('active');
+    }
+  });
+
+  window.addEventListener('dragover', (e) => {
+    e.preventDefault();
+  });
+
+  window.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dragCounter = 0;
+    if (dropzoneOverlay) dropzoneOverlay.classList.remove('active');
+
+    // If dropped inside Files app body, let the app handle it directly
+    if (e.target.closest('#files-drop-area')) {
+      return;
+    }
+
+    const files = Array.from(e.dataTransfer ? e.dataTransfer.files : []);
+    if (files.length === 0) return;
+
+    let savedCount = 0;
+    files.forEach(file => {
+      const reader = new FileReader();
+      const isText = file.type.startsWith('text/') || 
+                     file.name.endsWith('.txt') || 
+                     file.name.endsWith('.md') || 
+                     file.name.endsWith('.json') || 
+                     file.name.endsWith('.js') || 
+                     file.name.endsWith('.ts') || 
+                     file.name.endsWith('.css') || 
+                     file.name.endsWith('.html') || 
+                     file.name.endsWith('.svg');
+
+      reader.onload = (event) => {
+        const content = event.target.result;
+        const targetPath = `/Yuklamalar/${file.name}`;
+        const mime = file.type || (isText ? 'text/plain' : 'application/octet-stream');
+
+        vfs.writeFile(targetPath, content, mime);
+        savedCount++;
+        if (savedCount === files.length) {
+          taskbar.showNotification(
+            "Fayl Yuklandi",
+            files.length === 1 
+              ? `'${files[0].name}' /Yuklamalar jildiga saqlandi.` 
+              : `${files.length} ta fayl /Yuklamalar jildiga saqlandi.`,
+            ICONS.folder
+          );
+        }
+      };
+
+      if (isText) {
+        reader.readAsText(file);
+      } else {
+        reader.readAsDataURL(file);
+      }
+    });
+  });
+
+  // ============================================================================
+  // 13. System Hotkeys & Windows-style Alt+Tab Switcher HUD
+  // ============================================================================
+  let isAltPressed = false;
+  let switcherEl = null;
+  let switcherIndex = 0;
+  let switcherWindows = [];
+
+  function showSwitcherHUD() {
+    switcherWindows = wm.getOpenWindows();
+    if (switcherWindows.length === 0) return;
+
+    if (!switcherEl) {
+      switcherEl = document.createElement('div');
+      switcherEl.className = 'uzos-window-switcher-hud';
+      document.body.appendChild(switcherEl);
+    }
+
+    renderSwitcherHUD();
+  }
+
+  function renderSwitcherHUD() {
+    if (!switcherEl || switcherWindows.length === 0) return;
+    switcherEl.innerHTML = switcherWindows.map((win, idx) => {
+      const isSel = idx === switcherIndex;
+      return `
+        <div class="switcher-item ${isSel ? 'selected' : ''}">
+          <div class="switcher-icon">${win.icon}</div>
+          <span class="switcher-title">${win.title}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function hideSwitcherHUD() {
+    if (switcherEl) {
+      switcherEl.remove();
+      switcherEl = null;
+    }
+  }
+
+  window.addEventListener('keydown', (e) => {
+    // 1. Start Menu (Win key / Meta or Ctrl+Esc)
+    if (e.key === 'Meta' || (e.ctrlKey && e.key === 'Escape')) {
+      e.preventDefault();
+      const drawer = document.getElementById('drawer');
+      if (drawer) drawer.classList.toggle('collapsed');
+      return;
+    }
+
+    // 2. Escape: Close open modals, popovers, drawer
+    if (e.key === 'Escape') {
+      const drawer = document.getElementById('drawer');
+      if (drawer && !drawer.classList.contains('collapsed')) {
+        drawer.classList.add('collapsed');
+      }
+      const quick = document.getElementById('quick-settings-popover');
+      if (quick && quick.classList.contains('active')) {
+        quick.classList.remove('active');
+      }
+      const ctx = document.querySelector('.context-menu');
+      if (ctx) ctx.remove();
+    }
+
+    // 3. Show Desktop (Win+D or Alt+D)
+    if ((e.metaKey && (e.key === 'd' || e.key === 'D')) || (e.altKey && (e.key === 'd' || e.key === 'D'))) {
+      e.preventDefault();
+      wm.toggleShowDesktop();
+      return;
+    }
+
+    // 4. Quick launch Terminal (Ctrl+Alt+T)
+    if (e.ctrlKey && e.altKey && (e.key === 't' || e.key === 'T')) {
+      e.preventDefault();
+      openApp('terminal');
+      return;
+    }
+
+    // 5. Quick launch Files (Ctrl+Shift+E)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'e' || e.key === 'E')) {
+      e.preventDefault();
+      openApp('files');
+      return;
+    }
+
+    // 6. Alt+Tab Window Switching
+    if (e.altKey) {
+      isAltPressed = true;
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const wins = wm.getOpenWindows();
+        if (wins.length === 0) return;
+
+        if (!switcherEl) {
+          switcherWindows = wins;
+          switcherIndex = (switcherWindows.length > 1) ? 1 : 0;
+          showSwitcherHUD();
+        } else {
+          if (e.shiftKey) {
+            switcherIndex = (switcherIndex - 1 + switcherWindows.length) % switcherWindows.length;
+          } else {
+            switcherIndex = (switcherIndex + 1) % switcherWindows.length;
+          }
+          renderSwitcherHUD();
+        }
+      }
+    }
+  });
+
+  window.addEventListener('keyup', (e) => {
+    if (e.key === 'Alt') {
+      isAltPressed = false;
+      if (switcherEl && switcherWindows.length > 0) {
+        const targetWin = switcherWindows[switcherIndex];
+        if (targetWin) {
+          if (targetWin.minimized) {
+            wm.restoreWindow(targetWin.id);
+          }
+          wm.focusWindow(targetWin.id);
+        }
+        hideSwitcherHUD();
+      }
+    }
+  });
 });

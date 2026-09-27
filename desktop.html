@@ -3,12 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="description" content="UzOS Cloud — O'zbekiston Milliy Bulut Operatsion Tizimi. 100% Telegram Web 1:1 dizayn tili va ko'p oynali WebOS.">
+  <meta name="description" content="UzOS Cloud — O'zbekiston Milliy Bulut Operatsion Tizimi. 100% Telegram Web dizayn tili va ko'p oynali WebOS.">
   <meta name="theme-color" content="#0e1621">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="UzOS Cloud">
+  <meta property="og:title" content="UzOS Cloud — Milliy Bulut Operatsion Tizimi">
+  <meta property="og:description" content="O'zbekiston Milliy Brauzer-Asosidagi Suveren Bulut Operatsion Tizimi.">
+  <meta property="og:image" content="/icon.svg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
   <title>UzOS Cloud — Milliy WebOS</title>
 
-  <!-- Favicon (7-talik Asal Ari Uyasi / Honeycomb Rosette) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><g stroke='white' stroke-width='1.1' stroke-linejoin='round' fill='%230284C7'><polygon points='8.6,11.7 12.3,13.8 12.3,18.2 8.6,20.3 4.8,18.2 4.8,13.8'/><polygon points='23.4,11.7 27.2,13.8 27.2,18.2 23.4,20.3 19.7,18.2 19.7,13.8'/><polygon points='12.3,5.2 16,7.4 16,11.7 12.3,13.8 8.6,11.7 8.6,7.4'/><polygon points='19.7,5.2 23.4,7.4 23.4,11.7 19.7,13.8 16,11.7 16,7.4'/><polygon points='12.3,18.2 16,20.3 16,24.7 12.3,26.8 8.6,24.7 8.6,20.3'/><polygon points='19.7,18.2 23.4,20.3 23.4,24.7 19.7,26.8 16,24.7 16,20.3'/></g><polygon points='16,11.7 19.7,13.8 19.7,18.2 16,20.3 12.3,18.2 12.3,13.8' fill='white'/></svg>">
+  <!-- PWA Manifest & App Icons -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/icon.svg">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/desktop.css">
@@ -16,7 +26,7 @@
 </head>
 <body>
 
-  <!-- Full Desktop OS Workspace Container with Telegram Vector Doodle Wallpaper -->
+  <!-- Full Desktop OS Workspace Container -->
   <div id="desktop-container" class="default-wallpaper">
 
     <!-- ========================================================================
@@ -28,6 +38,19 @@
            WORKSPACE CANVAS (Desktop Icons + Floating Multi-Windows)
            ======================================================================== -->
       <main id="workspace">
+
+        <!-- Host File Dropzone Overlay -->
+        <div id="desktop-dropzone" class="desktop-dropzone-overlay">
+          <div class="desktop-dropzone-card">
+            <div class="desktop-dropzone-icon">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5 5 5 5-5m-5 5V3"/>
+              </svg>
+            </div>
+            <div class="desktop-dropzone-title">Faylni UzOS VFS ga yuklash</div>
+            <div class="desktop-dropzone-sub">Faylni qo'yib yuboring (Bulut xotirasiga saqlanadi)</div>
+          </div>
+        </div>
         
         <!-- Desktop Icons Grid (Single click to select, double click to launch) -->
         <div class="desktop-icons-grid" id="desktop-icons-grid">

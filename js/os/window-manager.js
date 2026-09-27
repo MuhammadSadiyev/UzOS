@@ -473,6 +473,34 @@ export class WindowManager {
     }
   }
 
+  toggleShowDesktop() {
+    const unminimized = Array.from(this.windows.values()).filter(w => !w.minimized);
+    if (unminimized.length > 0) {
+      this._desktopHiddenWindows = unminimized.map(w => w.id);
+      unminimized.forEach(w => this.minimizeWindow(w.id));
+      if (this.onActiveChange) this.onActiveChange(null);
+    } else if (this._desktopHiddenWindows && this._desktopHiddenWindows.length > 0) {
+      this._desktopHiddenWindows.forEach(id => {
+        if (this.windows.has(id)) {
+          this.restoreWindow(id);
+        }
+      });
+      this._desktopHiddenWindows = [];
+    }
+  }
+
+  getOpenWindows() {
+    return Array.from(this.windows.values()).map(w => ({
+      id: w.id,
+      title: w.title,
+      icon: w.icon,
+      appType: w.appType,
+      minimized: w.minimized,
+      active: w.id === this.activeWindowId,
+      zIndex: parseInt(w.element.style.zIndex || '0')
+    })).sort((a, b) => b.zIndex - a.zIndex);
+  }
+
   updateSnapPreview(snap) {
     if (!snap) {
       this.hideSnapPreview();

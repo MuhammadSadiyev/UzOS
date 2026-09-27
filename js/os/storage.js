@@ -110,6 +110,10 @@ export class VirtualFileSystem {
     }));
   }
 
+  getFolder(path = '/') {
+    return this.resolvePath(path);
+  }
+
   readFile(filePath) {
     const node = this.resolvePath(filePath);
     if (!node || node.type !== 'file') return null;
@@ -121,16 +125,30 @@ export class VirtualFileSystem {
     const fileName = parts.pop();
     const parentPath = parts.join('/');
 
-    const parentNode = this.resolvePath(parentPath);
+    let parentNode = this.resolvePath(parentPath);
+    if (!parentNode) {
+      // Auto-create missing intermediate folders
+      let current = this.fs;
+      for (const part of parts) {
+        if (!current.children[part]) {
+          current.children[part] = { type: 'directory', children: {} };
+        }
+        current = current.children[part];
+      }
+      parentNode = current;
+    }
+
     if (!parentNode || parentNode.type !== 'directory') return false;
 
     parentNode.children[fileName] = {
       type: 'file',
       mime,
-      content
+      content,
+      updatedAt: new Date().toISOString()
     };
 
     this.save();
+    this.emitChange({ action: 'write', path: filePath });
     return true;
   }
 
@@ -150,6 +168,7 @@ export class VirtualFileSystem {
     };
 
     this.save();
+    this.emitChange({ action: 'createFolder', path: folderPath });
     return true;
   }
 
@@ -164,13 +183,68 @@ export class VirtualFileSystem {
     if (parentNode.children[targetName]) {
       delete parentNode.children[targetName];
       this.save();
+      this.emitChange({ action: 'delete', path });
       return true;
     }
     return false;
   }
 
+  deleteItem(path) {
+    return this.delete(path);
+  }
+
+  exportBackup() {
+    let desktopPositions = {};
+    try {
+      const raw = localStorage.getItem('uzos_desktop_icon_positions');
+      if (raw) desktopPositions = JSON.parse(raw);
+    } catch (e) {}
+
+    return {
+      version: '2.0.4',
+      system: 'UzOS Cloud WebOS',
+      timestamp: new Date().toISOString(),
+      vfs: this.fs,
+      desktopPositions
+    };
+  }
+
+  importBackup(backupData) {
+    if (!backupData || typeof backupData !== 'object' || !backupData.vfs) {
+      throw new Error("Noto'g'ri zaxira fayl formati!");
+    }
+    this.fs = backupData.vfs;
+    this.save();
+
+    if (backupData.desktopPositions) {
+      try {
+        localStorage.setItem('uzos_desktop_icon_positions', JSON.stringify(backupData.desktopPositions));
+      } catch (e) {}
+    }
+
+    this.emitChange({ action: 'restore', path: '/' });
+    return true;
+  }
+
+  onChange(callback) {
+    if (!this.listeners) this.listeners = [];
+    this.listeners.push(callback);
+    return () => {
+      this.listeners = this.listeners.filter(cb => cb !== callback);
+    };
+  }
+
+  emitChange(event) {
+    if (this.listeners) {
+      this.listeners.forEach(cb => {
+        try { cb(event); } catch (e) { console.error('VFS listener error:', e); }
+      });
+    }
+  }
+
   reset() {
     this.fs = this.createDefaultFileSystem();
     this.save();
+    this.emitChange({ action: 'reset', path: '/' });
   }
 }

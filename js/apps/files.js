@@ -22,6 +22,13 @@ export class FilesApp {
     this.openEditor = openEditorCallback;
     this.currentPath = '/';
 
+    // Auto-refresh when VFS changes anywhere in UzOS
+    if (this.vfs && this.vfs.onChange) {
+      this.unsubscribeVfs = this.vfs.onChange(() => {
+        this.refreshGrid();
+      });
+    }
+
     this.render();
   }
 
@@ -30,17 +37,25 @@ export class FilesApp {
       <div class="app-files">
         
         <!-- Files Toolbar -->
-        <div class="files-toolbar">
+        <div class="files-toolbar" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
           <div class="files-breadcrumb" id="files-breadcrumb">
             <span class="files-breadcrumb-icon" id="files-breadcrumb-icon" style="display:flex;align-items:center;color:var(--tg-blue);cursor:pointer;" title="Bosh katalogga qaytish">
               ${ICONS.folder}
             </span>
             <div class="files-breadcrumb-segments" id="files-breadcrumb-segments" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;"></div>
           </div>
+
+          <div class="files-toolbar-actions" style="display:flex;align-items:center;gap:8px;">
+            <label class="tg-upload-btn" id="btn-upload-file" style="display:flex;align-items:center;gap:6px;background:rgba(36,129,204,0.18);color:#2481cc;border:1px solid rgba(36,129,204,0.35);padding:5px 12px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;user-select:none;transition:all 0.15s ease;">
+              ${FILE_SVGS.download}
+              <span>Fayl Yuklash</span>
+              <input type="file" id="files-host-input" multiple style="display:none;" />
+            </label>
+          </div>
         </div>
 
         <!-- Files Body (Full width Document List) -->
-        <div class="files-body">
+        <div class="files-body" id="files-drop-area">
           <div class="files-grid" id="files-grid">
             <!-- Items rendered dynamically -->
           </div>
@@ -50,8 +65,10 @@ export class FilesApp {
     `;
 
     this.gridEl = this.container.querySelector('#files-grid');
+    this.dropAreaEl = this.container.querySelector('#files-drop-area');
     this.breadcrumbSegments = this.container.querySelector('#files-breadcrumb-segments');
     this.breadcrumbIcon = this.container.querySelector('#files-breadcrumb-icon');
+    this.hostFileInput = this.container.querySelector('#files-host-input');
 
     this.bindEvents();
     this.updateBreadcrumbs();
@@ -66,6 +83,76 @@ export class FilesApp {
         this.refreshGrid();
       });
     }
+
+    if (this.hostFileInput) {
+      this.hostFileInput.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files || []);
+        if (files.length > 0) {
+          this.handleIncomingFiles(files);
+          this.hostFileInput.value = '';
+        }
+      });
+    }
+
+    // Drag and drop directly into current folder inside Files App
+    if (this.dropAreaEl) {
+      this.dropAreaEl.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.dropAreaEl.style.background = 'rgba(36, 129, 204, 0.08)';
+      });
+
+      this.dropAreaEl.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.dropAreaEl.style.background = '';
+      });
+
+      this.dropAreaEl.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.dropAreaEl.style.background = '';
+        const files = Array.from(e.dataTransfer.files || []);
+        if (files.length > 0) {
+          this.handleIncomingFiles(files);
+        }
+      });
+    }
+  }
+
+  handleIncomingFiles(files) {
+    let count = 0;
+    files.forEach(file => {
+      const reader = new FileReader();
+      const isText = file.type.startsWith('text/') || 
+                     file.name.endsWith('.txt') || 
+                     file.name.endsWith('.md') || 
+                     file.name.endsWith('.json') || 
+                     file.name.endsWith('.js') || 
+                     file.name.endsWith('.ts') || 
+                     file.name.endsWith('.css') || 
+                     file.name.endsWith('.html') || 
+                     file.name.endsWith('.svg');
+
+      reader.onload = (event) => {
+        const content = event.target.result;
+        const targetDir = this.currentPath === '/' ? '/Hujjatlar' : this.currentPath;
+        const targetPath = `${targetDir}/${file.name}`.replace('//', '/');
+        const mime = file.type || (isText ? 'text/plain' : 'application/octet-stream');
+
+        this.vfs.writeFile(targetPath, content, mime);
+        count++;
+        if (count === files.length) {
+          this.refreshGrid();
+        }
+      };
+
+      if (isText) {
+        reader.readAsText(file);
+      } else {
+        reader.readAsDataURL(file);
+      }
+    });
   }
 
   updateBreadcrumbs() {

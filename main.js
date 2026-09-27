@@ -267,4 +267,15 @@ document.addEventListener('DOMContentLoaded', () => {
     render();
   }
 
+  // Register Production Service Worker
+  if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').then((reg) => {
+        console.log('[UzOS] SW active:', reg.scope);
+      }).catch((err) => {
+        console.warn('[UzOS] SW error:', err);
+      });
+    });
+  }
+
 });

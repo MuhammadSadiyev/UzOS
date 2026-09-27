@@ -996,3 +996,148 @@ html, body {
   font-size: 12px;
   color: var(--text-secondary);
 }
+
+/* ==============================================================================
+   Host File Drag & Drop Overlay
+   ============================================================================== */
+.desktop-dropzone-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 22, 33, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.desktop-dropzone-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.desktop-dropzone-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 36px 44px;
+  background: #17212b;
+  border: 2px dashed #2b5278;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
+  animation: dropCardPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropCardPop {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.desktop-dropzone-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(36, 129, 204, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2481cc;
+  margin-bottom: 16px;
+  animation: pulseDrop 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseDrop {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.desktop-dropzone-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.desktop-dropzone-sub {
+  font-size: 13.5px;
+  color: var(--tg-text-secondary, #7f91a4);
+  max-width: 360px;
+}
+
+/* ==============================================================================
+   Alt+Tab Window Switcher HUD
+   ============================================================================== */
+.uzos-window-switcher-hud {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(23, 33, 43, 0.94);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(82, 136, 193, 0.28);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85);
+  border-radius: 18px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 999999;
+  pointer-events: none;
+  animation: switcherPop 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes switcherPop {
+  from { opacity: 0; transform: translate(-50%, -46%) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+.switcher-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  min-width: 90px;
+  max-width: 120px;
+  transition: all 0.15s ease;
+  border: 1.5px solid transparent;
+}
+
+.switcher-item.selected {
+  background: rgba(36, 129, 204, 0.25);
+  border-color: #2481cc;
+  box-shadow: 0 4px 16px rgba(36, 129, 204, 0.35);
+}
+
+.switcher-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.switcher-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.switcher-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
