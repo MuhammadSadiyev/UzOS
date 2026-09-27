@@ -289,9 +289,15 @@ jobs:
           command -v aws &>/dev/null || sudo apt install -y awscli
 
           echo "UzOS ISO Cloudflare R2 ga yuklanmoqda..."
+          ACCOUNT_ID="${{ secrets.R2_ACCOUNT_ID }}"
+          ACCOUNT_ID="${ACCOUNT_ID#https://}"
+          ACCOUNT_ID="${ACCOUNT_ID#http://}"
+          ACCOUNT_ID="${ACCOUNT_ID%.r2.cloudflarestorage.com*}"
+          ACCOUNT_ID="${ACCOUNT_ID%/}"
+
           aws s3 cp output/uzos-24.04-desktop-amd64.iso \
             s3://${{ secrets.R2_BUCKET_NAME }}/uzos-24.04-desktop-amd64.iso \
-            --endpoint-url https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com
+            --endpoint-url "https://${ACCOUNT_ID}.r2.cloudflarestorage.com"
 
           echo "================================================================="
           echo " [UzOS] Cloudflare R2 ga to'liq yuklandi!"
