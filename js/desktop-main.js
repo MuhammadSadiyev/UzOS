@@ -243,10 +243,10 @@ document.addEventListener('DOMContentLoaded', () => {
           const container = document.getElementById('desktop-container');
           if (container.classList.contains('wallpaper-mesh')) {
             container.className = 'default-wallpaper';
-            taskbar.showNotification("Fon Rasmi", "Telegram Dark Vector fon faol.", ICONS.palette);
+            taskbar.showNotification("Fon Rangi", "Telegram Dark (#0e1621) rangi faollashtirildi.", ICONS.palette);
           } else {
             container.className = 'default-wallpaper wallpaper-mesh';
-            taskbar.showNotification("Fon Rasmi", "Telegram Deep Indigo fon faol.", ICONS.palette);
+            taskbar.showNotification("Fon Rangi", "Telegram Night (#0f141c) rangi faollashtirildi.", ICONS.palette);
           }
           break;
         }

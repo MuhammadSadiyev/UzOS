@@ -81,29 +81,20 @@ html, body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-darkest);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-image 0.4s ease;
+  background-color: #0e1621;
+  background-image: none !important;
   overflow: hidden;
 }
 
-/* Default Wallpaper: Telegram Dark Vector Doodle Ambient Mesh Gradient */
+/* Telegram Desktop Solid Color (No illustrations / patterns) */
 .default-wallpaper {
-  background-color: #0e1621;
-  background-image: 
-    radial-gradient(circle at 12% 18%, rgba(36, 129, 204, 0.16) 0%, transparent 45%),
-    radial-gradient(circle at 88% 82%, rgba(51, 144, 236, 0.14) 0%, transparent 50%),
-    url("data:image/svg+xml,%3Csvg width='260' height='260' viewBox='0 0 260 260' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 40l18 6-12 12-6-18z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5' stroke-linejoin='round'/%3E%3Ccircle cx='95' cy='35' r='8' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M160 30h20v14h-20z' rx='3' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M215 75l6 14 14 6-14 6-6 14-6-14-14-6 14-6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M45 110c0-8 6-14 14-14s14 6 14 14c0 10-14 18-14 18s-14-8-14-18z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M120 100l12 20h-24z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M175 115a12 12 0 1 0 24 0 12 12 0 1 0-24 0z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M30 185c4-6 14-6 18 0 4 6-2 14-9 14s-13-8-9-14z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M90 180l10-10 10 10-10 10z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M150 185h22v12h-22z' rx='2' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M215 165l12 18-18-6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M70 65l6-6 6 6-6 6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M140 45l8 14-16 0z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M190 205a8 8 0 1 1 0-16 8 8 0 0 1 0 16z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-color: #0e1621 !important;
+  background-image: none !important;
 }
 
 .wallpaper-mesh {
-  background-color: #0b1118 !important;
-  background-image: 
-    radial-gradient(circle at 80% 20%, rgba(135, 116, 225, 0.18) 0%, transparent 50%),
-    radial-gradient(circle at 20% 80%, rgba(2, 132, 199, 0.22) 0%, transparent 50%),
-    url("data:image/svg+xml,%3Csvg width='260' height='260' viewBox='0 0 260 260' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 40l18 6-12 12-6-18z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5' stroke-linejoin='round'/%3E%3Ccircle cx='95' cy='35' r='8' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M160 30h20v14h-20z' rx='3' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M215 75l6 14 14 6-14 6-6 14-6-14-14-6 14-6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M45 110c0-8 6-14 14-14s14 6 14 14c0 10-14 18-14 18s-14-8-14-18z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M120 100l12 20h-24z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M175 115a12 12 0 1 0 24 0 12 12 0 1 0-24 0z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M30 185c4-6 14-6 18 0 4 6-2 14-9 14s-13-8-9-14z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M90 180l10-10 10 10-10 10z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M150 185h22v12h-22z' rx='2' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M215 165l12 18-18-6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M70 65l6-6 6 6-6 6z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M140 45l8 14-16 0z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M190 205a8 8 0 1 1 0-16 8 8 0 0 1 0 16z' stroke='%23ffffff' stroke-opacity='0.035' stroke-width='1.5'/%3E%3C/svg%3E") !important;
+  background-color: #0f141c !important;
+  background-image: none !important;
 }
 
 /* ==============================================================================
