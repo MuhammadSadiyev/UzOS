@@ -1,0 +1,937 @@
+/* ==============================================================================
+   UzOS Cloud (WebOS) — Telegram Dark Desktop Environment
+   Modern, Ultra-responsive Glassmorphism Design System
+   ============================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --bg-darkest: #0e1621;
+  --bg-sidebar: #0e1621;
+  --bg-drawer: #17212b;
+  --bg-surface: #242f3d;
+  --bg-surface-hover: #2b394a;
+  --bg-active: #2b5278;
+  
+  --accent: #2481cc;
+  --accent-bright: #3390ec;
+  --accent-glow: rgba(51, 144, 236, 0.35);
+  
+  --green: #4fae4e;
+  --red: #e53935;
+  --yellow: #f5a623;
+  --purple: #8b5cf6;
+
+  --text-primary: #ffffff;
+  --text-secondary: #7f91a4;
+  --text-muted: #5e7082;
+  
+  --border: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(51, 144, 236, 0.5);
+  --border-focus: rgba(51, 144, 236, 0.6);
+  
+  --glass-bg: rgba(23, 33, 43, 0.85);
+  --glass-blur: blur(20px);
+  
+  --shadow-window: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.09);
+  --shadow-dropdown: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  
+  --radius-window: 12px;
+  --radius-card: 10px;
+  --radius-btn: 8px;
+  --radius-pill: 9999px;
+  
+  --topbar-height: 44px;
+  --sidebar-width: 64px;
+  --drawer-width: 290px;
+  
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* Reset & Global Canvas */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  background-color: var(--bg-darkest);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ==============================================================================
+   Desktop Container & Wallpaper Canvas
+   ============================================================================== */
+#desktop-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-darkest);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.4s ease;
+}
+
+/* Default Wallpaper: Telegram Dark Honeycomb Mesh Ambient Gradient */
+.default-wallpaper {
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(36, 129, 204, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(43, 82, 120, 0.22) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(14, 22, 33, 0.95) 0%, #080d14 100%);
+}
+
+/* Ambient Honeycomb Pattern Overlay */
+.wallpaper-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: radial-gradient(#3390ec 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ==============================================================================
+   Top Status Bar (TopBar)
+   ============================================================================== */
+#topbar {
+  height: var(--topbar-height);
+  min-height: var(--topbar-height);
+  background: rgba(14, 22, 33, 0.88);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 9000;
+  position: relative;
+}
+
+.topbar-left, .topbar-center, .topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-btn);
+  transition: background 0.2s ease;
+}
+
+.topbar-brand:hover {
+  background: var(--bg-surface-hover);
+}
+
+.brand-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.brand-title {
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: -0.3px;
+  color: #ffffff;
+}
+
+.brand-badge {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--accent-bright);
+  color: #fff;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* Zero Telemetry Tag */
+.badge-zero-telemetry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(79, 174, 78, 0.15);
+  border: 1px solid rgba(79, 174, 78, 0.35);
+  color: var(--green);
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* TopBar Quick Action Buttons */
+.topbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.topbar-btn:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+.topbar-btn.active {
+  background: var(--bg-surface);
+  color: var(--accent-bright);
+  border-color: var(--border-active);
+}
+
+.topbar-clock {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+  padding-left: 4px;
+}
+
+/* ==============================================================================
+   Main Desktop Area (Sidebar + Drawer + Canvas Workspace)
+   ============================================================================== */
+#desktop-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Left Pill Sidebar */
+#sidebar {
+  width: var(--sidebar-width);
+  min-width: var(--sidebar-width);
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  gap: 10px;
+  z-index: 8500;
+}
+
+.sidebar-logo-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-card);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.sidebar-logo-btn:hover {
+  background: var(--bg-surface-hover);
+  transform: scale(1.05);
+}
+
+.sidebar-divider {
+  width: 32px;
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+.sidebar-app-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 18px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.sidebar-app-btn:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.sidebar-app-btn.active {
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.sidebar-app-btn .app-running-indicator {
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--accent-bright);
+  display: none;
+}
+
+.sidebar-app-btn.running .app-running-indicator {
+  display: block;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Tooltip for sidebar buttons */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%) scale(0.95);
+  background: var(--bg-drawer);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.15s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border);
+  z-index: 10000;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) scale(1);
+}
+
+/* ==============================================================================
+   Telegram-Style Drawer (Apps List & Tasks)
+   ============================================================================== */
+#drawer {
+  width: var(--drawer-width);
+  min-width: var(--drawer-width);
+  background: var(--bg-drawer);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 8000;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#drawer.collapsed {
+  margin-left: calc(-1 * var(--drawer-width));
+}
+
+.drawer-search-box {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-input-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: var(--accent-bright);
+  background: var(--bg-darkest);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.search-icon {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.drawer-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 13px;
+  width: 100%;
+}
+
+.drawer-search-input::placeholder {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.drawer-header {
+  padding: 10px 16px 4px 16px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--accent-bright);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.drawer-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.drawer-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.drawer-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+/* Telegram Chat Style App Item */
+.drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 10px;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.drawer-item:hover {
+  background: var(--bg-surface-hover);
+}
+
+.drawer-item.active {
+  background: var(--bg-active);
+}
+
+.drawer-item-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.drawer-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.drawer-item-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-item-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.drawer-item-tag {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.drawer-item-desc {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+/* ==============================================================================
+   Desktop Workspace Canvas
+   ============================================================================== */
+#workspace {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop App Icons Grid */
+.desktop-icons-grid {
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 86px);
+  grid-auto-rows: 96px;
+  gap: 16px 12px;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.desktop-icon-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border-radius: var(--radius-card);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.desktop-icon-cell:hover {
+  background: rgba(36, 47, 61, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.desktop-icon-cell.selected {
+  background: rgba(43, 82, 120, 0.7);
+  border-color: var(--border-active);
+}
+
+.desktop-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.desktop-icon-label {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 82px;
+}
+
+/* ==============================================================================
+   Window Manager: Floating Draggable Windows
+   ============================================================================== */
+.uzos-window {
+  position: absolute;
+  border-radius: var(--radius-window);
+  background: var(--bg-drawer);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-window);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 340px;
+  min-height: 220px;
+  z-index: 100;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease;
+}
+
+.uzos-window.active {
+  border-color: var(--border-active);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(51, 144, 236, 0.4);
+}
+
+.uzos-window.minimized {
+  opacity: 0;
+  transform: scale(0.7) translateY(80px);
+  pointer-events: none;
+}
+
+.uzos-window.maximized {
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+/* Window Titlebar */
+.window-titlebar {
+  height: 38px;
+  min-height: 38px;
+  background: var(--bg-darkest);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  cursor: grab;
+  user-select: none;
+}
+
+.window-titlebar:active {
+  cursor: grabbing;
+}
+
+.window-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.window-icon {
+  font-size: 15px;
+}
+
+.window-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Window Control Buttons (Minimize, Maximize, Close) */
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.win-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 11px;
+}
+
+.win-btn:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.win-btn.close:hover {
+  background: var(--red);
+  color: #ffffff;
+}
+
+/* Window Body */
+.window-body {
+  flex: 1;
+  background: var(--bg-drawer);
+  overflow: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Resize Handles (8 directions) */
+.resize-handle {
+  position: absolute;
+  z-index: 50;
+}
+
+.resize-n { top: 0; left: 6px; right: 6px; height: 6px; cursor: n-resize; }
+.resize-s { bottom: 0; left: 6px; right: 6px; height: 6px; cursor: s-resize; }
+.resize-e { top: 6px; bottom: 6px; right: 0; width: 6px; cursor: e-resize; }
+.resize-w { top: 6px; bottom: 6px; left: 0; width: 6px; cursor: w-resize; }
+.resize-ne { top: 0; right: 0; width: 10px; height: 10px; cursor: ne-resize; }
+.resize-nw { top: 0; left: 0; width: 10px; height: 10px; cursor: nw-resize; }
+.resize-se { bottom: 0; right: 0; width: 10px; height: 10px; cursor: se-resize; }
+.resize-sw { bottom: 0; left: 0; width: 10px; height: 10px; cursor: sw-resize; }
+
+/* ==============================================================================
+   Quick Settings Control Center (Popover)
+   ============================================================================== */
+#quick-settings {
+  position: absolute;
+  top: calc(var(--topbar-height) + 8px);
+  right: 16px;
+  width: 310px;
+  background: rgba(23, 33, 43, 0.95);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-window);
+  box-shadow: var(--shadow-dropdown);
+  padding: 16px;
+  z-index: 9500;
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeInDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#quick-settings.visible {
+  display: flex;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.qs-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-bright);
+}
+
+.qs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.qs-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qs-card:hover {
+  background: var(--bg-surface-hover);
+}
+
+.qs-card.active {
+  background: var(--accent);
+  border-color: var(--accent-bright);
+}
+
+.qs-card-icon {
+  font-size: 18px;
+}
+
+.qs-card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.qs-card-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.qs-card-status {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.qs-card.active .qs-card-status {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Sliders (Brightness / Volume) */
+.qs-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qs-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.qs-range {
+  flex: 1;
+  accent-color: var(--accent-bright);
+  cursor: pointer;
+}
+
+/* ==============================================================================
+   Desktop Context Menu (Right Click)
+   ============================================================================== */
+#context-menu {
+  position: absolute;
+  background: var(--bg-drawer);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-dropdown);
+  min-width: 200px;
+  padding: 6px;
+  z-index: 10000;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#context-menu.visible {
+  display: flex;
+}
+
+.ctx-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.ctx-item:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.ctx-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 6px;
+}
+
+/* ==============================================================================
+   Toast Notification Center
+   ============================================================================== */
+#notification-container {
+  position: absolute;
+  top: calc(var(--topbar-height) + 16px);
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9800;
+  pointer-events: none;
+}
+
+.toast-item {
+  width: 300px;
+  background: rgba(23, 33, 43, 0.94);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-bright);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-dropdown);
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  pointer-events: auto;
+  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.toast-icon {
+  font-size: 20px;
+}
+
+.toast-content {
+  flex: 1;
+}
+
+.toast-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.toast-msg {
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #drawer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--sidebar-width);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6);
+  }
+}
