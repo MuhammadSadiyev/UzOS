@@ -1,55 +1,55 @@
 /* ==============================================================================
-   UzOS Cloud (WebOS) — Telegram Dark Desktop Environment
-   Modern, Ultra-responsive Glassmorphism Design System
+   UzOS Cloud (WebOS) — 100% Authentic Telegram UI Design System
+   Based on @telegram-apps/telegram-ui and Telegram Desktop Specifications
    ============================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --bg-darkest: #0e1621;
-  --bg-sidebar: #0e1621;
-  --bg-drawer: #17212b;
-  --bg-surface: #242f3d;
-  --bg-surface-hover: #2b394a;
-  --bg-active: #2b5278;
+  /* Official Telegram Design Tokens (TelegramUI / WebApp Specification) */
+  --tg-theme-bg-color: #17212b;
+  --tg-theme-secondary-bg-color: #0e1621;
+  --tg-theme-header-bg-color: #17212b;
+  --tg-theme-section-bg-color: #17212b;
+  --tg-theme-card-bg-color: #242f3d;
   
-  --accent: #2481cc;
-  --accent-bright: #3390ec;
-  --accent-glow: rgba(51, 144, 236, 0.35);
+  --tg-theme-text-color: #ffffff;
+  --tg-theme-hint-color: #707579;
+  --tg-theme-subtitle-text-color: #7f91a4;
+  --tg-theme-section-header-text-color: #707579;
   
-  --green: #4fae4e;
-  --red: #e53935;
-  --yellow: #f5a623;
-  --purple: #8b5cf6;
-
-  --text-primary: #ffffff;
-  --text-secondary: #7f91a4;
-  --text-muted: #5e7082;
+  --tg-theme-link-color: #2b5278;
+  --tg-theme-button-color: #2481cc;
+  --tg-theme-button-text-color: #ffffff;
+  --tg-theme-accent-text-color: #3390ec;
+  --tg-theme-destructive-text-color: #e53935;
   
-  --border: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(51, 144, 236, 0.5);
-  --border-focus: rgba(51, 144, 236, 0.6);
+  /* Telegram Desktop Dark Palette */
+  --tg-darkest: #0e1621;
+  --tg-surface: #17212b;
+  --tg-surface-card: #242f3d;
+  --tg-surface-hover: #202b36;
+  --tg-surface-active: #2b5278;
   
-  --glass-bg: rgba(23, 33, 43, 0.85);
-  --glass-blur: blur(20px);
+  --tg-blue: #2481cc;
+  --tg-blue-bright: #3390ec;
+  --tg-blue-glow: rgba(51, 144, 236, 0.35);
+  --tg-green: #4fae4e;
+  --tg-red: #e53935;
+  --tg-orange: #f5a623;
+  --tg-purple: #8774e1;
   
-  --shadow-window: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.09);
-  --shadow-dropdown: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --tg-border: rgba(255, 255, 255, 0.07);
+  --tg-divider: rgba(255, 255, 255, 0.05);
   
-  --radius-window: 12px;
-  --radius-card: 10px;
-  --radius-btn: 8px;
-  --radius-pill: 9999px;
+  --tg-font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", Helvetica, Arial, sans-serif;
+  --tg-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
   
-  --topbar-height: 44px;
-  --sidebar-width: 64px;
-  --drawer-width: 290px;
-  
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --tg-shadow-dropdown: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--tg-border);
+  --tg-shadow-window: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--tg-border);
 }
 
-/* Reset & Global Canvas */
+/* Reset & Universal Box-sizing */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -62,15 +62,16 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  font-family: var(--font-sans);
-  background-color: var(--bg-darkest);
-  color: var(--text-primary);
+  font-family: var(--tg-font-family);
+  background-color: var(--tg-darkest);
+  color: var(--tg-theme-text-color);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ==============================================================================
-   Desktop Container & Wallpaper Canvas
+   Desktop Container & Authentic Telegram Background
    ============================================================================== */
 #desktop-container {
   position: relative;
@@ -78,41 +79,31 @@ html, body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-darkest);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-image 0.4s ease;
+  background-color: #0e1621;
+  transition: background 0.3s ease;
 }
 
-/* Default Wallpaper: Telegram Dark Honeycomb Mesh Ambient Gradient */
-.default-wallpaper {
-  background: 
-    radial-gradient(circle at 15% 20%, rgba(36, 129, 204, 0.18) 0%, transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(43, 82, 120, 0.22) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(14, 22, 33, 0.95) 0%, #080d14 100%);
-}
-
-/* Ambient Honeycomb Pattern Overlay */
+/* Telegram Signature Subtle Pattern Overlay */
 .wallpaper-pattern {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.04;
-  background-image: radial-gradient(#3390ec 1px, transparent 1px);
-  background-size: 28px 28px;
+  opacity: 0.06;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(36, 129, 204, 0.3) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(51, 144, 236, 0.25) 0%, transparent 25%),
+    url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z' fill='%23ffffff' fill-opacity='0.4'/%3E%3C/svg%3E");
+  background-repeat: repeat;
 }
 
 /* ==============================================================================
-   Top Status Bar (TopBar)
+   Top Status Bar (Telegram Desktop Titlebar Style)
    ============================================================================== */
 #topbar {
-  height: var(--topbar-height);
-  min-height: var(--topbar-height);
-  background: rgba(14, 22, 33, 0.88);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--border);
+  height: 42px;
+  min-height: 42px;
+  background: var(--tg-surface);
+  border-bottom: 1px solid var(--tg-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -121,7 +112,7 @@ html, body {
   position: relative;
 }
 
-.topbar-left, .topbar-center, .topbar-right {
+.topbar-left, .topbar-right {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -133,46 +124,45 @@ html, body {
   gap: 8px;
   cursor: pointer;
   padding: 4px 8px;
-  border-radius: var(--radius-btn);
-  transition: background 0.2s ease;
+  border-radius: 8px;
+  transition: background 0.15s ease;
 }
 
 .topbar-brand:hover {
-  background: var(--bg-surface-hover);
+  background: var(--tg-surface-hover);
 }
 
 .brand-icon {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
 }
 
 .brand-title {
-  font-weight: 700;
-  font-size: 13.5px;
-  letter-spacing: -0.3px;
+  font-weight: 600;
+  font-size: 14px;
   color: #ffffff;
+  letter-spacing: -0.2px;
 }
 
 .brand-badge {
   font-size: 10px;
   font-weight: 600;
-  text-transform: uppercase;
-  background: var(--accent-bright);
+  background: var(--tg-blue);
   color: #fff;
-  padding: 1px 6px;
-  border-radius: 4px;
+  padding: 2px 7px;
+  border-radius: 10px;
 }
 
-/* Zero Telemetry Tag */
+/* Zero Telemetry Telegram Verified Style Badge */
 .badge-zero-telemetry {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: rgba(79, 174, 78, 0.15);
   border: 1px solid rgba(79, 174, 78, 0.35);
-  color: var(--green);
-  padding: 3px 9px;
-  border-radius: var(--radius-pill);
+  color: var(--tg-green);
+  padding: 2px 10px;
+  border-radius: 12px;
   font-size: 11px;
   font-weight: 500;
 }
@@ -181,55 +171,45 @@ html, body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 8px var(--green);
-  animation: pulse 2s infinite ease-in-out;
+  background: var(--tg-green);
+  box-shadow: 0 0 6px var(--tg-green);
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
-}
-
-/* TopBar Quick Action Buttons */
 .topbar-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-secondary);
-  font-size: 12px;
+  border: none;
+  color: var(--tg-theme-subtitle-text-color);
+  font-size: 12.5px;
   font-weight: 500;
-  padding: 5px 10px;
-  border-radius: var(--radius-btn);
+  padding: 6px 12px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .topbar-btn:hover {
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  border-color: var(--border);
+  background: var(--tg-surface-hover);
+  color: #ffffff;
 }
 
 .topbar-btn.active {
-  background: var(--bg-surface);
-  color: var(--accent-bright);
-  border-color: var(--border-active);
+  background: var(--tg-surface-hover);
+  color: var(--tg-blue-bright);
 }
 
 .topbar-clock {
-  font-family: var(--font-mono);
+  font-family: var(--tg-font-family);
   font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: 0.5px;
-  padding-left: 4px;
+  font-weight: 500;
+  color: var(--tg-theme-text-color);
+  padding-left: 6px;
 }
 
 /* ==============================================================================
-   Main Desktop Area (Sidebar + Drawer + Canvas Workspace)
+   Main Desktop Layout (Telegram Folder Sidebar + Drawer + Workspace)
    ============================================================================== */
 #desktop-main {
   flex: 1;
@@ -238,71 +218,72 @@ html, body {
   position: relative;
 }
 
-/* Left Pill Sidebar */
+/* Far-Left Telegram Chat Folders Bar */
 #sidebar {
-  width: var(--sidebar-width);
-  min-width: var(--sidebar-width);
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border);
+  width: 68px;
+  min-width: 68px;
+  background: var(--tg-darkest);
+  border-right: 1px solid var(--tg-border);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 0;
-  gap: 10px;
+  padding: 10px 0;
+  gap: 8px;
   z-index: 8500;
 }
 
+/* Telegram Hamburger Menu Button */
 .sidebar-logo-btn {
   width: 44px;
   height: 44px;
-  border-radius: var(--radius-card);
+  border-radius: 10px;
   background: transparent;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  color: var(--tg-theme-subtitle-text-color);
+  transition: all 0.15s ease;
 }
 
 .sidebar-logo-btn:hover {
-  background: var(--bg-surface-hover);
-  transform: scale(1.05);
+  background: var(--tg-surface-hover);
+  color: #ffffff;
 }
 
 .sidebar-divider {
-  width: 32px;
+  width: 36px;
   height: 1px;
-  background: var(--border);
+  background: var(--tg-border);
   margin: 4px 0;
 }
 
+/* Telegram Folders / App Icons */
 .sidebar-app-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-pill);
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
   background: transparent;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-secondary);
-  font-size: 18px;
+  color: var(--tg-theme-subtitle-text-color);
+  font-size: 19px;
   position: relative;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .sidebar-app-btn:hover {
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  transform: translateY(-1px);
+  background: var(--tg-surface-hover);
+  color: #ffffff;
 }
 
 .sidebar-app-btn.active {
-  background: var(--accent);
+  background: var(--tg-surface-active);
   color: #ffffff;
-  box-shadow: 0 4px 12px var(--accent-glow);
 }
 
 .sidebar-app-btn .app-running-indicator {
@@ -311,9 +292,9 @@ html, body {
   top: 50%;
   transform: translateY(-50%);
   width: 3px;
-  height: 12px;
+  height: 16px;
   border-radius: 2px;
-  background: var(--accent-bright);
+  background: var(--tg-blue-bright);
   display: none;
 }
 
@@ -325,10 +306,10 @@ html, body {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* Tooltip for sidebar buttons */
+/* Tooltips */
 [data-tooltip] {
   position: relative;
 }
@@ -336,21 +317,22 @@ html, body {
 [data-tooltip]::after {
   content: attr(data-tooltip);
   position: absolute;
-  left: calc(100% + 10px);
+  left: calc(100% + 12px);
   top: 50%;
-  transform: translateY(-50%) scale(0.95);
-  background: var(--bg-drawer);
+  transform: translateY(-50%) scale(0.96);
+  background: #17212b;
   color: #fff;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 11.5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: all 0.15s ease;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--tg-border);
   z-index: 10000;
 }
 
@@ -361,47 +343,46 @@ html, body {
 }
 
 /* ==============================================================================
-   Telegram-Style Drawer (Apps List & Tasks)
+   Telegram Chat List Style Drawer
    ============================================================================== */
 #drawer {
-  width: var(--drawer-width);
-  min-width: var(--drawer-width);
-  background: var(--bg-drawer);
-  border-right: 1px solid var(--border);
+  width: 320px;
+  min-width: 320px;
+  background: var(--tg-surface);
+  border-right: 1px solid var(--tg-border);
   display: flex;
   flex-direction: column;
   z-index: 8000;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), margin-left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), margin-left 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 #drawer.collapsed {
-  margin-left: calc(-1 * var(--drawer-width));
+  margin-left: -320px;
 }
 
+/* Telegram Search Box */
 .drawer-search-box {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
 }
 
 .search-input-wrapper {
-  background: var(--bg-surface);
+  background: var(--tg-darkest);
   border: 1px solid transparent;
-  border-radius: var(--radius-pill);
+  border-radius: 22px;
   display: flex;
   align-items: center;
-  padding: 6px 12px;
-  gap: 8px;
+  padding: 7px 14px;
+  gap: 10px;
   transition: all 0.2s ease;
 }
 
 .search-input-wrapper:focus-within {
-  border-color: var(--accent-bright);
-  background: var(--bg-darkest);
-  box-shadow: 0 0 0 2px var(--accent-glow);
+  border-color: var(--tg-blue-bright);
+  background: #090e15;
 }
 
 .search-icon {
-  color: var(--text-muted);
+  color: var(--tg-theme-hint-color);
   font-size: 13px;
 }
 
@@ -409,29 +390,31 @@ html, body {
   background: transparent;
   border: none;
   outline: none;
-  color: var(--text-primary);
+  color: var(--tg-theme-text-color);
   font-size: 13px;
   width: 100%;
+  font-family: var(--tg-font-family);
 }
 
 .drawer-search-input::placeholder {
-  color: var(--text-muted);
-  font-size: 12px;
+  color: var(--tg-theme-hint-color);
+  font-size: 12.5px;
 }
 
+/* Telegram Section Header */
 .drawer-header {
-  padding: 10px 16px 4px 16px;
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--accent-bright);
-  letter-spacing: 0.5px;
+  padding: 12px 16px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tg-blue-bright);
+  letter-spacing: 0.4px;
   text-transform: uppercase;
 }
 
 .drawer-list {
   flex: 1;
   overflow-y: auto;
-  padding: 6px 8px;
+  padding: 4px 8px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -442,40 +425,42 @@ html, body {
 }
 
 .drawer-list::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 4px;
 }
 
-/* Telegram Chat Style App Item */
+/* 100% Authentic Telegram Chat List Item (Cell) */
 .drawer-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 9px 10px;
-  border-radius: var(--radius-card);
+  padding: 8px 10px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.12s ease;
+  position: relative;
 }
 
 .drawer-item:hover {
-  background: var(--bg-surface-hover);
+  background: var(--tg-surface-hover);
 }
 
 .drawer-item.active {
-  background: var(--bg-active);
+  background: var(--tg-surface-active);
 }
 
+/* Telegram Circular Avatar */
 .drawer-item-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-pill);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 20px;
   color: #fff;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .drawer-item-info {
@@ -487,29 +472,29 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 2px;
 }
 
 .drawer-item-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--tg-theme-text-color);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .drawer-item-tag {
-  font-size: 10px;
-  color: var(--text-muted);
+  font-size: 11px;
+  color: var(--tg-theme-hint-color);
 }
 
 .drawer-item-desc {
-  font-size: 11.5px;
-  color: var(--text-secondary);
+  font-size: 13px;
+  color: var(--tg-theme-subtitle-text-color);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: 1px;
 }
 
 /* ==============================================================================
@@ -526,14 +511,13 @@ html, body {
 /* Desktop App Icons Grid */
 .desktop-icons-grid {
   position: absolute;
-  top: 16px;
-  left: 20px;
+  top: 20px;
+  left: 24px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, 86px);
+  grid-template-columns: repeat(auto-fill, 90px);
   grid-auto-rows: 96px;
   gap: 16px 12px;
   z-index: 10;
-  pointer-events: auto;
 }
 
 .desktop-icon-cell {
@@ -542,7 +526,7 @@ html, body {
   align-items: center;
   justify-content: center;
   padding: 8px 4px;
-  border-radius: var(--radius-card);
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.15s ease;
   text-align: center;
@@ -550,65 +534,64 @@ html, body {
 }
 
 .desktop-icon-cell:hover {
-  background: rgba(36, 47, 61, 0.6);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(36, 47, 61, 0.7);
   transform: translateY(-2px);
 }
 
 .desktop-icon-cell.selected {
-  background: rgba(43, 82, 120, 0.7);
-  border-color: var(--border-active);
+  background: rgba(43, 82, 120, 0.8);
+  border-color: var(--tg-blue-bright);
 }
 
 .desktop-icon-box {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 22px;
   margin-bottom: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .desktop-icon-label {
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 500;
   color: #ffffff;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 82px;
+  max-width: 84px;
 }
 
 /* ==============================================================================
-   Window Manager: Floating Draggable Windows
+   Window Manager: Telegram Desktop Style Windows
    ============================================================================== */
 .uzos-window {
   position: absolute;
-  border-radius: var(--radius-window);
-  background: var(--bg-drawer);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-window);
+  border-radius: 12px;
+  background: var(--tg-surface);
+  border: 1px solid var(--tg-border);
+  box-shadow: var(--tg-shadow-window);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  min-width: 340px;
-  min-height: 220px;
+  min-width: 360px;
+  min-height: 240px;
   z-index: 100;
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease;
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.16s ease;
 }
 
 .uzos-window.active {
-  border-color: var(--border-active);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(51, 144, 236, 0.4);
+  border-color: rgba(51, 144, 236, 0.4);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(51, 144, 236, 0.35);
 }
 
 .uzos-window.minimized {
   opacity: 0;
-  transform: scale(0.7) translateY(80px);
+  transform: scale(0.8) translateY(60px);
   pointer-events: none;
 }
 
@@ -621,18 +604,17 @@ html, body {
   border: none !important;
 }
 
-/* Window Titlebar */
+/* Telegram Desktop Titlebar */
 .window-titlebar {
-  height: 38px;
-  min-height: 38px;
-  background: var(--bg-darkest);
-  border-bottom: 1px solid var(--border);
+  height: 40px;
+  min-height: 40px;
+  background: var(--tg-darkest);
+  border-bottom: 1px solid var(--tg-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 12px;
+  padding: 0 14px;
   cursor: grab;
-  user-select: none;
 }
 
 .window-titlebar:active {
@@ -647,61 +629,60 @@ html, body {
 }
 
 .window-icon {
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .window-title {
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Window Control Buttons (Minimize, Maximize, Close) */
+/* Telegram Desktop Native Window Buttons */
 .window-controls {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .win-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius-pill);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   border: none;
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--tg-theme-subtitle-text-color);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.15s ease;
-  font-size: 11px;
+  transition: all 0.12s ease;
+  font-size: 12px;
 }
 
 .win-btn:hover {
-  background: var(--bg-surface);
-  color: var(--text-primary);
-}
-
-.win-btn.close:hover {
-  background: var(--red);
+  background: var(--tg-surface-card);
   color: #ffffff;
 }
 
-/* Window Body */
+.win-btn.close:hover {
+  background: var(--tg-red);
+  color: #ffffff;
+}
+
 .window-body {
   flex: 1;
-  background: var(--bg-drawer);
+  background: var(--tg-surface);
   overflow: auto;
   position: relative;
   display: flex;
   flex-direction: column;
 }
 
-/* Resize Handles (8 directions) */
+/* Resize Handles */
 .resize-handle {
   position: absolute;
   z-index: 50;
@@ -717,39 +698,38 @@ html, body {
 .resize-sw { bottom: 0; left: 0; width: 10px; height: 10px; cursor: sw-resize; }
 
 /* ==============================================================================
-   Quick Settings Control Center (Popover)
+   Telegram Control Center (Quick Settings Popover)
    ============================================================================== */
 #quick-settings {
   position: absolute;
-  top: calc(var(--topbar-height) + 8px);
+  top: calc(42px + 8px);
   right: 16px;
-  width: 310px;
-  background: rgba(23, 33, 43, 0.95);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-window);
-  box-shadow: var(--shadow-dropdown);
+  width: 320px;
+  background: var(--tg-surface);
+  border: 1px solid var(--tg-border);
+  border-radius: 14px;
+  box-shadow: var(--tg-shadow-dropdown);
   padding: 16px;
   z-index: 9500;
   display: none;
   flex-direction: column;
   gap: 14px;
-  animation: fadeInDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fadeIn 0.15s ease-out;
 }
 
 #quick-settings.visible {
   display: flex;
 }
 
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .qs-title {
   font-size: 13px;
-  font-weight: 700;
-  color: var(--accent-bright);
+  font-weight: 600;
+  color: var(--tg-blue-bright);
 }
 
 .qs-grid {
@@ -759,24 +739,22 @@ html, body {
 }
 
 .qs-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-btn);
+  background: var(--tg-surface-card);
+  border-radius: 10px;
   padding: 10px 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
 .qs-card:hover {
-  background: var(--bg-surface-hover);
+  background: #2b394a;
 }
 
 .qs-card.active {
-  background: var(--accent);
-  border-color: var(--accent-bright);
+  background: var(--tg-blue);
 }
 
 .qs-card-icon {
@@ -795,45 +773,45 @@ html, body {
 }
 
 .qs-card-status {
-  font-size: 10px;
-  color: var(--text-secondary);
+  font-size: 10.5px;
+  color: var(--tg-theme-subtitle-text-color);
 }
 
 .qs-card.active .qs-card-status {
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* Sliders (Brightness / Volume) */
 .qs-slider-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  padding-top: 4px;
 }
 
 .qs-slider-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
-  color: var(--text-secondary);
+  font-size: 14px;
+  color: var(--tg-theme-subtitle-text-color);
 }
 
 .qs-range {
   flex: 1;
-  accent-color: var(--accent-bright);
+  accent-color: var(--tg-blue-bright);
   cursor: pointer;
 }
 
 /* ==============================================================================
-   Desktop Context Menu (Right Click)
+   Telegram Desktop Context Menu
    ============================================================================== */
 #context-menu {
   position: absolute;
-  background: var(--bg-drawer);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-dropdown);
-  min-width: 200px;
+  background: var(--tg-surface);
+  border: 1px solid var(--tg-border);
+  border-radius: 10px;
+  box-shadow: var(--tg-shadow-dropdown);
+  min-width: 210px;
   padding: 6px;
   z-index: 10000;
   display: none;
@@ -851,29 +829,29 @@ html, body {
   gap: 10px;
   padding: 8px 12px;
   border-radius: 6px;
-  font-size: 12.5px;
-  color: var(--text-primary);
+  font-size: 13px;
+  color: var(--tg-theme-text-color);
   cursor: pointer;
   transition: background 0.12s ease;
 }
 
 .ctx-item:hover {
-  background: var(--accent);
+  background: var(--tg-blue);
   color: #ffffff;
 }
 
 .ctx-divider {
   height: 1px;
-  background: var(--border);
+  background: var(--tg-border);
   margin: 4px 6px;
 }
 
 /* ==============================================================================
-   Toast Notification Center
+   Telegram Notification Center
    ============================================================================== */
 #notification-container {
   position: absolute;
-  top: calc(var(--topbar-height) + 16px);
+  top: calc(42px + 16px);
   right: 16px;
   display: flex;
   flex-direction: column;
@@ -883,29 +861,36 @@ html, body {
 }
 
 .toast-item {
-  width: 300px;
-  background: rgba(23, 33, 43, 0.94);
-  backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent-bright);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-dropdown);
+  width: 320px;
+  background: var(--tg-surface);
+  border: 1px solid var(--tg-border);
+  border-radius: 12px;
+  box-shadow: var(--tg-shadow-dropdown);
   padding: 12px 14px;
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
   pointer-events: auto;
-  animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  animation: toastIn 0.25s ease-out;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .toast-icon {
-  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--tg-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #fff;
+  flex-shrink: 0;
 }
 
 .toast-content {
@@ -913,25 +898,14 @@ html, body {
 }
 
 .toast-title {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--tg-blue-bright);
   margin-bottom: 2px;
 }
 
 .toast-msg {
-  font-size: 11.5px;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  #drawer {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: var(--sidebar-width);
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6);
-  }
+  font-size: 12px;
+  color: var(--tg-theme-text-color);
+  line-height: 1.35;
 }
