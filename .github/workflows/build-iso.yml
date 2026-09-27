@@ -78,14 +78,7 @@ jobs:
           sudo cp themes/install-uzos.desktop rootfs/etc/skel/Desktop/
           sudo cp themes/install-uzos.desktop rootfs/etc/xdg/autostart/
 
-          # 4. Replace Plymouth Ubuntu Boot Watermark with Native UzOS Logo
-          rsvg-convert -w 256 -h 256 themes/icons/UzOS-Telegram/scalable/apps/uzos-logo.svg -o uzos-logo.png
-          sudo cp uzos-logo.png rootfs/usr/share/plymouth/ubuntu-logo.png
-          sudo cp uzos-logo.png rootfs/usr/share/plymouth/themes/spinner/watermark.png
-          sudo cp uzos-logo.png rootfs/usr/share/plymouth/themes/bgrt/watermark.png 2>/dev/null || true
-          sudo cp uzos-logo.png rootfs/usr/share/pixmaps/ubuntu-logo.png 2>/dev/null || true
-
-          # 5. Install Native Telegram UI Shell & CLI tools
+          # 4. Install Native Telegram UI Shell & CLI tools
           sudo cp desktop-shell/build/uzos-shell rootfs/usr/bin/
           sudo cp desktop-shell/session/start-uzos.sh rootfs/usr/bin/
           sudo cp desktop-shell/session/uzos.desktop rootfs/usr/share/wayland-sessions/
@@ -93,7 +86,7 @@ jobs:
           sudo cp ubuntu-base/rootfs/usr/bin/uzosfetch rootfs/usr/bin/
           sudo chmod +x rootfs/usr/bin/uzos-shell rootfs/usr/bin/start-uzos.sh rootfs/usr/bin/uzosfetch
 
-          # 6. Apply UzOS System Configurations (Zero Telemetry, zRAM, Rebranding)
+          # 5. Apply UzOS System Configurations (Zero Telemetry, zRAM, Rebranding)
           sudo cp ubuntu-base/rootfs/etc/profile.d/uzos-env.sh rootfs/etc/profile.d/ || true
           sudo cp ubuntu-base/rootfs/etc/hosts rootfs/etc/hosts
           sudo cp ubuntu-base/rootfs/etc/lsb-release rootfs/etc/lsb-release
@@ -103,16 +96,16 @@ jobs:
           sudo cp ubuntu-base/rootfs/etc/sysctl.d/99-uzos-performance.conf rootfs/etc/sysctl.d/
           sudo cp ubuntu-base/rootfs/etc/default/zram-tools rootfs/etc/default/
 
-          # 7. Configure Casper Live Hostname and Identity
+          # 6. Configure Casper Live Hostname and Identity
           cat <<'EOF' | sudo tee rootfs/etc/casper.conf
           export USERNAME="uzos"
           export USERFULLNAME="UzOS Live"
           export HOST="uzos"
-          export BUILD_SYSTEM="UzOS"
-          export FLAVOUR="UzOS"
+          export BUILD_SYSTEM="Ubuntu"
+          export FLAVOUR="Ubuntu"
           EOF
 
-          # 8. Configure Passwordless Sudo & GDM3 Autologin for Live User
+          # 7. Configure Passwordless Sudo & GDM3 Autologin for Live User
           echo 'uzos ALL=(ALL) NOPASSWD:ALL' | sudo tee rootfs/etc/sudoers.d/uzos
           sudo chmod 0440 rootfs/etc/sudoers.d/uzos
 
@@ -214,11 +207,31 @@ jobs:
             systemctl enable NetworkManager.service || true
             systemctl enable gdm3.service || true
 
-            # 8. Rebuild initramfs with UzOS Plymouth splash and Casper branding
-            update-initramfs -u -k all || true
+            # 8. Force essential live boot modules into initramfs (Fixes /cow overlay panic & USB discovery)
+            cat <<'MODULES' >> /etc/initramfs-tools/modules
+overlay
+squashfs
+loop
+usb_storage
+uas
+nls_iso8859_1
+nls_cp437
+nls_utf8
+MODULES
 
             apt clean
           "
+
+          # 9. Replace Plymouth Ubuntu logos with native UzOS logo (AFTER apt install so it is NEVER overwritten)
+          rsvg-convert -w 256 -h 256 themes/icons/UzOS-Telegram/scalable/apps/uzos-logo.svg -o uzos-logo.png
+          sudo cp uzos-logo.png rootfs/usr/share/plymouth/ubuntu-logo.png
+          sudo cp uzos-logo.png rootfs/usr/share/plymouth/themes/spinner/watermark.png
+          sudo cp uzos-logo.png rootfs/usr/share/plymouth/themes/spinner/bgrt-fallback.png
+          sudo cp uzos-logo.png rootfs/usr/share/plymouth/themes/bgrt/watermark.png 2>/dev/null || true
+          sudo cp uzos-logo.png rootfs/usr/share/pixmaps/ubuntu-logo.png 2>/dev/null || true
+
+          # 10. Rebuild initramfs with overlayfs, USB drivers, and UzOS splash
+          sudo chroot rootfs update-initramfs -u -k all
 
           sudo umount -lf rootfs/dev/pts 2>/dev/null || true
           sudo umount -lf rootfs/dev 2>/dev/null || true
@@ -299,7 +312,12 @@ jobs:
             s3://${{ secrets.R2_BUCKET_NAME }}/uzos-24.04-desktop-amd64.iso \
             --endpoint-url "https://${ACCOUNT_ID}.r2.cloudflarestorage.com"
 
-          echo "================================================================="
-          echo " [UzOS] Cloudflare R2 ga to'liq yuklandi!"
-          echo " Endi faylni Cloudflare CDN orqali maksimal tezlikda olishingiz mumkin."
-          echo "================================================================="
+          PRESIGNED_URL=$(aws s3 presign s3://${{ secrets.R2_BUCKET_NAME }}/uzos-24.04-desktop-amd64.iso \
+            --endpoint-url "https://${ACCOUNT_ID}.r2.cloudflarestorage.com" \
+            --expires-in 604800)
+
+          echo "=========================================================================="
+          echo " [UzOS] Cloudflare R2 ga muvaffaqiyatli yuklandi!"
+          echo " CHEKSIZ TEZLIKDAGI TO'G'RIDAN-TO'G'RI YUKLAB OLISH HAVOLASI (7 kun amal qiladi):"
+          echo "$PRESIGNED_URL"
+          echo "=========================================================================="
