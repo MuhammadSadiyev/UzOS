@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="UzOS Cloud — O'zbekiston Milliy Bulut Operatsion Tizimi. Brauzerda 1 soniyada ochiluvchi, o'rnatishsiz, 100% ochiq kodli, Zero-Telemetry, Telegram UI va PWA oflayn ish stoli muhiti.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="UzOS Cloud">
+  <meta property="og:image" content="/icon.svg">
+
+  <title>UzOS Cloud — O'zbekiston Milliy Bulut Operatsion Tizimi</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="UzOS Cloud — O'zbekiston Milliy Bulut Operatsion Tizimi">
+  <meta property="og:description" content="Brauzerda 1 soniyada ochiluvchi, ko'p oynali WebOS va to'liq Telegram Web dizayn tili. Shaxsiy fayllar, kod muharriri, terminal va oflayn PWA.">
+  <meta name="twitter:card" content="summary">
+
+  <!-- PWA Manifest & App Icons -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/icon.svg">
+
+  <!-- CSS -->
+  <script type="module" crossorigin src="/assets/main-DW1t6mhR.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="stylesheet" crossorigin href="/assets/main-vXckS3UD.css">
+</head>
+<body>
+
+  <!-- Ambient Glow SVGs (1:1 TON.org Multi-mesh Radial Gradients) -->
+  <div class="ambient-glow-wrapper" aria-hidden="true">
+    <svg class="hero-glow-svg" preserveAspectRatio="none" viewBox="0 0 1440 660" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hero-glow-0" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-16 319 -526 -26 840 0)">
+          <stop stop-color="#378EE5"/>
+          <stop offset="1" stop-color="#378EE5" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="hero-glow-1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-286 330 -720 -624 1428 0)">
+          <stop stop-color="#378EE5"/>
+          <stop offset="1" stop-color="#378EE5" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="hero-glow-2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(218 0 0 314 -67 330)">
+          <stop stop-color="#378EE5"/>
+          <stop offset="1" stop-color="#378EE5" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="hero-glow-3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="rotate(93 241 227) scale(198 432)">
+          <stop stop-color="#378EE5"/>
+          <stop offset="1" stop-color="#378EE5" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <path d="M0 0H1440V660H0z" fill="url(#hero-glow-0)" fill-opacity=".2"/>
+      <path d="M0 0H1440V660H0z" fill="url(#hero-glow-1)" fill-opacity=".2"/>
+      <path d="M0 0H1440V660H0z" fill="url(#hero-glow-2)" fill-opacity=".2"/>
+      <path d="M0 0H1440V660H0z" fill="url(#hero-glow-3)" fill-opacity=".2"/>
+    </svg>
+  </div>
+
+  <div class="landing-shell">
+    
+    <!-- Site Header (1:1 TON.org Header: Left Logo + Right White Text Links) -->
+    <header class="site-header" id="site-header">
+      <div class="inner-header">
+        <a href="#hero" class="brand-logo" aria-label="UzOS Bosh sahifa">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="brand-icon">
+            <defs>
+              <linearGradient id="uzHoneycomb7Header" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38BDF8"/>
+                <stop offset="100%" stop-color="#0284C7"/>
+              </linearGradient>
+            </defs>
+            <!-- 6 Outer Honeycomb Cells -->
+            <g stroke="white" stroke-width="1.1" stroke-linejoin="round" fill="url(#uzHoneycomb7Header)">
+              <polygon points="8.6,11.7 12.3,13.8 12.3,18.2 8.6,20.3 4.8,18.2 4.8,13.8"/>
+              <polygon points="23.4,11.7 27.2,13.8 27.2,18.2 23.4,20.3 19.7,18.2 19.7,13.8"/>
+              <polygon points="12.3,5.2 16,7.4 16,11.7 12.3,13.8 8.6,11.7 8.6,7.4"/>
+              <polygon points="19.7,5.2 23.4,7.4 23.4,11.7 19.7,13.8 16,11.7 16,7.4"/>
+              <polygon points="12.3,18.2 16,20.3 16,24.7 12.3,26.8 8.6,24.7 8.6,20.3"/>
+              <polygon points="19.7,18.2 23.4,20.3 23.4,24.7 19.7,26.8 16,24.7 16,20.3"/>
+            </g>
+            <!-- Center Core Honeycomb Cell -->
+            <polygon points="16,11.7 19.7,13.8 19.7,18.2 16,20.3 12.3,18.2 12.3,13.8" fill="white" stroke="#38BDF8" stroke-width="1.1" stroke-linejoin="round"/>
+            <circle cx="16" cy="16" r="1.4" fill="#0284C7"/>
+          </svg>
+          <span class="brand-title">UzOS</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a class="nav-link" href="#infrastructure">Afzalliklar</a>
+          <a class="nav-link" href="https://github.com/MuhammadSadiyev/UzOS" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a class="nav-link" href="https://github.com/MuhammadSadiyev/UzOS/blob/main/README.md" target="_blank" rel="noopener noreferrer">Docs</a>
+          <a class="nav-btn-beta" href="desktop.html" style="display: inline-flex; align-items: center; justify-content: center; background: rgba(30, 174, 251, 0.14); color: #1eaefb; border: 1px solid rgba(30, 174, 251, 0.35); padding: 7px 18px; border-radius: 9999px; font-size: 13.5px; font-weight: 700; text-decoration: none; transition: all 0.2s ease; margin-left: 10px;">
+            <span>UZOS beta</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      
+      <!-- ==========================================================================
+           Hero Section (Split Title + Live Metrics + 3D Dot-Matrix Globe)
+           ========================================================================== -->
+      <section class="section-hero" id="hero">
+        <div class="container hero-container">
+          <div class="hero-content">
+            
+            <!-- 1:1 TON.org _badge_DqXMW: Shunchaki Ko'k Yozuv -->
+            <p class="section-label">O'zbekiston Milliy Bulut Operatsion Tizimi</p>
+
+            <!-- 1:1 TON.org Main Text Typography & Styling -->
+            <h1 id="hero-title" class="hero-title" style="max-width: 480px; font-weight: 700; line-height: 1.25; margin-bottom: 24px;">
+              <span class="split-title" style="max-width: 100%;">
+                <span style="white-space: normal; max-width: 100%;">Brauzerda soniyalarda ishga tushuvchi</span>
+                <span style="white-space: normal; max-width: 100%;">o'rnatishsiz, Milliy Bulut OS</span>
+              </span>
+            </h1>
+
+            <!-- 1:1 TON.org Style Metric Badges (Row 1: 3 badges, Row 2: 2 badges) -->
+            <ul aria-label="UzOS milliy ko'rsatkichlari" class="ton-badges-list">
+              <li class="ton-badge-item">
+                <span class="ton-badge-card">
+                  <span class="metric-val">100%</span>
+                  <span class="metric-lbl">Ochiq Kodli (MIT)</span>
+                </span>
+              </li>
+              <li class="ton-badge-item">
+                <span class="ton-badge-card">
+                  <span class="metric-val">0 B</span>
+                  <span class="metric-lbl">Xorijga Telemetriya</span>
+                </span>
+              </li>
+              <li class="ton-badge-item">
+                <span class="ton-badge-card">
+                  <span class="metric-val">&lt; 0.3s</span>
+                  <span class="metric-lbl">Bir Zumda Yuklanish</span>
+                </span>
+              </li>
+              <li class="ton-badge-item">
+                <span class="ton-badge-card">
+                  <span class="metric-val">PWA</span>
+                  <span class="metric-lbl">Oflayn & O'rnatiluvchi</span>
+                </span>
+              </li>
+              <li class="ton-badge-item">
+                <span class="ton-badge-card">
+                  <span class="metric-val">VFS</span>
+                  <span class="metric-lbl">Lokal Shifrlangan</span>
+                </span>
+              </li>
+            </ul>
+
+            <!-- Hero Cloud OS Action Button -->
+            <div class="hero-actions" style="margin-top: 30px; display: flex; align-items: center;">
+              <a href="desktop.html" class="btn-launch-beta" style="display: inline-flex; align-items: center; justify-content: center; background-color: #1eaefb; color: #ffffff; font-family: 'Plus Jakarta Sans', -apple-system, sans-serif; font-size: 15px; font-weight: 700; line-height: 1; padding: 15px 36px; border-radius: 9999px; text-decoration: none; border: 1px solid transparent; box-shadow: 0 4px 22px rgba(30, 174, 251, 0.45); letter-spacing: 0.02em; transition: all 0.2s ease;">
+                <span>UZOS beta</span>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- TON.org 3D Interactive Dot-Matrix Network Globe (Clean canvas) -->
+          <div class="hero-visual-wrap">
+            <div class="globe-canvas-container" id="globe-container">
+              <canvas id="hero-globe-canvas" width="600" height="520"></canvas>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           Technological superiority (1:1 TON.org Joined Cards Grid Container)
+           ========================================================================== -->
+      <section class="section" id="infrastructure">
+        <div class="container">
+          
+          <div class="section-heading">
+            <p class="section-label">Texnologik Poydevor</p>
+            <h2 class="heading-title">Yangi Avlod WebOS Afzalliklari</h2>
+          </div>
+
+          <!-- 1:1 Unified Card Grid Component (Joined cells, seamless borders) -->
+          <div class="features-unified-container">
+            <ul class="features-grid">
+              
+              <!-- Cell 1: Data Sovereignty / No foreign telemetry -->
+              <li class="feature-cell">
+                <div class="feature-cell-icon">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 5L7 11V19C7 28 12.5 35.5 20 38C27.5 35.5 33 28 33 19V11L20 5Z" stroke="#1EAEFB" stroke-width="2.2" stroke-linejoin="round"/>
+                    <path d="M15 20L18.5 23.5L25 16.5" stroke="#1EAEFB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="feature-cell-body">
+                  <h3 class="feature-cell-title">Raqamli Suverenitet & Maxfiylik</h3>
+                  <p class="feature-cell-desc">
+                    <strong>0 bayt xorijiy telemetriya.</strong> Foydalanuvchi ma'lumotlari, fayllar va buyruqlar tashqi serverlarga yuborilmaydi, faqat mahalliy brauzer xotirasida saqlanadi.
+                  </p>
+                </div>
+              </li>
+
+              <!-- Cell 2: Instant Boot & No ISO Installation -->
+              <li class="feature-cell">
+                <div class="feature-cell-icon">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="22" r="14" stroke="#1EAEFB" stroke-width="2.2"/>
+                    <path d="M20 14V22L25 25" stroke="#1EAEFB" stroke-width="2.2" stroke-linecap="round"/>
+                    <path d="M16 4H24M20 4V8" stroke="#1EAEFB" stroke-width="2.2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="feature-cell-body">
+                  <h3 class="feature-cell-title">1 Soniyada Ishga Tushish</h3>
+                  <p class="feature-cell-desc">
+                    <strong>Gigabaytlab ISO fayllar va formatlash shart emas.</strong> Istalgan kompyuter yoki brauzerda bir marta bosish bilan to'liq ish stoli ochiladi.
+                  </p>
+                </div>
+              </li>
+
+              <!-- Cell 3: Standalone PWA & Offline Engine -->
+              <li class="feature-cell">
+                <div class="feature-cell-icon">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <rect x="8" y="6" width="24" height="28" rx="4" stroke="#1EAEFB" stroke-width="2.2"/>
+                    <path d="M16 30H24" stroke="#1EAEFB" stroke-width="2.2" stroke-linecap="round"/>
+                    <path d="M15 15L20 20L25 15M20 10V20" stroke="#1EAEFB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="feature-cell-body">
+                  <h3 class="feature-cell-title">PWA & To'liq Oflayn Ishlash</h3>
+                  <p class="feature-cell-desc">
+                    <strong>Mustaqil ilova sifatida o'rnating.</strong> Service Worker tufayli hatto internet aloqasi bo'lmaganda ham (samolyotda yoki oflayn) to'liq ishlayveradi.
+                  </p>
+                </div>
+              </li>
+
+              <!-- Cell 4: Web Hypervisor & Virtual File System (VFS) -->
+              <li class="feature-cell">
+                <div class="feature-cell-icon">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <rect x="5" y="8" width="30" height="24" rx="4" stroke="#1EAEFB" stroke-width="2.2"/>
+                    <path d="M11 16L16 20L11 24" stroke="#1EAEFB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="19" y1="24" x2="27" y2="24" stroke="#1EAEFB" stroke-width="2.2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="feature-cell-body">
+                  <h3 class="feature-cell-title">Web Hypervisor & VFS Xotira</h3>
+                  <p class="feature-cell-desc">
+                    <strong>Virtual Fayl Tizimi va Drag & Drop.</strong> Kompyuteringizdagi fayllarni ish stoliga sudrab keling, tahrirlang va butun tizimni bitta tugma bilan zaxira (Backup) qiling.
+                  </p>
+                </div>
+              </li>
+
+              <!-- Cell 5: Telegram UI & Windows Aero Snap -->
+              <li class="feature-cell">
+                <div class="feature-cell-icon">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="15" stroke="#1EAEFB" stroke-width="2.2"/>
+                    <path d="M12 19L27 12L20 27L17.5 21.5L12 19Z" stroke="#1EAEFB" stroke-width="2.2" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="feature-cell-body">
+                  <h3 class="feature-cell-title">Telegram UI & Windows Aero Snap</h3>
+                  <p class="feature-cell-desc">
+                    <strong>Tanish, silliq va zamonaviy interfeys.</strong> Oynalarni erkin sudrash, chetga tekkanda 50% va 25% moslashish, Alt+Tab va qulay boshqaruv paneli.
+                  </p>
+                </div>
+              </li>
+
+              <!-- Cell 6: 100% Free & Open Source -->
+              <li class="feature-cell">
+                <div class="feature-cell-icon">
+                  <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <circle cx="12" cy="12" r="4" stroke="#1EAEFB" stroke-width="2.2"/>
+                    <circle cx="12" cy="28" r="4" stroke="#1EAEFB" stroke-width="2.2"/>
+                    <circle cx="28" cy="20" r="4" stroke="#1EAEFB" stroke-width="2.2"/>
+                    <path d="M12 16V24" stroke="#1EAEFB" stroke-width="2.2"/>
+                    <path d="M12 16C12 20 28 16 28 16V16" stroke="#1EAEFB" stroke-width="2.2"/>
+                  </svg>
+                </div>
+                <div class="feature-cell-body">
+                  <h3 class="feature-cell-title">100% Ochiq Kodli & Mutlaqo Bepul</h3>
+                  <p class="feature-cell-desc">
+                    <strong>Hech qanday litsenziya to'lovlarisiz.</strong> MIT litsenziyasi asosida to'liq ochiq, har qanday tashkilot va fuqaro uchun erkin foydalanish huquqi.
+                  </p>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==========================================================================
+         Footer (1:1 TON.org Style: Left Logo + Center Social Links + Right Meta)
+         ========================================================================== -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        
+        <!-- Left: UzOS Logo (7-talik Asal Ari Uyasi) -->
+        <a href="#hero" class="footer-logo brand-logo" aria-label="UzOS Bosh sahifa">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none" class="brand-icon">
+            <defs>
+              <linearGradient id="uzHoneycomb7Footer" x1="4" y1="4" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#38BDF8"/>
+                <stop offset="100%" stop-color="#0284C7"/>
+              </linearGradient>
+            </defs>
+            <!-- 6 Outer Honeycomb Cells -->
+            <g stroke="white" stroke-width="1.1" stroke-linejoin="round" fill="url(#uzHoneycomb7Footer)">
+              <polygon points="8.6,11.7 12.3,13.8 12.3,18.2 8.6,20.3 4.8,18.2 4.8,13.8"/>
+              <polygon points="23.4,11.7 27.2,13.8 27.2,18.2 23.4,20.3 19.7,18.2 19.7,13.8"/>
+              <polygon points="12.3,5.2 16,7.4 16,11.7 12.3,13.8 8.6,11.7 8.6,7.4"/>
+              <polygon points="19.7,5.2 23.4,7.4 23.4,11.7 19.7,13.8 16,11.7 16,7.4"/>
+              <polygon points="12.3,18.2 16,20.3 16,24.7 12.3,26.8 8.6,24.7 8.6,20.3"/>
+              <polygon points="19.7,18.2 23.4,20.3 23.4,24.7 19.7,26.8 16,24.7 16,20.3"/>
+            </g>
+            <!-- Center Core Honeycomb Cell -->
+            <polygon points="16,11.7 19.7,13.8 19.7,18.2 16,20.3 12.3,18.2 12.3,13.8" fill="white" stroke="#38BDF8" stroke-width="1.1" stroke-linejoin="round"/>
+            <circle cx="16" cy="16" r="1.4" fill="#0284C7"/>
+          </svg>
+          <span class="brand-title">UzOS</span>
+        </a>
+
+        <!-- Center: TON.org style horizontal link list with icons -->
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <ul class="footer-links-list">
+            <li class="footer-link-item">
+              <a class="footer-link" href="https://t.me/texnomuhandis" target="_blank" rel="noopener noreferrer">
+                <!-- TON.org Telegram SVG Icon -->
+                <svg class="footer-link-icon" aria-hidden="true" fill="none" focusable="false" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <g opacity="0.5">
+                    <path d="M16.3234 4.17334C17.0263 4.17334 17.2113 4.70501 17.0034 5.95334C16.7655 7.38084 16.0801 12.1071 15.5334 15.0492C15.3242 16.175 14.9472 16.6604 14.3984 16.6604C14.0967 16.6604 13.7434 16.5138 13.3376 16.2458C12.7876 15.8825 10.0109 14.0463 9.40798 13.615C8.85798 13.2221 8.09924 12.7492 9.0509 11.8183C9.38965 11.4867 11.6092 9.36709 13.3384 7.71751C13.523 7.54126 13.3684 7.27251 13.1634 7.27251C13.1167 7.27251 13.0672 7.28667 13.0188 7.31876C10.688 8.86459 7.4559 11.01 7.04465 11.2896C6.6334 11.5688 6.23257 11.7479 5.6984 11.7479C5.42549 11.7479 5.11757 11.7013 4.75548 11.5971C3.9459 11.3646 3.15549 11.0875 2.84757 10.9817C1.66215 10.575 1.9434 10.0479 3.09465 9.54126C7.71048 7.51084 13.6834 5.03501 14.508 4.69251C15.3113 4.35876 15.908 4.17334 16.3234 4.17334ZM16.3234 2.92334C15.7534 2.92334 15.0672 3.10709 14.0292 3.53751L13.9047 3.58917C9.4734 5.42917 5.45548 7.13667 2.59132 8.39667C2.14382 8.59376 0.782568 9.19251 0.835485 10.445C0.857985 10.9854 1.15549 11.7221 2.44215 12.1633L2.53715 12.1958C2.89632 12.3196 3.64423 12.5775 4.4109 12.7979C4.87757 12.9321 5.29923 12.9971 5.69882 12.9971C6.39215 12.9971 6.92923 12.7992 7.34923 12.5688C7.34715 12.6388 7.34882 12.7092 7.35423 12.78C7.43007 13.7433 8.17507 14.2717 8.62007 14.5875L8.68215 14.6317C9.33924 15.1017 12.313 17.0663 12.6497 17.2883C13.2834 17.7067 13.8555 17.9096 14.3992 17.9096C15.2542 17.9096 16.3588 17.4529 16.763 15.2771C17.1467 13.2133 17.5901 10.3304 17.9138 8.22542C18.0517 7.32709 18.1651 6.59042 18.2372 6.15834C18.3826 5.28584 18.4492 4.29751 17.8422 3.58126C17.5872 3.28126 17.1172 2.92334 16.3234 2.92334Z" fill="currentColor"/>
+                  </g>
+                </svg>
+                <span>Telegram</span>
+              </a>
+            </li>
+            <li class="footer-link-item">
+              <a class="footer-link" href="https://github.com/MuhammadSadiyev/UzOS" target="_blank" rel="noopener noreferrer">
+                <!-- TON.org GitHub SVG Icon -->
+                <svg class="footer-link-icon" aria-hidden="true" fill="none" focusable="false" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <g opacity="0.5">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2C5.58 2 2 5.58 2 10C2 13.53 4.29 16.53 7.47 17.59C7.87 17.66 8.02 17.42 8.02 17.21C8.02 17.02 8.01 16.39 8.01 15.72C6 16.09 5.48 15.23 5.32 14.78C5.23 14.55 4.84 13.84 4.5 13.65C4.22 13.5 3.82 13.13 4.49 13.12C5.12 13.11 5.57 13.7 5.72 13.94C6.44 15.15 7.59 14.81 8.05 14.6C8.12 14.08 8.33 13.73 8.56 13.53C6.78 13.33 4.92 12.64 4.92 9.58C4.92 8.71 5.23 7.99 5.74 7.43C5.66 7.23 5.38 6.41 5.82 5.31C5.82 5.31 6.49 5.1 8.02 6.13C8.66 5.95 9.34 5.86 10.02 5.86C10.7 5.86 11.38 5.95 12.02 6.13C13.55 5.09 14.22 5.31 14.22 5.31C14.66 6.41 14.38 7.23 14.3 7.43C14.81 7.99 15.12 8.7 15.12 9.58C15.12 12.65 13.25 13.33 11.47 13.53C11.76 13.78 12.01 14.26 12.01 15.01C12.01 16.08 12 16.94 12 17.21C12 17.42 12.15 17.67 12.55 17.59C15.71 16.53 18 13.53 18 10C18 5.58 14.42 2 10 2Z" fill="currentColor"/>
+                  </g>
+                </svg>
+                <span>GitHub</span>
+              </a>
+            </li>
+            <li class="footer-link-item">
+              <a class="footer-link" href="https://github.com/MuhammadSadiyev/UzOS/blob/main/README.md" target="_blank" rel="noopener noreferrer">
+                <!-- TON.org Document / Media Assets SVG Icon -->
+                <svg class="footer-link-icon" aria-hidden="true" fill="none" focusable="false" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <g opacity="0.5">
+                    <path d="M10.6257 6.45817V2.2915H5.20898C4.51857 2.2915 3.95898 2.85109 3.95898 3.5415V16.4582C3.95898 17.1486 4.51857 17.7082 5.20898 17.7082H14.7923C15.4827 17.7082 16.0423 17.1486 16.0423 16.4582V7.70817H11.8757C11.1852 7.70817 10.6257 7.14859 10.6257 6.45817Z" stroke="currentColor" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.25"/>
+                    <path d="M16.0417 7.70817L10.625 2.2915" stroke="currentColor" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.25"/>
+                    <path d="M7.29102 15.2085H12.7077" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="1.25"/>
+                    <path d="M10 9.7915V13.5736" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.25"/>
+                  </g>
+                </svg>
+                <span>Docs</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Right: TON.org style meta -->
+        <div class="footer-meta">
+          <span class="footer-copyright">© 2026 UzOS</span>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

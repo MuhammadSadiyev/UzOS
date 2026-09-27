@@ -1,0 +1,37 @@
+{
+  "name": "UzOS Cloud — Milliy Bulut Operatsion Tizimi",
+  "short_name": "UzOS Cloud",
+  "description": "O'zbekiston Milliy Brauzer-Asosidagi Suveren Bulut Operatsion Tizimi va Shaxsiy Ish Stoli Muhiti",
+  "start_url": "/desktop.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0e1621",
+  "theme_color": "#17212b",
+  "categories": ["utilities", "productivity", "system"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ish Stoli (Desktop)",
+      "url": "/desktop.html",
+      "description": "UzOS Cloud Ish Stoli Muhitiga Kirish"
+    },
+    {
+      "name": "Taqdimot & Hujjatlar",
+      "url": "/index.html",
+      "description": "UzOS Loyihasi haqida ma'lumot"
+    }
+  ]
+}

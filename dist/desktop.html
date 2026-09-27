@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="UzOS Cloud — O'zbekiston Milliy Bulut Operatsion Tizimi. 100% Telegram Web dizayn tili va ko'p oynali WebOS.">
+  <meta name="theme-color" content="#0e1621">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="UzOS Cloud">
+  <meta property="og:title" content="UzOS Cloud — Milliy Bulut Operatsion Tizimi">
+  <meta property="og:description" content="O'zbekiston Milliy Brauzer-Asosidagi Suveren Bulut Operatsion Tizimi.">
+  <meta property="og:image" content="/icon.svg">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <title>UzOS Cloud — Milliy WebOS</title>
+
+  <!-- PWA Manifest & App Icons -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/icon.svg">
+
+  <!-- Stylesheets -->
+  <script type="module" crossorigin src="/assets/desktop-DLDHdYYH.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="stylesheet" crossorigin href="/assets/desktop-D1jkoeO1.css">
+</head>
+<body>
+
+  <!-- Full Desktop OS Workspace Container -->
+  <div id="desktop-container" class="default-wallpaper">
+
+    <!-- ========================================================================
+         DESKTOP BODY (Full Viewport Workspace Canvas + Bottom Taskbar & Dock)
+         ======================================================================== -->
+    <div id="desktop-body">
+
+      <!-- ========================================================================
+           WORKSPACE CANVAS (Desktop Icons + Floating Multi-Windows)
+           ======================================================================== -->
+      <main id="workspace">
+
+        <!-- Host File Dropzone Overlay -->
+        <div id="desktop-dropzone" class="desktop-dropzone-overlay">
+          <div class="desktop-dropzone-card">
+            <div class="desktop-dropzone-icon">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m4-5 5 5 5-5m-5 5V3"/>
+              </svg>
+            </div>
+            <div class="desktop-dropzone-title">Faylni UzOS VFS ga yuklash</div>
+            <div class="desktop-dropzone-sub">Faylni qo'yib yuboring (Bulut xotirasiga saqlanadi)</div>
+          </div>
+        </div>
+        
+        <!-- Desktop Icons Grid (Single click to select, double click to launch) -->
+        <div class="desktop-icons-grid" id="desktop-icons-grid">
+          
+          <div class="desktop-icon-cell" data-app="files" tabindex="0">
+            <div class="desktop-icon-box files">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+              </svg>
+            </div>
+            <span class="desktop-icon-label">Bulut Fayllar</span>
+          </div>
+
+          <div class="desktop-icon-cell" data-app="terminal" tabindex="0">
+            <div class="desktop-icon-box terminal">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+            </div>
+            <span class="desktop-icon-label">Web Terminal</span>
+          </div>
+
+          <div class="desktop-icon-cell" data-app="editor" tabindex="0">
+            <div class="desktop-icon-box editor">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+              </svg>
+            </div>
+            <span class="desktop-icon-label">Kod Muharriri</span>
+          </div>
+
+          <div class="desktop-icon-cell" data-app="taskmanager" tabindex="0">
+            <div class="desktop-icon-box taskmanager">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+            </div>
+            <span class="desktop-icon-label">Vazifalar</span>
+          </div>
+
+          <div class="desktop-icon-cell" data-app="settings" tabindex="0">
+            <div class="desktop-icon-box settings">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </div>
+            <span class="desktop-icon-label">Sozlamalar</span>
+          </div>
+
+        </div>
+
+        <!-- Floating Windows Container (managed by WindowManager) -->
+      </main>
+
+      <!-- ========================================================================
+           APP DRAWER / START MENU (Slide-up Glass Popover from Bottom-Left)
+           ======================================================================== -->
+      <div id="drawer" class="collapsed">
+        <div class="drawer-search-box">
+          <div class="search-input-wrapper">
+            <span class="search-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="21" y1="21" x2="16" y2="16"></line>
+              </svg>
+            </span>
+            <input type="text" class="drawer-search-input" id="drawer-search" placeholder="Ilovalarni qidirish..." autocomplete="off" spellcheck="false" />
+          </div>
+        </div>
+
+        <div class="drawer-header">O'rnatilgan Ilovalar</div>
+
+        <div class="drawer-list" id="drawer-list">
+          
+          <div class="drawer-item" data-app="files" data-app-name="Bulut Fayllar" data-app-desc="VFS Shaxsiy Bulut Xotirasi">
+            <div class="drawer-item-icon" style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"></path>
+              </svg>
+            </div>
+            <div class="drawer-item-info">
+              <div class="drawer-item-title-row">
+                <span class="drawer-item-title">Bulut Fayllar</span>
+                <span class="drawer-item-tag">Tizim</span>
+              </div>
+              <div class="drawer-item-desc">VFS Shaxsiy Bulut Xotirasi</div>
+            </div>
+          </div>
+
+          <div class="drawer-item" data-app="terminal" data-app-name="Web Terminal" data-app-desc="Rust WebAssembly Yadro Shell">
+            <div class="drawer-item-icon" style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border:1px solid rgba(255,255,255,0.12);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+              </svg>
+            </div>
+            <div class="drawer-item-info">
+              <div class="drawer-item-title-row">
+                <span class="drawer-item-title">Web Terminal</span>
+                <span class="drawer-item-tag">Dasturlash</span>
+              </div>
+              <div class="drawer-item-desc">Rust WebAssembly Yadro Shell</div>
+            </div>
+          </div>
+
+          <div class="drawer-item" data-app="editor" data-app-name="Kod Muharriri" data-app-desc="JavaScript va Markdown Studio">
+            <div class="drawer-item-icon" style="background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+              </svg>
+            </div>
+            <div class="drawer-item-info">
+              <div class="drawer-item-title-row">
+                <span class="drawer-item-title">Kod Muharriri</span>
+                <span class="drawer-item-tag">IDE</span>
+              </div>
+              <div class="drawer-item-desc">JavaScript va Markdown Studio</div>
+            </div>
+          </div>
+
+          <div class="drawer-item" data-app="taskmanager" data-app-name="Vazifalar Menejeri" data-app-desc="Jarayonlar va Tizim Nazorati">
+            <div class="drawer-item-icon" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+            </div>
+            <div class="drawer-item-info">
+              <div class="drawer-item-title-row">
+                <span class="drawer-item-title">Vazifalar Menejeri</span>
+                <span class="drawer-item-tag">Tizim</span>
+              </div>
+              <div class="drawer-item-desc">Jarayonlar va Resurslar Nazorati</div>
+            </div>
+          </div>
+
+          <div class="drawer-item" data-app="settings" data-app-name="Tizim Sozlamalari" data-app-desc="Zero-Telemetry va Mavzular">
+            <div class="drawer-item-icon" style="background: linear-gradient(135deg, #475569 0%, #64748b 100%);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </div>
+            <div class="drawer-item-info">
+              <div class="drawer-item-title-row">
+                <span class="drawer-item-title">Tizim Sozlamalari</span>
+                <span class="drawer-item-tag">Konfig</span>
+              </div>
+              <div class="drawer-item-desc">Zero-Telemetry va Mavzular</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ========================================================================
+           CONTROL CENTER POPOVER (Quick Settings Slide-up from Bottom-Right)
+           ======================================================================== -->
+      <div id="quick-settings">
+        <div class="qs-title">Boshqaruv Markazi</div>
+        <div class="qs-grid">
+          <div class="qs-card active" data-control="wifi">
+            <div class="qs-card-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+              </svg>
+            </div>
+            <div class="qs-card-info">
+              <span class="qs-card-name">Wi-Fi</span>
+              <span class="qs-card-status">Faol</span>
+            </div>
+          </div>
+
+          <div class="qs-card active" data-control="shield">
+            <div class="qs-card-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <path d="m9 12 2 2 4-4"></path>
+              </svg>
+            </div>
+            <div class="qs-card-info">
+              <span class="qs-card-name">Qalqon</span>
+              <span class="qs-card-status">0 B Tarmoq</span>
+            </div>
+          </div>
+
+          <div class="qs-card" data-control="bluetooth">
+            <div class="qs-card-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"></polyline>
+              </svg>
+            </div>
+            <div class="qs-card-info">
+              <span class="qs-card-name">Bluetooth</span>
+              <span class="qs-card-status">O'chiq</span>
+            </div>
+          </div>
+
+          <div class="qs-card active" data-control="night">
+            <div class="qs-card-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            </div>
+            <div class="qs-card-info">
+              <span class="qs-card-name">Dark Mode</span>
+              <span class="qs-card-status">Faol</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="qs-slider-group">
+          <div class="qs-slider-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+            <input type="range" class="qs-range" min="0" max="100" value="80" title="Ovoz balandligi" />
+          </div>
+          <div class="qs-slider-row">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <input type="range" class="qs-range" min="10" max="100" value="95" title="Yorug'lik darajasi" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================================
+           RIGHT-CLICK CONTEXT MENU (Desktop)
+           ======================================================================== -->
+      <div id="context-menu">
+        <div class="ctx-item" data-action="new-file">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="12" y1="18" x2="12" y2="12"></line>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+          </svg>
+          <span>Yangi fayl yaratish</span>
+        </div>
+        <div class="ctx-item" data-action="arrange-icons">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+          <span>Belgilarni tartiblash</span>
+        </div>
+        <div class="ctx-item" data-action="refresh">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          <span>Ish stolini yangilash</span>
+        </div>
+        <div class="ctx-divider"></div>
+        <div class="ctx-item" data-action="wallpaper">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="13.5" cy="6.5" r=".5"></circle>
+            <circle cx="17.5" cy="10.5" r=".5"></circle>
+            <circle cx="8.5" cy="7.5" r=".5"></circle>
+            <circle cx="6.5" cy="12.5" r=".5"></circle>
+            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.563-2.512 5.563-5.563C22 6.5 17.5 2 12 2z"></path>
+          </svg>
+          <span>Fon rasmini almashtirish</span>
+        </div>
+        <div class="ctx-item" data-action="sys-info">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>Tizim haqida ma'lumot</span>
+        </div>
+      </div>
+
+      <!-- ========================================================================
+           NOTIFICATION TOASTS CONTAINER (Top-Right)
+           ======================================================================== -->
+      <div id="notification-container"></div>
+
+      <!-- ========================================================================
+           BOTTOM TASKBAR & DOCK (Unified WebOS Panel)
+           ======================================================================== -->
+      <footer id="taskbar">
+        
+        <!-- Left: Launcher Button & Active Window Title -->
+        <div class="taskbar-left">
+          <button class="taskbar-launcher-btn" id="sidebar-logo-btn" title="Ilovalar Menyu" aria-label="Ilovalar">
+            <svg width="22" height="22" viewBox="0 0 32 32">
+              <g stroke="white" stroke-width="1.1" stroke-linejoin="round" fill="#0284C7">
+                <polygon points="8.6,11.7 12.3,13.8 12.3,18.2 8.6,20.3 4.8,18.2 4.8,13.8"/>
+                <polygon points="23.4,11.7 27.2,13.8 27.2,18.2 23.4,20.3 19.7,18.2 19.7,13.8"/>
+                <polygon points="12.3,5.2 16,7.4 16,11.7 12.3,13.8 8.6,11.7 8.6,7.4"/>
+                <polygon points="19.7,5.2 23.4,7.4 23.4,11.7 19.7,13.8 16,11.7 16,7.4"/>
+                <polygon points="12.3,18.2 16,20.3 16,24.7 12.3,26.8 8.6,24.7 8.6,20.3"/>
+                <polygon points="19.7,18.2 23.4,20.3 23.4,24.7 19.7,26.8 16,24.7 16,20.3"/>
+              </g>
+              <polygon points="16,11.7 19.7,13.8 19.7,18.2 16,20.3 12.3,18.2 12.3,13.8" fill="white"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Center: Running Window Pills (Active/Minimized windows switcher) -->
+        <div class="taskbar-center">
+          <div id="topbar-running-tasks">
+            <!-- Running task pills rendered dynamically by TaskbarController -->
+          </div>
+        </div>
+
+        <!-- Right: System Tray & Control Center -->
+        <div class="taskbar-right">
+          <div class="taskbar-tray">
+            <div class="taskbar-clock" id="topbar-clock">12:00:00</div>
+            <div class="tray-item" id="btn-toggle-quicksettings" title="Boshqaruv Markazi">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="21" x2="4" y2="14"></line>
+                <line x1="4" y1="10" x2="4" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12" y2="3"></line>
+                <line x1="20" y1="21" x2="20" y2="16"></line>
+                <line x1="20" y1="12" x2="20" y2="3"></line>
+                <line x1="1" y1="14" x2="7" y2="14"></line>
+                <line x1="9" y1="8" x2="15" y2="8"></line>
+                <line x1="17" y1="16" x2="23" y2="16"></line>
+              </svg>
+            </div>
+            <button class="tray-item" id="btn-fullscreen" title="To'liq Ekranga O'tish">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </footer>
+
+    </div>
+
+  </div>
+
+  <!-- Master WebOS Script -->
+</body>
+</html>
