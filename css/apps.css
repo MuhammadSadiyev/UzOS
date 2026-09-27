@@ -468,93 +468,35 @@
 }
 
 .files-toolbar {
-  height: 52px;
+  height: 50px;
   background: var(--tg-bg-sidebar);
   border-bottom: 1px solid var(--tg-border);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  gap: 12px;
-}
-
-.files-nav-btns {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.files-btn {
-  background: var(--tg-bg-search);
-  border: 1px solid var(--tg-border);
-  border-radius: 8px;
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 500;
-  padding: 7px 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.15s ease;
-}
-
-.files-btn:hover {
-  background: var(--tg-active);
-  border-color: var(--tg-blue);
+  padding: 0 18px;
 }
 
 .files-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   background: var(--tg-bg-search);
   border-radius: 8px;
-  padding: 6px 14px;
+  padding: 7px 14px;
   font-size: 13px;
   color: var(--tg-text-secondary);
-  flex: 1;
-  max-width: 380px;
+  width: 100%;
+}
+
+.files-breadcrumb-icon:hover {
+  transform: scale(1.1);
+  transition: transform 0.15s ease;
 }
 
 .files-body {
   flex: 1;
   display: flex;
   overflow: hidden;
-}
-
-.files-sidebar {
-  width: 200px;
-  min-width: 200px;
-  background: var(--tg-bg-sidebar);
-  border-right: 1px solid var(--tg-border);
-  padding: 12px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.files-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 9px 14px;
-  border-radius: 10px;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--tg-text-secondary);
-  cursor: pointer;
-  transition: all 0.12s ease;
-}
-
-.files-nav-item:hover {
-  background: var(--tg-hover);
-  color: #ffffff;
-}
-
-.files-nav-item.active {
-  background: var(--tg-active);
-  color: #ffffff;
 }
 
 /* Telegram Document File Rows */

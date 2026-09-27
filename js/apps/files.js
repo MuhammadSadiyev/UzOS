@@ -20,7 +20,7 @@ export class FilesApp {
     this.vfs = vfs;
     this.wm = windowManager;
     this.openEditor = openEditorCallback;
-    this.currentPath = '/Hujjatlar';
+    this.currentPath = '/';
 
     this.render();
   }
@@ -31,114 +31,70 @@ export class FilesApp {
         
         <!-- Files Toolbar -->
         <div class="files-toolbar">
-          <div class="files-nav-btns">
-            <button class="files-btn" id="files-btn-up" title="Yuqoriga">
-              ${FILE_SVGS.up}
-              <span>Chiqish</span>
-            </button>
-            <button class="files-btn" id="files-btn-new-folder">
-              ${ICONS.folder}
-              <span>Yangi Papka</span>
-            </button>
-            <button class="files-btn" id="files-btn-new-file">
-              ${ICONS.newFile}
-              <span>Yangi Fayl</span>
-            </button>
-          </div>
           <div class="files-breadcrumb" id="files-breadcrumb">
-            <span style="display:flex;align-items:center;color:var(--tg-blue);">${ICONS.folder}</span>
-            <span id="files-breadcrumb-text">${this.currentPath}</span>
+            <span class="files-breadcrumb-icon" id="files-breadcrumb-icon" style="display:flex;align-items:center;color:var(--tg-blue);cursor:pointer;" title="Bosh katalogga qaytish">
+              ${ICONS.folder}
+            </span>
+            <div class="files-breadcrumb-segments" id="files-breadcrumb-segments" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;"></div>
           </div>
         </div>
 
-        <!-- Files Body -->
+        <!-- Files Body (Full width Document List) -->
         <div class="files-body">
-          
-          <!-- Files Sidebar -->
-          <div class="files-sidebar">
-            <div class="files-nav-item ${this.currentPath === '/Hujjatlar' ? 'active' : ''}" data-path="/Hujjatlar">
-              <span style="display:flex;align-items:center;">${FILE_SVGS.doc}</span>
-              <span>Hujjatlar</span>
-            </div>
-            <div class="files-nav-item ${this.currentPath === '/Rasmlar' ? 'active' : ''}" data-path="/Rasmlar">
-              <span style="display:flex;align-items:center;">${FILE_SVGS.image}</span>
-              <span>Rasmlar</span>
-            </div>
-            <div class="files-nav-item ${this.currentPath === '/Yuklamalar' ? 'active' : ''}" data-path="/Yuklamalar">
-              <span style="display:flex;align-items:center;">${FILE_SVGS.download}</span>
-              <span>Yuklamalar</span>
-            </div>
-            <div class="files-nav-item ${this.currentPath === '/Chiqindilar' ? 'active' : ''}" data-path="/Chiqindilar">
-              <span style="display:flex;align-items:center;">${FILE_SVGS.trash}</span>
-              <span>Chiqindilar</span>
-            </div>
-          </div>
-
-          <!-- Files Document Rows List -->
           <div class="files-grid" id="files-grid">
             <!-- Items rendered dynamically -->
           </div>
-
         </div>
 
       </div>
     `;
 
     this.gridEl = this.container.querySelector('#files-grid');
-    this.breadcrumbText = this.container.querySelector('#files-breadcrumb-text');
+    this.breadcrumbSegments = this.container.querySelector('#files-breadcrumb-segments');
+    this.breadcrumbIcon = this.container.querySelector('#files-breadcrumb-icon');
 
     this.bindEvents();
+    this.updateBreadcrumbs();
     this.refreshGrid();
   }
 
   bindEvents() {
-    this.container.querySelectorAll('.files-nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        this.currentPath = item.dataset.path;
-        this.updateActiveNav();
+    if (this.breadcrumbIcon) {
+      this.breadcrumbIcon.addEventListener('click', () => {
+        this.currentPath = '/';
+        this.updateBreadcrumbs();
         this.refreshGrid();
       });
-    });
+    }
+  }
 
-    this.container.querySelector('#files-btn-up').addEventListener('click', () => {
-      if (this.currentPath !== '/' && this.currentPath !== '') {
-        const parts = this.currentPath.split('/').filter(Boolean);
-        parts.pop();
-        this.currentPath = parts.length ? '/' + parts.join('/') : '/';
-        this.updateActiveNav();
-        this.refreshGrid();
-      }
-    });
+  updateBreadcrumbs() {
+    if (!this.breadcrumbSegments) return;
+    const parts = this.currentPath.split('/').filter(Boolean);
+    if (parts.length === 0) {
+      this.breadcrumbSegments.innerHTML = `<span class="path-seg active" style="color:#ffffff;font-weight:600;font-size:13.5px;">/ (Bosh Katalog)</span>`;
+    } else {
+      let html = `<span class="path-seg" data-path="/" style="cursor:pointer;color:var(--tg-blue);font-weight:500;">/</span>`;
+      let currentSub = '';
+      parts.forEach((p, idx) => {
+        currentSub += '/' + p;
+        const isLast = idx === parts.length - 1;
+        html += ` <span style="opacity:0.35;margin:0 4px;">/</span> <span class="path-seg ${isLast ? 'active' : ''}" data-path="${currentSub}" style="cursor:pointer;${isLast ? 'color:#fff;font-weight:600;' : 'color:var(--tg-blue);font-weight:500;'}">${p}</span>`;
+      });
+      this.breadcrumbSegments.innerHTML = html;
+    }
 
-    this.container.querySelector('#files-btn-new-folder').addEventListener('click', () => {
-      const name = prompt("Yangi papka nomi:", "Yangi_Papka");
-      if (name) {
-        const path = `${this.currentPath}/${name}`.replace('//', '/');
-        this.vfs.createFolder(path);
+    this.breadcrumbSegments.querySelectorAll('.path-seg[data-path]').forEach(seg => {
+      seg.addEventListener('click', () => {
+        this.currentPath = seg.dataset.path || '/';
+        this.updateBreadcrumbs();
         this.refreshGrid();
-      }
-    });
-
-    this.container.querySelector('#files-btn-new-file').addEventListener('click', () => {
-      const name = prompt("Yangi fayl nomi (masalan: hisobot.txt):", "yangi_fayl.txt");
-      if (name) {
-        const path = `${this.currentPath}/${name}`.replace('//', '/');
-        this.vfs.writeFile(path, `# ${name}\nYangi yaratilgan fayl.`);
-        this.refreshGrid();
-        if (this.openEditor) {
-          this.openEditor(path, name);
-        }
-      }
+      });
     });
   }
 
   updateActiveNav() {
-    this.container.querySelectorAll('.files-nav-item').forEach(item => {
-      item.classList.toggle('active', item.dataset.path === this.currentPath);
-    });
-    if (this.breadcrumbText) {
-      this.breadcrumbText.textContent = this.currentPath;
-    }
+    this.updateBreadcrumbs();
   }
 
   getFileIconInfo(name, isFolder) {
@@ -178,7 +134,7 @@ export class FilesApp {
             ${ICONS.folder}
           </div>
           <div style="font-size: 14px; font-weight: 500; color: #fff;">Bu papka bo'sh</div>
-          <div style="font-size: 12.5px; color: var(--tg-text-secondary); max-width: 280px;">Yuqoridagi 'Yangi Fayl' yoki 'Yangi Papka' tugmalari orqali fayl qo'shishingiz mumkin.</div>
+          <div style="font-size: 12.5px; color: var(--tg-text-secondary); max-width: 280px;">Ushbu katalogda hozircha fayllar mavjud emas.</div>
         </div>
       `;
       return;
